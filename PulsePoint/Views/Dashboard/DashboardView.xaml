@@ -1,0 +1,161 @@
+<UserControl x:Class="PulsePoint.Views.Dashboard.DashboardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Background="Transparent">
+        <StackPanel Margin="28,24">
+
+            <!-- Page header -->
+            <TextBlock Text="Dashboard" Style="{StaticResource TextDisplaySmall}" Margin="0,0,0,24" />
+
+            <!-- Stat cards row -->
+            <Grid Margin="0,0,0,24">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="16" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="16" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Active Customers -->
+                <Border Grid.Column="0" Style="{StaticResource CardPanel}">
+                    <StackPanel>
+                        <TextBlock Text="ACTIVE CUSTOMERS" Style="{StaticResource TextCaption}" Margin="0,0,0,8" />
+                        <TextBlock Text="{Binding ActiveCustomerCount}" Style="{StaticResource TextStatNumber}" />
+                    </StackPanel>
+                </Border>
+
+                <!-- Prospects -->
+                <Border Grid.Column="2" Style="{StaticResource CardPanel}">
+                    <StackPanel>
+                        <TextBlock Text="PROSPECTS" Style="{StaticResource TextCaption}" Margin="0,0,0,8" />
+                        <TextBlock Text="{Binding ProspectCount}" Style="{StaticResource TextStatNumber}" />
+                    </StackPanel>
+                </Border>
+
+                <!-- Needs Attention -->
+                <Border Grid.Column="4" Style="{StaticResource CardPanel}">
+                    <StackPanel>
+                        <TextBlock Text="NEEDS ATTENTION" Style="{StaticResource TextCaption}" Margin="0,0,0,8" />
+                        <TextBlock Text="{Binding StaleContacts.Count}" Style="{StaticResource TextStatNumber}"
+                                   Foreground="{StaticResource StatusAmberBrush}" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- Lower two columns -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="16" />
+                    <ColumnDefinition Width="340" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Stale contacts -->
+                <Border Grid.Column="0" Style="{StaticResource CardPanel}">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                            <Ellipse Width="6" Height="6" Fill="{StaticResource StatusAmberBrush}"
+                                     VerticalAlignment="Center" Margin="0,0,8,0" />
+                            <TextBlock Text="NEEDS ATTENTION" Style="{StaticResource TextSubheading}" />
+                        </StackPanel>
+
+                        <ItemsControl ItemsSource="{Binding StaleContacts}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="{StaticResource BorderSubtleBrush}"
+                                            BorderThickness="0,0,0,1"
+                                            Padding="0,10">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Grid.Column="0">
+                                                <TextBlock Text="{Binding Name}" Style="{StaticResource TextBody}" />
+                                                <TextBlock Text="{Binding Company}" Style="{StaticResource TextBodySecondary}" />
+                                            </StackPanel>
+                                            <Border Grid.Column="1" VerticalAlignment="Center"
+                                                    Background="{StaticResource StatusAmberGlowBrush}"
+                                                    CornerRadius="4" Padding="8,3">
+                                                <TextBlock Style="{StaticResource TextCaption}"
+                                                           Foreground="{StaticResource StatusAmberBrush}">
+                                                    <Run Text="{Binding DaysSinceLastInteraction, Mode=OneWay}" />
+                                                    <Run Text="days" />
+                                                </TextBlock>
+                                            </Border>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <TextBlock Text="No stale contacts — you're on top of it."
+                                   Style="{StaticResource TextBodySecondary}"
+                                   Margin="0,8,0,0"
+                                   Visibility="{Binding StaleContacts.Count,
+                                       Converter={StaticResource ZeroToVisibleConverter}}" />
+                    </StackPanel>
+                </Border>
+
+                <!-- Right column -->
+                <StackPanel Grid.Column="2">
+
+                    <!-- Upcoming follow-ups -->
+                    <Border Style="{StaticResource CardPanel}" Margin="0,0,0,16">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                <Ellipse Width="6" Height="6" Fill="{StaticResource AccentPrimaryBrush}"
+                                         VerticalAlignment="Center" Margin="0,0,8,0" />
+                                <TextBlock Text="FOLLOW-UPS" Style="{StaticResource TextSubheading}" />
+                            </StackPanel>
+                            <ItemsControl ItemsSource="{Binding UpcomingFollowUps}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Margin="0,0,0,8">
+                                            <TextBlock Text="{Binding ContactName}" Style="{StaticResource TextBody}" />
+                                            <TextBlock Style="{StaticResource TextCaption}">
+                                                <Run Text="{Binding NextFollowUpDate, StringFormat='MMM d', Mode=OneWay}" />
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <TextBlock Text="No upcoming follow-ups."
+                                       Style="{StaticResource TextBodySecondary}"
+                                       Visibility="{Binding UpcomingFollowUps.Count,
+                                           Converter={StaticResource ZeroToVisibleConverter}}" />
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Recent activity -->
+                    <Border Style="{StaticResource CardPanel}">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                <Ellipse Width="6" Height="6" Fill="{StaticResource StatusGreenBrush}"
+                                         VerticalAlignment="Center" Margin="0,0,8,0" />
+                                <TextBlock Text="RECENT ACTIVITY" Style="{StaticResource TextSubheading}" />
+                            </StackPanel>
+                            <ItemsControl ItemsSource="{Binding RecentActivity}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Margin="0,0,0,8">
+                                            <TextBlock Text="{Binding ContactName}" Style="{StaticResource TextBody}" />
+                                            <TextBlock Style="{StaticResource TextCaption}">
+                                                <Run Text="{Binding Type, Mode=OneWay}" />
+                                                <Run Text="·" />
+                                                <Run Text="{Binding Date, StringFormat='MMM d', Mode=OneWay}" />
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

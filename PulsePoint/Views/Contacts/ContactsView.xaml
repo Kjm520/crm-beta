@@ -1,0 +1,84 @@
+<UserControl x:Class="PulsePoint.Views.Contacts.ContactsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid Margin="28,24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="16" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="16" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Contacts" Style="{StaticResource TextDisplaySmall}" Grid.Column="0" />
+            <Button Content="+ New Contact" Style="{StaticResource ButtonPrimary}"
+                    Grid.Column="1" VerticalAlignment="Bottom"
+                    Click="NewContact_Click" />
+        </Grid>
+
+        <!-- Search -->
+        <TextBox Grid.Row="2"
+                 Style="{StaticResource InputField}"
+                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                 MaxWidth="400"
+                 HorizontalAlignment="Left">
+            <TextBox.Resources>
+                <Style TargetType="TextBox" BasedOn="{StaticResource InputField}">
+                    <Style.Triggers>
+                        <Trigger Property="Text" Value="">
+                            <Setter Property="Background">
+                                <Setter.Value>
+                                    <DrawingBrush Stretch="None" AlignmentX="Left">
+                                        <DrawingBrush.Drawing>
+                                            <GeometryDrawing>
+                                                <GeometryDrawing.Pen>
+                                                    <Pen Brush="Transparent" />
+                                                </GeometryDrawing.Pen>
+                                            </GeometryDrawing>
+                                        </DrawingBrush.Drawing>
+                                    </DrawingBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Resources>
+        </TextBox>
+
+        <!-- Contact list -->
+        <Border Grid.Row="4" Style="{StaticResource CardPanel}" Padding="0">
+            <ListView x:Name="ContactList"
+                      ItemsSource="{Binding Contacts}"
+                      SelectedItem="{Binding SelectedContact}"
+                      Background="Transparent"
+                      BorderThickness="0"
+                      SelectionChanged="ContactList_SelectionChanged">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Name" Width="200"
+                                        DisplayMemberBinding="{Binding Name}" />
+                        <GridViewColumn Header="Company" Width="180"
+                                        DisplayMemberBinding="{Binding Company}" />
+                        <GridViewColumn Header="Type" Width="100"
+                                        DisplayMemberBinding="{Binding Type}" />
+                        <GridViewColumn Header="Status" Width="90"
+                                        DisplayMemberBinding="{Binding Status}" />
+                        <GridViewColumn Header="City" Width="130"
+                                        DisplayMemberBinding="{Binding City}" />
+                        <GridViewColumn Header="Last Contact" Width="120"
+                                        DisplayMemberBinding="{Binding LastInteractionDate, StringFormat='MMM d, yyyy'}" />
+                        <GridViewColumn Header="Days Ago" Width="80"
+                                        DisplayMemberBinding="{Binding DaysSinceLastInteraction}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Border>
+    </Grid>
+</UserControl>

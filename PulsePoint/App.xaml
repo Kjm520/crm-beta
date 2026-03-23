@@ -1,0 +1,16 @@
+<Application x:Class="PulsePoint.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:PulsePoint.Converters"
+             Startup="OnStartup">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Themes/Colors.xaml" />
+                <ResourceDictionary Source="Resources/Themes/Typography.xaml" />
+                <ResourceDictionary Source="Resources/Themes/Controls.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <converters:ZeroToVisibleConverter x:Key="ZeroToVisibleConverter" />
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

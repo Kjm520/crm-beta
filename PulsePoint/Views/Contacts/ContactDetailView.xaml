@@ -1,0 +1,208 @@
+<Window x:Class="PulsePoint.Views.Contacts.ContactDetailView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Contact"
+        Width="720" Height="620"
+        WindowStartupLocation="CenterOwner"
+        Background="{StaticResource BackgroundDeepBrush}"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False">
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="0" ResizeBorderThickness="0" />
+    </WindowChrome.WindowChrome>
+
+    <Border Background="{StaticResource BackgroundDeepBrush}"
+            BorderBrush="{StaticResource BorderSubtleBrush}"
+            BorderThickness="1"
+            CornerRadius="10">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="48" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!-- Title bar -->
+            <Border Grid.Row="0"
+                    Background="{StaticResource BackgroundMidBrush}"
+                    CornerRadius="10,10,0,0"
+                    MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+                <Grid Margin="16,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{Binding Contact.Name, FallbackValue='New Contact'}"
+                               Style="{StaticResource TextSubheading}"
+                               VerticalAlignment="Center" />
+                    <Button Content="✕" Style="{StaticResource ButtonGhost}"
+                            Width="36" Height="32" Padding="0" FontSize="12"
+                            Grid.Column="1"
+                            Click="Close_Click" />
+                </Grid>
+            </Border>
+
+            <!-- Body -->
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                <StackPanel Margin="24,20">
+
+                    <!-- Contact fields -->
+                    <Border Style="{StaticResource CardPanel}" Margin="0,0,0,16">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="16" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="12" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="12" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <!-- Name -->
+                            <StackPanel Grid.Column="0" Grid.Row="0">
+                                <TextBlock Text="NAME" Style="{StaticResource TextFieldLabel}" />
+                                <TextBox Style="{StaticResource InputField}"
+                                         Text="{Binding Contact.Name, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+
+                            <!-- Company -->
+                            <StackPanel Grid.Column="2" Grid.Row="0">
+                                <TextBlock Text="COMPANY" Style="{StaticResource TextFieldLabel}" />
+                                <TextBox Style="{StaticResource InputField}"
+                                         Text="{Binding Contact.Company, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+
+                            <!-- Type -->
+                            <StackPanel Grid.Column="0" Grid.Row="2">
+                                <TextBlock Text="TYPE" Style="{StaticResource TextFieldLabel}" />
+                                <ComboBox Style="{StaticResource InputCombo}"
+                                          ItemsSource="{Binding ContactTypes}"
+                                          SelectedItem="{Binding Contact.Type}" />
+                            </StackPanel>
+
+                            <!-- Status -->
+                            <StackPanel Grid.Column="2" Grid.Row="2">
+                                <TextBlock Text="STATUS" Style="{StaticResource TextFieldLabel}" />
+                                <ComboBox Style="{StaticResource InputCombo}"
+                                          ItemsSource="{Binding ContactStatuses}"
+                                          SelectedItem="{Binding Contact.Status}" />
+                            </StackPanel>
+
+                            <!-- Phone / Email -->
+                            <StackPanel Grid.Column="0" Grid.Row="4">
+                                <TextBlock Text="PHONE" Style="{StaticResource TextFieldLabel}" />
+                                <TextBox Style="{StaticResource InputField}"
+                                         Text="{Binding Contact.Phone, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="2" Grid.Row="4">
+                                <TextBlock Text="EMAIL" Style="{StaticResource TextFieldLabel}" />
+                                <TextBox Style="{StaticResource InputField}"
+                                         Text="{Binding Contact.Email, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- Log interaction -->
+                    <Border Style="{StaticResource CardPanel}" Margin="0,0,0,16">
+                        <StackPanel>
+                            <TextBlock Text="LOG INTERACTION" Style="{StaticResource TextSubheading}" Margin="0,0,0,14" />
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="12" />
+                                    <ColumnDefinition Width="140" />
+                                    <ColumnDefinition Width="12" />
+                                    <ColumnDefinition Width="140" />
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="SUMMARY" Style="{StaticResource TextFieldLabel}" />
+                                    <TextBox Style="{StaticResource InputField}"
+                                             Text="{Binding NewInteractionSummary, UpdateSourceTrigger=PropertyChanged}" />
+                                </StackPanel>
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Text="TYPE" Style="{StaticResource TextFieldLabel}" />
+                                    <ComboBox Style="{StaticResource InputCombo}"
+                                              ItemsSource="{Binding InteractionTypes}"
+                                              SelectedItem="{Binding NewInteractionType}" />
+                                </StackPanel>
+                                <StackPanel Grid.Column="4">
+                                    <TextBlock Text="DATE" Style="{StaticResource TextFieldLabel}" />
+                                    <DatePicker SelectedDate="{Binding NewInteractionDate}"
+                                                Foreground="{StaticResource TextPrimaryBrush}"
+                                                Background="{StaticResource BackgroundElevatedBrush}" />
+                                </StackPanel>
+                            </Grid>
+                            <Button Content="Log" Style="{StaticResource ButtonPrimary}"
+                                    HorizontalAlignment="Left"
+                                    Margin="0,12,0,0"
+                                    Command="{Binding LogInteractionCommand}" />
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Interaction history -->
+                    <Border Style="{StaticResource CardPanel}">
+                        <StackPanel>
+                            <TextBlock Text="HISTORY" Style="{StaticResource TextSubheading}" Margin="0,0,0,12" />
+                            <ItemsControl ItemsSource="{Binding Interactions}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border BorderBrush="{StaticResource BorderSubtleBrush}"
+                                                BorderThickness="0,0,0,1"
+                                                Padding="0,8">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="80" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0"
+                                                           Text="{Binding Date, StringFormat='MMM d'}"
+                                                           Style="{StaticResource TextCaption}"
+                                                           VerticalAlignment="Center" />
+                                                <StackPanel Grid.Column="1">
+                                                    <TextBlock Text="{Binding Summary}" Style="{StaticResource TextBody}" />
+                                                    <TextBlock Text="{Binding Type}" Style="{StaticResource TextCaption}" />
+                                                </StackPanel>
+                                                <Button Grid.Column="2"
+                                                        Content="✕" Style="{StaticResource ButtonGhost}"
+                                                        Width="28" Height="24" Padding="0" FontSize="10"
+                                                        Command="{Binding DataContext.DeleteInteractionCommand,
+                                                            RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                        CommandParameter="{Binding}" />
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- Footer -->
+            <Border Grid.Row="2"
+                    Background="{StaticResource BackgroundMidBrush}"
+                    BorderBrush="{StaticResource BorderSubtleBrush}"
+                    BorderThickness="0,1,0,0"
+                    CornerRadius="0,0,10,10"
+                    Padding="24,12">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="Cancel" Style="{StaticResource ButtonGhost}"
+                            Margin="0,0,12,0" Click="Close_Click" />
+                    <Button Content="Save Contact" Style="{StaticResource ButtonPrimary}"
+                            Command="{Binding SaveContactCommand}"
+                            Click="Save_Click" />
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

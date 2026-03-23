@@ -1,0 +1,68 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- ═══════════════════════════════════════════
+         Base Palette
+    ═══════════════════════════════════════════ -->
+    <Color x:Key="BackgroundDeepColor">#FF0D0F14</Color>
+    <Color x:Key="BackgroundMidColor">#FF131720</Color>
+    <Color x:Key="BackgroundPanelColor">#FF1A1F2E</Color>
+    <Color x:Key="BackgroundElevatedColor">#FF212840</Color>
+    <Color x:Key="BorderSubtleColor">#FF2A3050</Color>
+    <Color x:Key="BorderAccentColor">#FF3D4F80</Color>
+
+    <!-- ═══════════════════════════════════════════
+         Accent
+    ═══════════════════════════════════════════ -->
+    <Color x:Key="AccentPrimaryColor">#FF4A90E2</Color>
+    <Color x:Key="AccentPrimaryHoverColor">#FF5DA0F0</Color>
+    <Color x:Key="AccentGlowColor">#404A90E2</Color>
+
+    <!-- ═══════════════════════════════════════════
+         Status Colors
+    ═══════════════════════════════════════════ -->
+    <Color x:Key="StatusGreenColor">#FF2ECC71</Color>
+    <Color x:Key="StatusAmberColor">#FFF39C12</Color>
+    <Color x:Key="StatusRedColor">#FFE74C3C</Color>
+    <Color x:Key="StatusGreenGlowColor">#402ECC71</Color>
+    <Color x:Key="StatusAmberGlowColor">#40F39C12</Color>
+    <Color x:Key="StatusRedGlowColor">#40E74C3C</Color>
+
+    <!-- ═══════════════════════════════════════════
+         Text
+    ═══════════════════════════════════════════ -->
+    <Color x:Key="TextPrimaryColor">#FFEAECF0</Color>
+    <Color x:Key="TextSecondaryColor">#FF8A94B0</Color>
+    <Color x:Key="TextMutedColor">#FF4A5270</Color>
+    <Color x:Key="TextAccentColor">#FF4A90E2</Color>
+
+    <!-- ═══════════════════════════════════════════
+         Brushes
+    ═══════════════════════════════════════════ -->
+    <SolidColorBrush x:Key="BackgroundDeepBrush"     Color="{StaticResource BackgroundDeepColor}" />
+    <SolidColorBrush x:Key="BackgroundMidBrush"      Color="{StaticResource BackgroundMidColor}" />
+    <SolidColorBrush x:Key="BackgroundPanelBrush"    Color="{StaticResource BackgroundPanelColor}" />
+    <SolidColorBrush x:Key="BackgroundElevatedBrush" Color="{StaticResource BackgroundElevatedColor}" />
+    <SolidColorBrush x:Key="BorderSubtleBrush"       Color="{StaticResource BorderSubtleColor}" />
+    <SolidColorBrush x:Key="BorderAccentBrush"       Color="{StaticResource BorderAccentColor}" />
+
+    <SolidColorBrush x:Key="AccentPrimaryBrush"      Color="{StaticResource AccentPrimaryColor}" />
+    <SolidColorBrush x:Key="AccentPrimaryHoverBrush" Color="{StaticResource AccentPrimaryHoverColor}" />
+    <SolidColorBrush x:Key="AccentGlowBrush"         Color="{StaticResource AccentGlowColor}" />
+
+    <SolidColorBrush x:Key="StatusGreenBrush"         Color="{StaticResource StatusGreenColor}" />
+    <SolidColorBrush x:Key="StatusAmberBrush"         Color="{StaticResource StatusAmberColor}" />
+    <SolidColorBrush x:Key="StatusRedBrush"           Color="{StaticResource StatusRedColor}" />
+    <SolidColorBrush x:Key="StatusGreenGlowBrush"     Color="{StaticResource StatusGreenGlowColor}" />
+    <SolidColorBrush x:Key="StatusAmberGlowBrush"     Color="{StaticResource StatusAmberGlowColor}" />
+    <SolidColorBrush x:Key="StatusRedGlowBrush"       Color="{StaticResource StatusRedGlowColor}" />
+
+    <SolidColorBrush x:Key="TextPrimaryBrush"        Color="{StaticResource TextPrimaryColor}" />
+    <SolidColorBrush x:Key="TextSecondaryBrush"      Color="{StaticResource TextSecondaryColor}" />
+    <SolidColorBrush x:Key="TextMutedBrush"          Color="{StaticResource TextMutedColor}" />
+    <SolidColorBrush x:Key="TextAccentBrush"         Color="{StaticResource TextAccentColor}" />
+
+    <!-- Translucent panel overlay for glassmorphism -->
+    <SolidColorBrush x:Key="GlassPanelBrush"         Color="#1A4A90E2" />
+
+</ResourceDictionary>
