@@ -9,7 +9,7 @@ public static class Database
 
     public static void Initialize()
     {
-        var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        var appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
         var dir = Path.Combine(appData, "PulsePoint");
         Directory.CreateDirectory(dir);
 
