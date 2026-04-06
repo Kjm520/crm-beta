@@ -4,37 +4,37 @@
     <!-- ═══════════════════════════════════════════
          Base Palette
     ═══════════════════════════════════════════ -->
-    <Color x:Key="BackgroundDeepColor">#FF0D0F14</Color>
-    <Color x:Key="BackgroundMidColor">#FF131720</Color>
-    <Color x:Key="BackgroundPanelColor">#FF1A1F2E</Color>
-    <Color x:Key="BackgroundElevatedColor">#FF212840</Color>
-    <Color x:Key="BorderSubtleColor">#FF2A3050</Color>
-    <Color x:Key="BorderAccentColor">#FF3D4F80</Color>
+    <Color x:Key="BackgroundDeepColor">#FFF5F7F5</Color>
+    <Color x:Key="BackgroundMidColor">#FFFAFBFA</Color>
+    <Color x:Key="BackgroundPanelColor">#FFFFFFFF</Color>
+    <Color x:Key="BackgroundElevatedColor">#FFFFFFFF</Color>
+    <Color x:Key="BorderSubtleColor">#FFE0E5DF</Color>
+    <Color x:Key="BorderAccentColor">#FFC2D4C0</Color>
 
     <!-- ═══════════════════════════════════════════
          Accent
     ═══════════════════════════════════════════ -->
-    <Color x:Key="AccentPrimaryColor">#FF4A90E2</Color>
-    <Color x:Key="AccentPrimaryHoverColor">#FF5DA0F0</Color>
-    <Color x:Key="AccentGlowColor">#404A90E2</Color>
+    <Color x:Key="AccentPrimaryColor">#FF3A9A5C</Color>
+    <Color x:Key="AccentPrimaryHoverColor">#FF2E8B4E</Color>
+    <Color x:Key="AccentGlowColor">#203A9A5C</Color>
 
     <!-- ═══════════════════════════════════════════
          Status Colors
     ═══════════════════════════════════════════ -->
-    <Color x:Key="StatusGreenColor">#FF2ECC71</Color>
-    <Color x:Key="StatusAmberColor">#FFF39C12</Color>
-    <Color x:Key="StatusRedColor">#FFE74C3C</Color>
-    <Color x:Key="StatusGreenGlowColor">#402ECC71</Color>
-    <Color x:Key="StatusAmberGlowColor">#40F39C12</Color>
-    <Color x:Key="StatusRedGlowColor">#40E74C3C</Color>
+    <Color x:Key="StatusGreenColor">#FF2D8E4F</Color>
+    <Color x:Key="StatusAmberColor">#FFD4880E</Color>
+    <Color x:Key="StatusRedColor">#FFD44030</Color>
+    <Color x:Key="StatusGreenGlowColor">#202D8E4F</Color>
+    <Color x:Key="StatusAmberGlowColor">#20D4880E</Color>
+    <Color x:Key="StatusRedGlowColor">#20D44030</Color>
 
     <!-- ═══════════════════════════════════════════
          Text
     ═══════════════════════════════════════════ -->
-    <Color x:Key="TextPrimaryColor">#FFEAECF0</Color>
-    <Color x:Key="TextSecondaryColor">#FF8A94B0</Color>
-    <Color x:Key="TextMutedColor">#FF4A5270</Color>
-    <Color x:Key="TextAccentColor">#FF4A90E2</Color>
+    <Color x:Key="TextPrimaryColor">#FF1A2B1E</Color>
+    <Color x:Key="TextSecondaryColor">#FF5A6E5E</Color>
+    <Color x:Key="TextMutedColor">#FF94A698</Color>
+    <Color x:Key="TextAccentColor">#FF3A9A5C</Color>
 
     <!-- ═══════════════════════════════════════════
          Brushes
@@ -62,7 +62,7 @@
     <SolidColorBrush x:Key="TextMutedBrush"          Color="{StaticResource TextMutedColor}" />
     <SolidColorBrush x:Key="TextAccentBrush"         Color="{StaticResource TextAccentColor}" />
 
-    <!-- Translucent panel overlay for glassmorphism -->
-    <SolidColorBrush x:Key="GlassPanelBrush"         Color="#1A4A90E2" />
+    <!-- Translucent panel overlay -->
+    <SolidColorBrush x:Key="GlassPanelBrush"         Color="#0A3A9A5C" />
 
 </ResourceDictionary>

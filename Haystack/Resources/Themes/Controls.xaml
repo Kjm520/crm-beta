@@ -12,7 +12,7 @@
         <Setter Property="Padding"          Value="20" />
         <Setter Property="Effect">
             <Setter.Value>
-                <DropShadowEffect Color="#000000" BlurRadius="24" ShadowDepth="4" Opacity="0.35" Direction="270" />
+                <DropShadowEffect Color="#000000" BlurRadius="12" ShadowDepth="2" Opacity="0.08" Direction="270" />
             </Setter.Value>
         </Setter>
     </Style>
@@ -22,7 +22,7 @@
     ═══════════════════════════════════════════ -->
     <Style x:Key="ButtonPrimary" TargetType="Button">
         <Setter Property="Background"   Value="{StaticResource AccentPrimaryBrush}" />
-        <Setter Property="Foreground"   Value="#FFEAECF0" />
+        <Setter Property="Foreground"   Value="#FFFFFFFF" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Padding"      Value="20,9" />
         <Setter Property="FontSize"     Value="13" />
@@ -223,8 +223,8 @@
                                     CornerRadius="6"
                                     Margin="0,2,0,0">
                                 <Border.Effect>
-                                    <DropShadowEffect Color="#000000" BlurRadius="16" ShadowDepth="4"
-                                                      Opacity="0.45" Direction="270" />
+                                    <DropShadowEffect Color="#000000" BlurRadius="12" ShadowDepth="2"
+                                                      Opacity="0.1" Direction="270" />
                                 </Border.Effect>
                                 <ScrollViewer>
                                     <ItemsPresenter />

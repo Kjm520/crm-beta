@@ -37,7 +37,7 @@
 
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Column="0">
                         <Ellipse Width="8" Height="8" Fill="{StaticResource AccentPrimaryBrush}" Margin="0,0,10,0" />
-                        <TextBlock Text="PULSEPOINT"
+                        <TextBlock Text="HAYSTACK"
                                    Style="{StaticResource TextSubheading}"
                                    VerticalAlignment="Center" />
                     </StackPanel>
