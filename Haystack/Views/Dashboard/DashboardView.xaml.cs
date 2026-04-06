@@ -1,7 +1,7 @@
 using System.Windows.Controls;
-using PulsePoint.ViewModels;
+using Haystack.ViewModels;
 
-namespace PulsePoint.Views.Dashboard;
+namespace Haystack.Views.Dashboard;
 
 public partial class DashboardView : UserControl
 {

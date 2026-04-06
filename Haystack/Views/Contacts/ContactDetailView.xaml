@@ -1,4 +1,4 @@
-<Window x:Class="PulsePoint.Views.Contacts.ContactDetailView"
+<Window x:Class="Haystack.Views.Contacts.ContactDetailView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Contact"

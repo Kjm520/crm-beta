@@ -1,4 +1,4 @@
-namespace PulsePoint.Models;
+namespace Haystack.Models;
 
 public class Interaction
 {

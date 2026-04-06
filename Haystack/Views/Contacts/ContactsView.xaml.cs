@@ -1,9 +1,9 @@
 using System.Windows;
 using System.Windows.Controls;
-using PulsePoint.ViewModels;
-using PulsePoint.Views.Contacts;
+using Haystack.ViewModels;
+using Haystack.Views.Contacts;
 
-namespace PulsePoint.Views.Contacts;
+namespace Haystack.Views.Contacts;
 
 public partial class ContactsView : UserControl
 {

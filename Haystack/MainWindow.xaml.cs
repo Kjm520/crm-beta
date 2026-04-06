@@ -1,10 +1,10 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using PulsePoint.Views.Dashboard;
-using PulsePoint.Views.Contacts;
+using Haystack.Views.Dashboard;
+using Haystack.Views.Contacts;
 
-namespace PulsePoint;
+namespace Haystack;
 
 public partial class MainWindow : Window
 {

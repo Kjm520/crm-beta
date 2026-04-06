@@ -1,7 +1,7 @@
 using System.IO;
 using Microsoft.Data.Sqlite;
 
-namespace PulsePoint.Data;
+namespace Haystack.Data;
 
 public static class Database
 {
@@ -10,7 +10,7 @@ public static class Database
     public static void Initialize()
     {
         var appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        var dir = Path.Combine(appData, "PulsePoint");
+        var dir = Path.Combine(appData, "Haystack");
         Directory.CreateDirectory(dir);
 
         var dbPath = Path.Combine(dir, "pulsepoint.db");

@@ -1,7 +1,7 @@
 using System.Windows;
-using PulsePoint.Data;
+using Haystack.Data;
 
-namespace PulsePoint;
+namespace Haystack;
 
 public partial class App : Application
 {

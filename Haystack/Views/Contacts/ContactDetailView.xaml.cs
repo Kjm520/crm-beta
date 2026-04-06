@@ -1,9 +1,9 @@
 using System.Windows;
 using System.Windows.Input;
-using PulsePoint.Models;
-using PulsePoint.ViewModels;
+using Haystack.Models;
+using Haystack.ViewModels;
 
-namespace PulsePoint.Views.Contacts;
+namespace Haystack.Views.Contacts;
 
 public partial class ContactDetailView : Window
 {

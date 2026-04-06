@@ -1,6 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace PulsePoint.ViewModels.Base;
+namespace Haystack.ViewModels.Base;
 
 public abstract class ViewModelBase : ObservableObject
 {

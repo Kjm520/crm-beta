@@ -1,11 +1,11 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using PulsePoint.Data;
-using PulsePoint.Models;
-using PulsePoint.ViewModels.Base;
+using Haystack.Data;
+using Haystack.Models;
+using Haystack.ViewModels.Base;
 
-namespace PulsePoint.ViewModels;
+namespace Haystack.ViewModels;
 
 public partial class ContactsViewModel : ViewModelBase
 {

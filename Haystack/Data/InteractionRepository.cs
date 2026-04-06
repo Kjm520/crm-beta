@@ -1,7 +1,7 @@
 using Dapper;
-using PulsePoint.Models;
+using Haystack.Models;
 
-namespace PulsePoint.Data;
+namespace Haystack.Data;
 
 public class InteractionRepository
 {
