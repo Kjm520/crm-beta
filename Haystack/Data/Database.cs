@@ -16,6 +16,9 @@ public static class Database
         var dbPath = Path.Combine(dir, "haystack.db");
         _connectionString = $"Data Source={dbPath}";
 
+        // Teach Dapper how to read SQLite's TEXT dates as DateTime (see class docs).
+        SqliteDateTimeHandlers.Register();
+
         using var conn = GetConnection();
         conn.Execute("PRAGMA foreign_keys = ON;");
         Migrations.Apply(conn);
