@@ -20,14 +20,17 @@
             CornerRadius="10">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="48" />
+                <RowDefinition Height="36" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <!-- Title bar -->
             <Border Grid.Row="0"
+                    Height="36"
                     Background="{StaticResource BackgroundMidBrush}"
+                    BorderBrush="{StaticResource BorderSubtleBrush}"
+                    BorderThickness="0,0,0,1"
                     CornerRadius="10,10,0,0"
                     MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
                 <Grid Margin="16,0">
@@ -38,10 +41,22 @@
                     <TextBlock Text="{Binding Contact.Name, FallbackValue='New Contact'}"
                                Style="{StaticResource TextSubheading}"
                                VerticalAlignment="Center" />
-                    <Button Content="✕" Style="{StaticResource ButtonGhost}"
-                            Width="36" Height="32" Padding="0" FontSize="12"
-                            Grid.Column="1"
-                            Click="Close_Click" />
+                    <Button Grid.Column="1"
+                            Style="{StaticResource ButtonClose}"
+                            Width="26" Height="26" Padding="0"
+                            Margin="0,0,-4,0"
+                            Click="Close_Click">
+                        <Grid Width="10" Height="10">
+                            <Line X1="0" Y1="0" X2="10" Y2="10"
+                                  Stroke="{StaticResource TextSecondaryBrush}"
+                                  StrokeThickness="1"
+                                  SnapsToDevicePixels="True" />
+                            <Line X1="0" Y1="10" X2="10" Y2="0"
+                                  Stroke="{StaticResource TextSecondaryBrush}"
+                                  StrokeThickness="1"
+                                  SnapsToDevicePixels="True" />
+                        </Grid>
+                    </Button>
                 </Grid>
             </Border>
 

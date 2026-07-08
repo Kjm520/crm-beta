@@ -54,31 +54,71 @@
 
         <!-- Contact list -->
         <Border Grid.Row="4" Style="{StaticResource CardPanel}" Padding="0">
-            <ListView x:Name="ContactList"
-                      ItemsSource="{Binding Contacts}"
-                      SelectedItem="{Binding SelectedContact}"
-                      Background="Transparent"
-                      BorderThickness="0"
-                      SelectionChanged="ContactList_SelectionChanged">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="Name" Width="200"
-                                        DisplayMemberBinding="{Binding Name}" />
-                        <GridViewColumn Header="Company" Width="180"
-                                        DisplayMemberBinding="{Binding Company}" />
-                        <GridViewColumn Header="Type" Width="100"
-                                        DisplayMemberBinding="{Binding Type}" />
-                        <GridViewColumn Header="Status" Width="90"
-                                        DisplayMemberBinding="{Binding Status}" />
-                        <GridViewColumn Header="City" Width="130"
-                                        DisplayMemberBinding="{Binding City}" />
-                        <GridViewColumn Header="Last Contact" Width="120"
-                                        DisplayMemberBinding="{Binding LastInteractionDate, StringFormat='MMM d, yyyy'}" />
-                        <GridViewColumn Header="Days Since" Width="80"
-                                        DisplayMemberBinding="{Binding DaysSinceLastInteractionDisplay}" />
-                    </GridView>
-                </ListView.View>
-            </ListView>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <!-- Column headers -->
+                <Border Grid.Row="0"
+                        BorderBrush="{StaticResource BorderSubtleBrush}"
+                        BorderThickness="0,0,0,1"
+                        Padding="16,0">
+                    <Grid Height="34">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="110" />
+                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="1.3*" />
+                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition Width="90" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="NAME"         Style="{StaticResource TextCaption}" VerticalAlignment="Center" />
+                        <TextBlock Grid.Column="1" Text="COMPANY"      Style="{StaticResource TextCaption}" VerticalAlignment="Center" />
+                        <TextBlock Grid.Column="2" Text="TYPE"         Style="{StaticResource TextCaption}" VerticalAlignment="Center" />
+                        <TextBlock Grid.Column="3" Text="STATUS"       Style="{StaticResource TextCaption}" VerticalAlignment="Center" />
+                        <TextBlock Grid.Column="4" Text="CITY"         Style="{StaticResource TextCaption}" VerticalAlignment="Center" />
+                        <TextBlock Grid.Column="5" Text="LAST CONTACT" Style="{StaticResource TextCaption}" VerticalAlignment="Center" />
+                        <TextBlock Grid.Column="6" Text="DAYS SINCE"   Style="{StaticResource TextCaption}" VerticalAlignment="Center" />
+                    </Grid>
+                </Border>
+
+                <!-- Rows -->
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding Contacts}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Style="{StaticResource RowButton}"
+                                        Click="ContactRow_Click"
+                                        Tag="{Binding Id}">
+                                    <Border Padding="16,0" Background="Transparent">
+                                        <Grid Height="36">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*" />
+                                                <ColumnDefinition Width="2*" />
+                                                <ColumnDefinition Width="110" />
+                                                <ColumnDefinition Width="90" />
+                                                <ColumnDefinition Width="1.3*" />
+                                                <ColumnDefinition Width="120" />
+                                                <ColumnDefinition Width="90" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="{Binding Name}"    Style="{StaticResource TextBody}"          VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                                            <TextBlock Grid.Column="1" Text="{Binding Company}" Style="{StaticResource TextBodySecondary}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                                            <TextBlock Grid.Column="2" Text="{Binding Type}"    Style="{StaticResource TextBodySecondary}" VerticalAlignment="Center" />
+                                            <TextBlock Grid.Column="3" Text="{Binding Status}"  Style="{StaticResource TextBodySecondary}" VerticalAlignment="Center" />
+                                            <TextBlock Grid.Column="4" Text="{Binding City}"    Style="{StaticResource TextBodySecondary}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                                            <TextBlock Grid.Column="5" Text="{Binding LastInteractionDate, StringFormat='MMM d, yyyy'}" Style="{StaticResource TextBodySecondary}" VerticalAlignment="Center" />
+                                            <TextBlock Grid.Column="6" Text="{Binding DaysSinceLastInteractionDisplay}"                 Style="{StaticResource TextBodySecondary}" VerticalAlignment="Center" />
+                                        </Grid>
+                                    </Border>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
         </Border>
     </Grid>
 </UserControl>
