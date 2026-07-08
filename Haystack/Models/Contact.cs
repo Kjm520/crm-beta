@@ -21,10 +21,10 @@ public class Contact
         ? (int)(DateTime.Today - LastInteractionDate.Value.Date).TotalDays
         : int.MaxValue;
 
-    // Display-friendly version for the UI: "·" when there's no interaction yet.
+    // Display-friendly version for the UI: "-" when there's no interaction yet.
     public string DaysSinceLastInteractionDisplay => LastInteractionDate.HasValue
         ? DaysSinceLastInteraction.ToString()
-        : "·";
+        : "-";
 }
 
 public enum ContactType
