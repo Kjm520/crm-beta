@@ -3,6 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Haystack.Views.Dashboard;
 using Haystack.Views.Contacts;
+using Haystack.Views.Workflow;
 
 namespace Haystack;
 
@@ -46,5 +47,11 @@ public partial class MainWindow : Window
     {
         if (MainContent is null) return;
         MainContent.Content = new ContactsView();
+    }
+
+    private void Nav_Workflow(object sender, RoutedEventArgs e)
+    {
+        if (MainContent is null) return;
+        MainContent.Content = new WorkflowView();
     }
 }

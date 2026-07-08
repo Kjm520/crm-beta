@@ -75,7 +75,7 @@
                         <GridViewColumn Header="Last Contact" Width="120"
                                         DisplayMemberBinding="{Binding LastInteractionDate, StringFormat='MMM d, yyyy'}" />
                         <GridViewColumn Header="Days Ago" Width="80"
-                                        DisplayMemberBinding="{Binding DaysSinceLastInteraction}" />
+                                        DisplayMemberBinding="{Binding DaysSinceLastInteractionDisplay}" />
                     </GridView>
                 </ListView.View>
             </ListView>

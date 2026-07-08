@@ -1,0 +1,28 @@
+<UserControl x:Class="Haystack.Views.Workflow.WorkflowView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid Margin="28,24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="24" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <TextBlock Grid.Row="0" Text="Workflow" Style="{StaticResource TextDisplaySmall}" />
+
+        <!-- Empty state placeholder -->
+        <Border Grid.Row="2" Style="{StaticResource CardPanel}">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,48">
+                <TextBlock Text="Nothing here yet"
+                           Style="{StaticResource TextSubheading}"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,8" />
+                <TextBlock Text="Tasks and workflow items will appear here."
+                           Style="{StaticResource TextBodySecondary}"
+                           HorizontalAlignment="Center" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

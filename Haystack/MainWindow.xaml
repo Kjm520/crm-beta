@@ -77,6 +77,8 @@
                                      IsChecked="True"
                                      Checked="Nav_Dashboard">Dashboard</RadioButton>
                         <RadioButton Style="{StaticResource NavButton}"
+                                     Checked="Nav_Workflow" Content="Workflow"/>
+                        <RadioButton Style="{StaticResource NavButton}"
                                      Checked="Nav_Contacts">Contacts</RadioButton>
                     </StackPanel>
                 </Border>
