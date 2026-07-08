@@ -109,45 +109,7 @@
                         </Grid>
                     </Border>
 
-                    <!-- Log interaction -->
-                    <Border Style="{StaticResource CardPanel}" Margin="0,0,0,16">
-                        <StackPanel>
-                            <TextBlock Text="LOG INTERACTION" Style="{StaticResource TextSubheading}" Margin="0,0,0,14" />
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="12" />
-                                    <ColumnDefinition Width="140" />
-                                    <ColumnDefinition Width="12" />
-                                    <ColumnDefinition Width="140" />
-                                </Grid.ColumnDefinitions>
-
-                                <StackPanel Grid.Column="0">
-                                    <TextBlock Text="SUMMARY" Style="{StaticResource TextFieldLabel}" />
-                                    <TextBox Style="{StaticResource InputField}"
-                                             Text="{Binding NewInteractionSummary, UpdateSourceTrigger=PropertyChanged}" />
-                                </StackPanel>
-                                <StackPanel Grid.Column="2">
-                                    <TextBlock Text="TYPE" Style="{StaticResource TextFieldLabel}" />
-                                    <ComboBox Style="{StaticResource InputCombo}"
-                                              ItemsSource="{Binding InteractionTypes}"
-                                              SelectedItem="{Binding NewInteractionType}" />
-                                </StackPanel>
-                                <StackPanel Grid.Column="4">
-                                    <TextBlock Text="DATE" Style="{StaticResource TextFieldLabel}" />
-                                    <DatePicker SelectedDate="{Binding NewInteractionDate}"
-                                                Foreground="{StaticResource TextPrimaryBrush}"
-                                                Background="{StaticResource BackgroundElevatedBrush}" />
-                                </StackPanel>
-                            </Grid>
-                            <Button Content="Log" Style="{StaticResource ButtonPrimary}"
-                                    HorizontalAlignment="Left"
-                                    Margin="0,12,0,0"
-                                    Command="{Binding LogInteractionCommand}" />
-                        </StackPanel>
-                    </Border>
-
-                    <!-- Interaction history -->
+                    <!-- Interaction history (read-only; logging now lives in the Activity tab) -->
                     <Border Style="{StaticResource CardPanel}">
                         <StackPanel>
                             <TextBlock Text="HISTORY" Style="{StaticResource TextSubheading}" Margin="0,0,0,12" />

@@ -7,6 +7,9 @@ public static class Database
 {
     private static string? _connectionString;
 
+    /// <summary>Full path to the live database file. Set during Initialize().</summary>
+    public static string DbPath { get; private set; } = string.Empty;
+
     public static void Initialize()
     {
         var appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
@@ -14,6 +17,7 @@ public static class Database
         Directory.CreateDirectory(dir);
 
         var dbPath = Path.Combine(dir, "haystack.db");
+        DbPath = dbPath;
         _connectionString = $"Data Source={dbPath}";
 
         // Teach Dapper how to read SQLite's TEXT dates as DateTime (see class docs).
@@ -31,6 +35,24 @@ public static class Database
         var conn = new SqliteConnection(_connectionString);
         conn.Open();
         return conn;
+    }
+
+    /// <summary>
+    /// Writes a clean, consistent snapshot of the database to <paramref name="destinationPath"/>.
+    /// Uses SQLite's VACUUM INTO, which produces a fully intact copy even while the
+    /// database is in use — safer than a raw file copy, which can catch in-flight writes.
+    /// </summary>
+    public static void Backup(string destinationPath)
+    {
+        // VACUUM INTO fails if the target file already exists, so overwrite cleanly.
+        if (File.Exists(destinationPath))
+            File.Delete(destinationPath);
+
+        using var conn = GetConnection();
+        using var cmd = conn.CreateCommand();
+        cmd.CommandText = "VACUUM INTO $dest;";
+        cmd.Parameters.AddWithValue("$dest", destinationPath);
+        cmd.ExecuteNonQuery();
     }
 }
 

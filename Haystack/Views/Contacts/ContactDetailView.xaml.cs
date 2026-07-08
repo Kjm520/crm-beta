@@ -15,10 +15,6 @@ public partial class ContactDetailView : Window
     {
         InitializeComponent();
 
-        _vm.ContactTypes = Enum.GetValues<ContactType>();
-        _vm.ContactStatuses = Enum.GetValues<ContactStatus>();
-        _vm.InteractionTypes = Enum.GetValues<InteractionType>();
-
         if (contactId.HasValue)
             _vm.LoadContact(contactId.Value);
 
