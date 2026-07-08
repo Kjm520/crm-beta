@@ -141,9 +141,11 @@
         <Setter Property="CaretBrush"       Value="{StaticResource AccentPrimaryBrush}" />
         <Setter Property="BorderBrush"      Value="{StaticResource BorderSubtleBrush}" />
         <Setter Property="BorderThickness"  Value="1" />
-        <Setter Property="Padding"          Value="12,8" />
+        <Setter Property="Height"           Value="32" />
+        <Setter Property="Padding"          Value="10,0" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="FontSize"         Value="13" />
-        <Setter Property="SelectionBrush"   Value="{StaticResource AccentGlowBrush}" />
+        <Setter Property="SelectionBrush"   Value="#803A9A5C" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TextBox">
@@ -182,6 +184,7 @@
         <Setter Property="Foreground"       Value="{StaticResource TextPrimaryBrush}" />
         <Setter Property="BorderBrush"      Value="{StaticResource BorderSubtleBrush}" />
         <Setter Property="BorderThickness"  Value="1" />
+        <Setter Property="Height"           Value="32" />
         <Setter Property="FontSize"         Value="13" />
         <Setter Property="Template">
             <Setter.Value>
@@ -215,7 +218,7 @@
                                 <ContentPresenter Grid.Column="0"
                                                   Content="{TemplateBinding SelectionBoxItem}"
                                                   ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
-                                                  Margin="12,8,0,8"
+                                                  Margin="10,0,0,0"
                                                   VerticalAlignment="Center"
                                                   IsHitTestVisible="False" />
                                 <Path Grid.Column="1"

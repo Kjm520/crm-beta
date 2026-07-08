@@ -17,7 +17,7 @@
         <!-- Log new interaction -->
         <Border Grid.Row="2" Style="{StaticResource CardPanel}">
             <StackPanel>
-                <TextBlock Text="LOG INTERACTION" Style="{StaticResource TextSubheading}" Margin="0,0,0,14" />
+                <TextBlock Text="LOG ACTIVITY" Style="{StaticResource TextSubheading}" Margin="0,0,0,14" />
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="200" />
@@ -50,6 +50,8 @@
                     <StackPanel Grid.Column="6">
                         <TextBlock Text="DATE" Style="{StaticResource TextFieldLabel}" />
                         <DatePicker SelectedDate="{Binding NewInteractionDate}"
+                                    Height="32"
+                                    VerticalContentAlignment="Center"
                                     Foreground="{StaticResource TextPrimaryBrush}"
                                     Background="{StaticResource BackgroundElevatedBrush}" />
                     </StackPanel>
