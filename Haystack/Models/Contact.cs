@@ -15,16 +15,16 @@ public class Contact
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 
-    // Computed — populated by query, not stored
+    // Computed - populated by query, not stored
     public DateTime? LastInteractionDate { get; set; }
     public int DaysSinceLastInteraction => LastInteractionDate.HasValue
         ? (int)(DateTime.Today - LastInteractionDate.Value.Date).TotalDays
         : int.MaxValue;
 
-    // Display-friendly version for the UI: "—" when there's no interaction yet.
+    // Display-friendly version for the UI: "·" when there's no interaction yet.
     public string DaysSinceLastInteractionDisplay => LastInteractionDate.HasValue
         ? DaysSinceLastInteraction.ToString()
-        : "—";
+        : "·";
 }
 
 public enum ContactType
@@ -38,6 +38,5 @@ public enum ContactType
 public enum ContactStatus
 {
     Active,
-    Inactive,
-    Dormant
+    Inactive
 }

@@ -91,7 +91,7 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
 
-                        <TextBlock Text="No stale contacts — you're on top of it."
+                        <TextBlock Text="No stale contacts · you're on top of it."
                                    Style="{StaticResource TextBodySecondary}"
                                    Margin="0,8,0,0"
                                    Visibility="{Binding StaleContacts.Count,

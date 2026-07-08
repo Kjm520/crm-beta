@@ -9,7 +9,7 @@ namespace Haystack.Data;
 /// higher than the DB's current version, in order, each inside its own transaction.
 ///
 /// This is what makes updates safe: shipping a structural change is just adding a
-/// new numbered step here. Every user's database — no matter how old — upgrades
+/// new numbered step here. Every user's database - no matter how old - upgrades
 /// itself on next launch, preserving all existing data. NEVER edit or reorder an
 /// already-released migration; only append new ones with the next number.
 /// </summary>
