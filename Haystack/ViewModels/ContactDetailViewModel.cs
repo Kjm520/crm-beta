@@ -54,20 +54,26 @@ public partial class ContactDetailViewModel : ViewModelBase
         }
     }
 
-    // Save is only valid once a company is chosen (company is required).
-    private bool CanSave() => SelectedCompany is not null && !string.IsNullOrWhiteSpace(Contact.Name);
-
-    partial void OnSelectedCompanyChanged(Company? value) => SaveContactCommand.NotifyCanExecuteChanged();
-
-    [RelayCommand(CanExecute = nameof(CanSave))]
-    public void SaveContact()
+    /// <summary>The reason the contact can't be saved yet, or null if it's valid.</summary>
+    public string? Validate()
     {
+        if (string.IsNullOrWhiteSpace(Contact.Name)) return "Enter a name.";
+        if (SelectedCompany is null) return "Select a company.";
+        return null;
+    }
+
+    /// <summary>Saves the contact. Returns false (without saving) if invalid.</summary>
+    public bool SaveContact()
+    {
+        if (Validate() is not null) return false;
+
         Contact.CompanyId = SelectedCompany!.Id;
         Contact.UpdatedAt = DateTime.UtcNow;
         if (Contact.Id == 0)
             Contact.Id = _contactRepo.Insert(Contact);
         else
             _contactRepo.Update(Contact);
+        return true;
     }
 
     [RelayCommand]

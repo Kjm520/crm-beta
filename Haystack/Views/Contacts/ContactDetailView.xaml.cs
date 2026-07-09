@@ -9,8 +9,6 @@ public partial class ContactDetailView : Window
 {
     private readonly ContactDetailViewModel _vm = new();
 
-    public event EventHandler? ContactSaved;
-
     public ContactDetailView(int? contactId, int? preselectCompanyId = null)
     {
         InitializeComponent();
@@ -28,7 +26,15 @@ public partial class ContactDetailView : Window
 
     private void Save_Click(object sender, RoutedEventArgs e)
     {
-        ContactSaved?.Invoke(this, EventArgs.Empty);
+        var problem = _vm.Validate();
+        if (problem is not null)
+        {
+            MessageBox.Show(this, problem, "Can't save yet",
+                MessageBoxButton.OK, MessageBoxImage.Information);
+            return;
+        }
+
+        _vm.SaveContact();
         Close();
     }
 

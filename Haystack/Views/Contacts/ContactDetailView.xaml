@@ -189,7 +189,6 @@
                     <Button Content="Cancel" Style="{StaticResource ButtonGhost}"
                             Margin="0,0,12,0" Click="Close_Click" />
                     <Button Content="Save Contact" Style="{StaticResource ButtonPrimary}"
-                            Command="{Binding SaveContactCommand}"
                             Click="Save_Click" />
                 </StackPanel>
             </Border>
