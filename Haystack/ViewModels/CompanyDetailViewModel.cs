@@ -43,15 +43,23 @@ public partial class CompanyDetailViewModel : ViewModelBase
         Activity = new ObservableCollection<Interaction>(_interactionRepo.GetByCompany(companyId));
     }
 
-    private bool CanSave() => !string.IsNullOrWhiteSpace(Company.Name);
-
-    [RelayCommand(CanExecute = nameof(CanSave))]
-    public void SaveCompany()
+    /// <summary>The reason the company can't be saved yet, or null if it's valid.</summary>
+    public string? Validate()
     {
+        if (string.IsNullOrWhiteSpace(Company.Name)) return "Enter a company name.";
+        return null;
+    }
+
+    /// <summary>Saves the company. Returns false (without saving) if invalid.</summary>
+    public bool SaveCompany()
+    {
+        if (Validate() is not null) return false;
+
         Company.UpdatedAt = DateTime.UtcNow;
         if (Company.Id == 0)
             Company.Id = _companyRepo.Insert(Company);
         else
             _companyRepo.Update(Company);
+        return true;
     }
 }

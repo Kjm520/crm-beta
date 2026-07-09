@@ -55,6 +55,14 @@
                                                         Duration="0:0:0.05" />
                                     </Storyboard>
                                 </VisualState>
+                                <!-- Disabled: dim so a non-interactive button is visibly greyed. -->
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="Root"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="0.45" Duration="0" />
+                                    </Storyboard>
+                                </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
                     </Border>

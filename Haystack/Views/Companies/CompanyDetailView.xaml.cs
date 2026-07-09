@@ -29,7 +29,7 @@ public partial class CompanyDetailView : Window
         // save it first so it has an Id.
         if (_vm.Company.Id == 0)
         {
-            if (!_vm.SaveCompanyCommand.CanExecute(null))
+            if (!_vm.SaveCompany())
             {
                 MessageBox.Show(this,
                     "Enter a company name before adding contacts.",
@@ -37,7 +37,6 @@ public partial class CompanyDetailView : Window
                     MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
-            _vm.SaveCompanyCommand.Execute(null);
         }
 
         var detail = new ContactDetailView(null, preselectCompanyId: _vm.Company.Id);
@@ -56,7 +55,18 @@ public partial class CompanyDetailView : Window
     }
 
     private void Save_Click(object sender, RoutedEventArgs e)
-        => Close();
+    {
+        var problem = _vm.Validate();
+        if (problem is not null)
+        {
+            MessageBox.Show(this, problem, "Can't save yet",
+                MessageBoxButton.OK, MessageBoxImage.Information);
+            return;
+        }
+
+        _vm.SaveCompany();
+        Close();
+    }
 
     private void Close_Click(object sender, RoutedEventArgs e)
         => Close();

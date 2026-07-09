@@ -201,7 +201,6 @@
                     <Button Content="Cancel" Style="{StaticResource ButtonGhost}"
                             Margin="0,0,12,0" Click="Close_Click" />
                     <Button Content="Save Company" Style="{StaticResource ButtonPrimary}"
-                            Command="{Binding SaveCompanyCommand}"
                             Click="Save_Click" />
                 </StackPanel>
             </Border>
