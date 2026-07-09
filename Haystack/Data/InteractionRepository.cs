@@ -23,6 +23,28 @@ public class InteractionRepository
         ", new { contactId });
     }
 
+    // Rolled-up activity for a whole company: every interaction across all of
+    // its contacts, newest first, with each interaction's contact name.
+    public IEnumerable<Interaction> GetByCompany(int companyId)
+    {
+        using var conn = Database.GetConnection();
+        return conn.Query<Interaction>(@"
+            SELECT
+                i.id                  AS Id,
+                i.contact_id          AS ContactId,
+                i.type                AS Type,
+                i.date                AS Date,
+                i.summary             AS Summary,
+                i.next_followup_date  AS NextFollowUpDate,
+                i.created_at          AS CreatedAt,
+                c.name                AS ContactName
+            FROM interactions i
+            JOIN contacts c ON c.id = i.contact_id
+            WHERE c.company_id = @companyId
+            ORDER BY i.date DESC
+        ", new { companyId });
+    }
+
     public IEnumerable<Interaction> GetRecent(int count = 20)
     {
         using var conn = Database.GetConnection();

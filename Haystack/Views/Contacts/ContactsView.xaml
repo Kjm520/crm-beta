@@ -105,7 +105,7 @@
                                                 <ColumnDefinition Width="90" />
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Grid.Column="0" Text="{Binding Name}"    Style="{StaticResource TextBody}"          VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
-                                            <TextBlock Grid.Column="1" Text="{Binding Company}" Style="{StaticResource TextBodySecondary}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                                            <TextBlock Grid.Column="1" Text="{Binding CompanyName}" Style="{StaticResource TextBodySecondary}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
                                             <TextBlock Grid.Column="2" Text="{Binding Type}"    Style="{StaticResource TextBodySecondary}" VerticalAlignment="Center" />
                                             <TextBlock Grid.Column="3" Text="{Binding Status}"  Style="{StaticResource TextBodySecondary}" VerticalAlignment="Center" />
                                             <TextBlock Grid.Column="4" Text="{Binding City}"    Style="{StaticResource TextBodySecondary}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />

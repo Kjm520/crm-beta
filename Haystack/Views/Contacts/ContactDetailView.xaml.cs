@@ -11,12 +11,14 @@ public partial class ContactDetailView : Window
 
     public event EventHandler? ContactSaved;
 
-    public ContactDetailView(int? contactId)
+    public ContactDetailView(int? contactId, int? preselectCompanyId = null)
     {
         InitializeComponent();
 
         if (contactId.HasValue)
             _vm.LoadContact(contactId.Value);
+        else if (preselectCompanyId.HasValue)
+            _vm.PreselectCompany(preselectCompanyId.Value);
 
         DataContext = _vm;
     }

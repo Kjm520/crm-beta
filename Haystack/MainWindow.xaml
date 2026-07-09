@@ -124,6 +124,8 @@
                         <RadioButton Style="{StaticResource NavButton}"
                                      Checked="Nav_Workflow" Content="Workflow"/>
                         <RadioButton Style="{StaticResource NavButton}"
+                                     Checked="Nav_Companies">Companies</RadioButton>
+                        <RadioButton Style="{StaticResource NavButton}"
                                      Checked="Nav_Contacts">Contacts</RadioButton>
                         <RadioButton Style="{StaticResource NavButton}"
                                      Checked="Nav_Activity">Activity</RadioButton>

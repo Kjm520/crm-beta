@@ -5,51 +5,51 @@ namespace Haystack.Data;
 
 public class ContactRepository
 {
+    // Shared SELECT: contact columns + owning company name + last interaction date.
+    private const string SelectContact = @"
+        SELECT
+            c.id            AS Id,
+            c.company_id    AS CompanyId,
+            co.name         AS CompanyName,
+            c.name          AS Name,
+            c.title         AS Title,
+            c.type          AS Type,
+            c.status        AS Status,
+            c.phone         AS Phone,
+            c.email         AS Email,
+            c.city          AS City,
+            c.state         AS State,
+            c.notes         AS Notes,
+            c.created_at    AS CreatedAt,
+            c.updated_at    AS UpdatedAt,
+            MAX(i.date)     AS LastInteractionDate
+        FROM contacts c
+        JOIN companies co ON co.id = c.company_id
+        LEFT JOIN interactions i ON i.contact_id = c.id ";
+
     public IEnumerable<Contact> GetAll()
     {
         using var conn = Database.GetConnection();
-        return conn.Query<Contact>(@"
-            SELECT
-                c.id            AS Id,
-                c.name          AS Name,
-                c.company       AS Company,
-                c.type          AS Type,
-                c.status        AS Status,
-                c.phone         AS Phone,
-                c.email         AS Email,
-                c.city          AS City,
-                c.state         AS State,
-                c.notes         AS Notes,
-                c.created_at    AS CreatedAt,
-                c.updated_at    AS UpdatedAt,
-                MAX(i.date)     AS LastInteractionDate
-            FROM contacts c
-            LEFT JOIN interactions i ON i.contact_id = c.id
+        return conn.Query<Contact>(SelectContact + @"
             GROUP BY c.id
             ORDER BY c.name
         ");
     }
 
+    public IEnumerable<Contact> GetByCompany(int companyId)
+    {
+        using var conn = Database.GetConnection();
+        return conn.Query<Contact>(SelectContact + @"
+            WHERE c.company_id = @companyId
+            GROUP BY c.id
+            ORDER BY c.name
+        ", new { companyId });
+    }
+
     public IEnumerable<Contact> GetStale(int thresholdDays = 60)
     {
         using var conn = Database.GetConnection();
-        return conn.Query<Contact>(@"
-            SELECT
-                c.id            AS Id,
-                c.name          AS Name,
-                c.company       AS Company,
-                c.type          AS Type,
-                c.status        AS Status,
-                c.phone         AS Phone,
-                c.email         AS Email,
-                c.city          AS City,
-                c.state         AS State,
-                c.notes         AS Notes,
-                c.created_at    AS CreatedAt,
-                c.updated_at    AS UpdatedAt,
-                MAX(i.date)     AS LastInteractionDate
-            FROM contacts c
-            LEFT JOIN interactions i ON i.contact_id = c.id
+        return conn.Query<Contact>(SelectContact + @"
             WHERE c.status = 0
             GROUP BY c.id
             HAVING LastInteractionDate IS NULL
@@ -61,23 +61,7 @@ public class ContactRepository
     public Contact? GetById(int id)
     {
         using var conn = Database.GetConnection();
-        return conn.QueryFirstOrDefault<Contact>(@"
-            SELECT
-                c.id            AS Id,
-                c.name          AS Name,
-                c.company       AS Company,
-                c.type          AS Type,
-                c.status        AS Status,
-                c.phone         AS Phone,
-                c.email         AS Email,
-                c.city          AS City,
-                c.state         AS State,
-                c.notes         AS Notes,
-                c.created_at    AS CreatedAt,
-                c.updated_at    AS UpdatedAt,
-                MAX(i.date)     AS LastInteractionDate
-            FROM contacts c
-            LEFT JOIN interactions i ON i.contact_id = c.id
+        return conn.QueryFirstOrDefault<Contact>(SelectContact + @"
             WHERE c.id = @id
             GROUP BY c.id
         ", new { id });
@@ -87,8 +71,8 @@ public class ContactRepository
     {
         using var conn = Database.GetConnection();
         return conn.ExecuteScalar<int>(@"
-            INSERT INTO contacts (name, company, type, status, phone, email, city, state, notes, created_at, updated_at)
-            VALUES (@Name, @Company, @Type, @Status, @Phone, @Email, @City, @State, @Notes, datetime('now'), datetime('now'));
+            INSERT INTO contacts (company_id, name, title, type, status, phone, email, city, state, notes, created_at, updated_at)
+            VALUES (@CompanyId, @Name, @Title, @Type, @Status, @Phone, @Email, @City, @State, @Notes, datetime('now'), datetime('now'));
             SELECT last_insert_rowid();
         ", contact);
     }
@@ -98,8 +82,9 @@ public class ContactRepository
         using var conn = Database.GetConnection();
         conn.Execute(@"
             UPDATE contacts SET
+                company_id = @CompanyId,
                 name       = @Name,
-                company    = @Company,
+                title      = @Title,
                 type       = @Type,
                 status     = @Status,
                 phone      = @Phone,
@@ -122,24 +107,8 @@ public class ContactRepository
     {
         using var conn = Database.GetConnection();
         var like = $"%{query}%";
-        return conn.Query<Contact>(@"
-            SELECT
-                c.id            AS Id,
-                c.name          AS Name,
-                c.company       AS Company,
-                c.type          AS Type,
-                c.status        AS Status,
-                c.phone         AS Phone,
-                c.email         AS Email,
-                c.city          AS City,
-                c.state         AS State,
-                c.notes         AS Notes,
-                c.created_at    AS CreatedAt,
-                c.updated_at    AS UpdatedAt,
-                MAX(i.date)     AS LastInteractionDate
-            FROM contacts c
-            LEFT JOIN interactions i ON i.contact_id = c.id
-            WHERE c.name LIKE @like OR c.company LIKE @like OR c.city LIKE @like
+        return conn.Query<Contact>(SelectContact + @"
+            WHERE c.name LIKE @like OR co.name LIKE @like OR c.city LIKE @like
             GROUP BY c.id
             ORDER BY c.name
         ", new { like });

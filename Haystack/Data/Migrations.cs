@@ -57,9 +57,58 @@ internal static class Migrations
             CREATE INDEX IF NOT EXISTS idx_custom_fields_contact ON contact_custom_fields(contact_id);
             """,
 
-        // Future structural changes go here as new numbered steps, e.g.:
-        // [2] = "ALTER TABLE contacts ADD COLUMN website TEXT;",
-        // [3] = "CREATE TABLE tasks (...);",
+        // v2: introduce companies as a parent entity; contacts now belong to a
+        // company (required company_id FK). Existing test data is intentionally
+        // dropped (agreed clean-slate) — safe because no real data existed yet.
+        [2] = """
+            DROP TABLE IF EXISTS interactions;
+            DROP TABLE IF EXISTS contact_custom_fields;
+            DROP TABLE IF EXISTS contacts;
+
+            CREATE TABLE companies (
+                id          INTEGER PRIMARY KEY AUTOINCREMENT,
+                name        TEXT NOT NULL,
+                type        INTEGER NOT NULL DEFAULT 0,
+                status      INTEGER NOT NULL DEFAULT 0,
+                phone       TEXT,
+                email       TEXT,
+                city        TEXT,
+                state       TEXT,
+                notes       TEXT,
+                created_at  TEXT NOT NULL DEFAULT (datetime('now')),
+                updated_at  TEXT NOT NULL DEFAULT (datetime('now'))
+            );
+
+            CREATE TABLE contacts (
+                id          INTEGER PRIMARY KEY AUTOINCREMENT,
+                company_id  INTEGER NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
+                name        TEXT NOT NULL,
+                title       TEXT,
+                type        INTEGER NOT NULL DEFAULT 0,
+                status      INTEGER NOT NULL DEFAULT 0,
+                phone       TEXT,
+                email       TEXT,
+                city        TEXT,
+                state       TEXT,
+                notes       TEXT,
+                created_at  TEXT NOT NULL DEFAULT (datetime('now')),
+                updated_at  TEXT NOT NULL DEFAULT (datetime('now'))
+            );
+
+            CREATE TABLE interactions (
+                id                  INTEGER PRIMARY KEY AUTOINCREMENT,
+                contact_id          INTEGER NOT NULL REFERENCES contacts(id) ON DELETE CASCADE,
+                type                INTEGER NOT NULL DEFAULT 4,
+                date                TEXT NOT NULL,
+                summary             TEXT,
+                next_followup_date  TEXT,
+                created_at          TEXT NOT NULL DEFAULT (datetime('now'))
+            );
+
+            CREATE INDEX idx_contacts_company     ON contacts(company_id);
+            CREATE INDEX idx_interactions_contact ON interactions(contact_id);
+            CREATE INDEX idx_interactions_date    ON interactions(date);
+            """,
     };
 
     public static void Apply(SqliteConnection conn)

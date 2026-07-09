@@ -7,6 +7,7 @@ using Haystack.Views.Dashboard;
 using Haystack.Views.Contacts;
 using Haystack.Views.Workflow;
 using Haystack.Views.Activity;
+using Haystack.Views.Companies;
 
 namespace Haystack;
 
@@ -44,6 +45,12 @@ public partial class MainWindow : Window
     {
         if (MainContent is null) return;
         MainContent.Content = new DashboardView();
+    }
+
+    private void Nav_Companies(object sender, RoutedEventArgs e)
+    {
+        if (MainContent is null) return;
+        MainContent.Content = new CompaniesView();
     }
 
     private void Nav_Contacts(object sender, RoutedEventArgs e)

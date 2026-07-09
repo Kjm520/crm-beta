@@ -74,7 +74,7 @@
                                             </Grid.ColumnDefinitions>
                                             <StackPanel Grid.Column="0">
                                                 <TextBlock Text="{Binding Name}" Style="{StaticResource TextBody}" />
-                                                <TextBlock Text="{Binding Company}" Style="{StaticResource TextBodySecondary}" />
+                                                <TextBlock Text="{Binding CompanyName}" Style="{StaticResource TextBodySecondary}" />
                                             </StackPanel>
                                             <Border Grid.Column="1" VerticalAlignment="Center"
                                                     Background="{StaticResource StatusAmberGlowBrush}"

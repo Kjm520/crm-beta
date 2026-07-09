@@ -1,0 +1,102 @@
+<UserControl x:Class="Haystack.Views.Companies.CompaniesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid Margin="28,24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="16" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="16" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Companies" Style="{StaticResource TextDisplaySmall}" Grid.Column="0" />
+            <Button Content="+ New Company" Style="{StaticResource ButtonPrimary}"
+                    Grid.Column="1" VerticalAlignment="Bottom"
+                    Click="NewCompany_Click" />
+        </Grid>
+
+        <!-- Search -->
+        <TextBox Grid.Row="2"
+                 Style="{StaticResource InputField}"
+                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                 MaxWidth="400"
+                 HorizontalAlignment="Left" />
+
+        <!-- Company list -->
+        <Border Grid.Row="4" Style="{StaticResource CardPanel}" Padding="0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <!-- Column headers -->
+                <Border Grid.Row="0"
+                        BorderBrush="{StaticResource BorderSubtleBrush}"
+                        BorderThickness="0,0,0,1"
+                        Padding="16,0">
+                    <Grid Height="34">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2.4*" />
+                            <ColumnDefinition Width="110" />
+                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="1.4*" />
+                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition Width="90" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="NAME"         Style="{StaticResource TextCaption}" VerticalAlignment="Center" />
+                        <TextBlock Grid.Column="1" Text="TYPE"         Style="{StaticResource TextCaption}" VerticalAlignment="Center" />
+                        <TextBlock Grid.Column="2" Text="STATUS"       Style="{StaticResource TextCaption}" VerticalAlignment="Center" />
+                        <TextBlock Grid.Column="3" Text="CITY"         Style="{StaticResource TextCaption}" VerticalAlignment="Center" />
+                        <TextBlock Grid.Column="4" Text="CONTACTS"     Style="{StaticResource TextCaption}" VerticalAlignment="Center" />
+                        <TextBlock Grid.Column="5" Text="LAST CONTACT" Style="{StaticResource TextCaption}" VerticalAlignment="Center" />
+                        <TextBlock Grid.Column="6" Text="DAYS SINCE"   Style="{StaticResource TextCaption}" VerticalAlignment="Center" />
+                    </Grid>
+                </Border>
+
+                <!-- Rows -->
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding Companies}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Style="{StaticResource RowButton}"
+                                        Click="CompanyRow_Click"
+                                        Tag="{Binding Id}">
+                                    <Border Padding="16,0" Background="Transparent">
+                                        <Grid Height="36">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2.4*" />
+                                                <ColumnDefinition Width="110" />
+                                                <ColumnDefinition Width="90" />
+                                                <ColumnDefinition Width="1.4*" />
+                                                <ColumnDefinition Width="90" />
+                                                <ColumnDefinition Width="120" />
+                                                <ColumnDefinition Width="90" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="{Binding Name}"   Style="{StaticResource TextBody}"          VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                                            <TextBlock Grid.Column="1" Text="{Binding Type}"   Style="{StaticResource TextBodySecondary}" VerticalAlignment="Center" />
+                                            <TextBlock Grid.Column="2" Text="{Binding Status}" Style="{StaticResource TextBodySecondary}" VerticalAlignment="Center" />
+                                            <TextBlock Grid.Column="3" Text="{Binding City}"   Style="{StaticResource TextBodySecondary}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                                            <TextBlock Grid.Column="4" Text="{Binding ContactCount}" Style="{StaticResource TextBodySecondary}" VerticalAlignment="Center" />
+                                            <TextBlock Grid.Column="5" Text="{Binding LastInteractionDate, StringFormat='MMM d, yyyy'}" Style="{StaticResource TextBodySecondary}" VerticalAlignment="Center" />
+                                            <TextBlock Grid.Column="6" Text="{Binding DaysSinceLastInteractionDisplay}"                 Style="{StaticResource TextBodySecondary}" VerticalAlignment="Center" />
+                                        </Grid>
+                                    </Border>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>
