@@ -23,6 +23,21 @@ public partial class MainWindow : Window
     {
         var main = Application.Current.MainWindow as MainWindow;
         dialog.Owner = main;
+
+        // Fade the dialog window in together with the scrim so they read as one
+        // motion (the scrim lives in the main window; the dialog is its own Window).
+        dialog.Opacity = 0;
+        dialog.Loaded += (_, _) =>
+        {
+            var fadeIn = new System.Windows.Media.Animation.DoubleAnimation
+            {
+                From = 0, To = 1,
+                Duration = TimeSpan.FromMilliseconds(30),
+                EasingFunction = new System.Windows.Media.Animation.QuadraticEase()
+            };
+            dialog.BeginAnimation(OpacityProperty, fadeIn);
+        };
+
         main?.FadeScrim(true);
         try
         {
@@ -41,19 +56,18 @@ public partial class MainWindow : Window
 
         var fade = new System.Windows.Media.Animation.DoubleAnimation
         {
-            To = show ? 1.0 : 0.0,
-            Duration = TimeSpan.FromMilliseconds(60),
-            EasingFunction = new System.Windows.Media.Animation.QuadraticEase()
+            // Explicit From so the scrim always animates the FULL range. Without it,
+            // WPF starts from the property's current (held) value, which caused the
+            // scrim to jump most of the way to dark, then crawl the rest.
+            From = show ? 0.0 : 1.0,
+            To   = show ? 1.0 : 0.0,
+            Duration = TimeSpan.FromMilliseconds(2400),
+            EasingFunction = new System.Windows.Media.Animation.ExponentialEase()
         };
         if (!show)
             fade.Completed += (_, _) => ModalScrim.Visibility = Visibility.Collapsed;
 
         ModalScrim.BeginAnimation(OpacityProperty, fade);
-
-        // Let the fade-in render a frame before ShowDialog() blocks the thread,
-        // so the scrim eases in rather than snapping to dark.
-        if (show)
-            Dispatcher.Invoke(() => { }, System.Windows.Threading.DispatcherPriority.Render);
     }
 
     public MainWindow()
