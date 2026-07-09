@@ -39,7 +39,7 @@ public partial class CompanyDetailView : Window
             }
         }
 
-        var detail = new ContactDetailView(null, preselectCompanyId: _vm.Company.Id);
+        var detail = new ContactDetailView(null, preselectCompanyId: _vm.Company.Id) { Owner = this };
         detail.ShowDialog();
         _vm.RefreshChildren(_vm.Company.Id);
     }
@@ -49,7 +49,7 @@ public partial class CompanyDetailView : Window
         if (sender is not Button { Tag: int contactId })
             return;
 
-        var detail = new ContactDetailView(contactId);
+        var detail = new ContactDetailView(contactId) { Owner = this };
         detail.ShowDialog();
         _vm.RefreshChildren(_vm.Company.Id);
     }

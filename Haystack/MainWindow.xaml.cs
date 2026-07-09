@@ -8,11 +8,54 @@ using Haystack.Views.Contacts;
 using Haystack.Views.Workflow;
 using Haystack.Views.Activity;
 using Haystack.Views.Companies;
+using Haystack.Views.Settings;
 
 namespace Haystack;
 
 public partial class MainWindow : Window
 {
+    /// <summary>
+    /// Shows a dialog modally with the background dimmed by the main-window scrim
+    /// (which quickly fades in/out), signalling that the rest of the app is blocked
+    /// until the dialog closes. Safe to call from any view.
+    /// </summary>
+    public static bool? ShowModal(Window dialog)
+    {
+        var main = Application.Current.MainWindow as MainWindow;
+        dialog.Owner = main;
+        main?.FadeScrim(true);
+        try
+        {
+            return dialog.ShowDialog();
+        }
+        finally
+        {
+            main?.FadeScrim(false);
+        }
+    }
+
+    private void FadeScrim(bool show)
+    {
+        if (show)
+            ModalScrim.Visibility = Visibility.Visible;
+
+        var fade = new System.Windows.Media.Animation.DoubleAnimation
+        {
+            To = show ? 1.0 : 0.0,
+            Duration = TimeSpan.FromMilliseconds(60),
+            EasingFunction = new System.Windows.Media.Animation.QuadraticEase()
+        };
+        if (!show)
+            fade.Completed += (_, _) => ModalScrim.Visibility = Visibility.Collapsed;
+
+        ModalScrim.BeginAnimation(OpacityProperty, fade);
+
+        // Let the fade-in render a frame before ShowDialog() blocks the thread,
+        // so the scrim eases in rather than snapping to dark.
+        if (show)
+            Dispatcher.Invoke(() => { }, System.Windows.Threading.DispatcherPriority.Render);
+    }
+
     public MainWindow()
     {
         InitializeComponent();
@@ -69,6 +112,11 @@ public partial class MainWindow : Window
     {
         if (MainContent is null) return;
         MainContent.Content = new ActivityView();
+    }
+
+    private void Settings_Click(object sender, RoutedEventArgs e)
+    {
+        ShowModal(new SettingsWindow());
     }
 
     private void BackupDatabase_Click(object sender, RoutedEventArgs e)

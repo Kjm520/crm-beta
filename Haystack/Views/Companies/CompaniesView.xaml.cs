@@ -17,8 +17,7 @@ public partial class CompaniesView : UserControl
 
     private void NewCompany_Click(object sender, RoutedEventArgs e)
     {
-        var detail = new CompanyDetailView(null);
-        detail.ShowDialog();
+        MainWindow.ShowModal(new CompanyDetailView(null));
         _vm.LoadCommand.Execute(null);
     }
 
@@ -27,8 +26,7 @@ public partial class CompaniesView : UserControl
         if (sender is not Button { Tag: int companyId })
             return;
 
-        var detail = new CompanyDetailView(companyId);
-        detail.ShowDialog();
+        MainWindow.ShowModal(new CompanyDetailView(companyId));
         _vm.LoadCommand.Execute(null);
     }
 }

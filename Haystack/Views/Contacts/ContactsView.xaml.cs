@@ -18,8 +18,7 @@ public partial class ContactsView : UserControl
 
     private void NewContact_Click(object sender, RoutedEventArgs e)
     {
-        var detail = new ContactDetailView(null);
-        detail.ShowDialog();
+        MainWindow.ShowModal(new ContactDetailView(null));
         // Reload after the dialog closes: interactions are written live, so the
         // list can be stale even if the contact itself wasn't re-saved.
         _vm.LoadCommand.Execute(null);
@@ -30,8 +29,7 @@ public partial class ContactsView : UserControl
         if (sender is not Button { Tag: int contactId })
             return;
 
-        var detail = new ContactDetailView(contactId);
-        detail.ShowDialog();
+        MainWindow.ShowModal(new ContactDetailView(contactId));
         _vm.LoadCommand.Execute(null);
     }
 }

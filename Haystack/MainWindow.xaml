@@ -61,6 +61,8 @@
                                 </Style>
                             </Menu.Resources>
                             <MenuItem Header="_File">
+                                <MenuItem Header="Settings" Click="Settings_Click" />
+                                <Separator />
                                 <MenuItem Header="Backup Database…" Click="BackupDatabase_Click" />
                                 <Separator />
                                 <MenuItem Header="Exit" Click="CloseButton_Click" />
@@ -135,6 +137,15 @@
                 <!-- Content area -->
                 <ContentControl x:Name="MainContent" Grid.Column="1" />
             </Grid>
+
+            <!-- Modal scrim: dims the whole window while a modal dialog is open.
+                 Starts transparent and fades in/out (see MainWindow.ShowModal). -->
+            <Border x:Name="ModalScrim"
+                    Grid.Row="0" Grid.RowSpan="2"
+                    Background="#66000000"
+                    CornerRadius="10"
+                    Opacity="0"
+                    Visibility="Collapsed" />
         </Grid>
     </Border>
 </Window>
