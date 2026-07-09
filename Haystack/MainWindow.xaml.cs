@@ -32,7 +32,7 @@ public partial class MainWindow : Window
             var fadeIn = new System.Windows.Media.Animation.DoubleAnimation
             {
                 From = 0, To = 1,
-                Duration = TimeSpan.FromMilliseconds(30),
+                Duration = TimeSpan.FromMilliseconds(0),
                 EasingFunction = new System.Windows.Media.Animation.QuadraticEase()
             };
             dialog.BeginAnimation(OpacityProperty, fadeIn);
@@ -59,10 +59,11 @@ public partial class MainWindow : Window
             // Explicit From so the scrim always animates the FULL range. Without it,
             // WPF starts from the property's current (held) value, which caused the
             // scrim to jump most of the way to dark, then crawl the rest.
-            From = show ? 0.0 : 1.0,
-            To   = show ? 1.0 : 0.0,
-            Duration = TimeSpan.FromMilliseconds(2400),
-            EasingFunction = new System.Windows.Media.Animation.ExponentialEase()
+            From = show ? 0.0 : 0.5,
+            To   = show ? 0.5 : 0.0,
+            // Separate in/out durations (ms).
+            Duration = TimeSpan.FromMilliseconds(show ? 600 : 100),
+            EasingFunction = new System.Windows.Media.Animation.CircleEase()
         };
         if (!show)
             fade.Completed += (_, _) => ModalScrim.Visibility = Visibility.Collapsed;
