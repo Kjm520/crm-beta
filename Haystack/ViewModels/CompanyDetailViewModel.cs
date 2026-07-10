@@ -62,4 +62,14 @@ public partial class CompanyDetailViewModel : ViewModelBase
             _companyRepo.Update(Company);
         return true;
     }
+
+    /// <summary>
+    /// Deletes this company AND cascades to all its contacts and their interactions.
+    /// The count is exposed via <see cref="Contacts"/> so callers can warn first.
+    /// </summary>
+    public void DeleteCompany()
+    {
+        if (Company.Id != 0)
+            _companyRepo.Delete(Company.Id);
+    }
 }

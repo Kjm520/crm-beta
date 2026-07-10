@@ -15,7 +15,10 @@ public partial class CompanyDetailView : Window
         InitializeComponent();
 
         if (companyId.HasValue)
+        {
             _vm.LoadCompany(companyId.Value);
+            DeleteButton.Visibility = Visibility.Visible;
+        }
 
         DataContext = _vm;
     }
@@ -65,6 +68,24 @@ public partial class CompanyDetailView : Window
         }
 
         _vm.SaveCompany();
+        Close();
+    }
+
+    private void Delete_Click(object sender, RoutedEventArgs e)
+    {
+        var contactCount = _vm.Contacts.Count;
+        var cascade = contactCount == 0
+            ? "This company has no contacts."
+            : $"This will also delete its {contactCount} contact(s) and all their logged interactions.";
+
+        var confirm = MessageBox.Show(this,
+            $"Delete this company?\n\n{_vm.Company.Name}\n\n{cascade}\n\nThis can't be undone.",
+            "Delete company",
+            MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+        if (confirm != MessageBoxResult.Yes) return;
+
+        _vm.DeleteCompany();
         Close();
     }
 

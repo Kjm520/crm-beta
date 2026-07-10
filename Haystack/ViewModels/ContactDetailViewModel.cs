@@ -76,6 +76,13 @@ public partial class ContactDetailViewModel : ViewModelBase
         return true;
     }
 
+    /// <summary>Deletes this contact and its interactions (cascade).</summary>
+    public void DeleteContact()
+    {
+        if (Contact.Id != 0)
+            _contactRepo.Delete(Contact.Id);
+    }
+
     [RelayCommand]
     public void DeleteInteraction(Interaction interaction)
     {

@@ -14,9 +14,14 @@ public partial class ContactDetailView : Window
         InitializeComponent();
 
         if (contactId.HasValue)
+        {
             _vm.LoadContact(contactId.Value);
+            DeleteButton.Visibility = Visibility.Visible;
+        }
         else if (preselectCompanyId.HasValue)
+        {
             _vm.PreselectCompany(preselectCompanyId.Value);
+        }
 
         DataContext = _vm;
     }
@@ -35,6 +40,20 @@ public partial class ContactDetailView : Window
         }
 
         _vm.SaveContact();
+        Close();
+    }
+
+    private void Delete_Click(object sender, RoutedEventArgs e)
+    {
+        var confirm = MessageBox.Show(this,
+            $"Delete this contact?\n\n{_vm.Contact.Name}\n\n" +
+            "Their logged interactions will be deleted too. This can't be undone.",
+            "Delete contact",
+            MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+        if (confirm != MessageBoxResult.Yes) return;
+
+        _vm.DeleteContact();
         Close();
     }
 
