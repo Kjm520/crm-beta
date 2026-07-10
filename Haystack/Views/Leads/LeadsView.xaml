@@ -84,7 +84,7 @@
                                                 </Grid.ColumnDefinitions>
                                                 <TextBlock Grid.Column="0" Text="{Binding Name}"       Style="{StaticResource TextBody}"          VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
                                                 <TextBlock Grid.Column="1" Text="{Binding Company}"    Style="{StaticResource TextBodySecondary}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
-                                                <TextBlock Grid.Column="2" Text="{Binding Phone}"      Style="{StaticResource TextBodySecondary}" VerticalAlignment="Center" />
+                                                <TextBlock Grid.Column="2" Text="{Binding Phone, Converter={StaticResource PhoneFormatConverter}}" Style="{StaticResource TextBodySecondary}" VerticalAlignment="Center" />
                                                 <TextBlock Grid.Column="3" Text="{Binding Email}"      Style="{StaticResource TextBodySecondary}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
                                                 <TextBlock Grid.Column="4" Text="{Binding StatusName}" Style="{StaticResource TextBodySecondary}" VerticalAlignment="Center" />
                                                 <TextBlock Grid.Column="5" Text="{Binding CreatedAt, StringFormat='MMM d, yyyy'}" Style="{StaticResource TextBodySecondary}" VerticalAlignment="Center" />

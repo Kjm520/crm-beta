@@ -11,6 +11,7 @@
                 <ResourceDictionary Source="Resources/Themes/Controls.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <converters:ZeroToVisibleConverter x:Key="ZeroToVisibleConverter" />
+            <converters:PhoneFormatConverter x:Key="PhoneFormatConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

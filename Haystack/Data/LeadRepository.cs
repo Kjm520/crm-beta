@@ -39,14 +39,21 @@ public class LeadRepository
     {
         using var conn = Database.GetConnection();
         var like = $"%{query}%";
+
+        // Phones are stored as bare digits, so a search like "402-720" would miss.
+        // Match phone against a digits-only form of the query as well.
+        var digits = new string(query.Where(char.IsDigit).ToArray());
+        var digitsLike = string.IsNullOrEmpty(digits) ? null : $"%{digits}%";
+
         return conn.Query<Lead>(SelectLead + @"
             WHERE l.name    LIKE @like
                OR l.company LIKE @like
-               OR l.phone   LIKE @like
                OR l.email   LIKE @like
                OR l.notes   LIKE @like
+               OR l.phone   LIKE @like
+               OR (@digitsLike IS NOT NULL AND l.phone LIKE @digitsLike)
             ORDER BY l.created_at DESC
-        ", new { like });
+        ", new { like, digitsLike });
     }
 
     public int Insert(Lead lead)
