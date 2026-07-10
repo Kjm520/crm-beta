@@ -109,6 +109,54 @@ internal static class Migrations
             CREATE INDEX idx_interactions_contact ON interactions(contact_id);
             CREATE INDEX idx_interactions_date    ON interactions(date);
             """,
+
+        // v3: leads — a flat, standalone bulk list (deliberately NOT linked to
+        // companies/contacts). Statuses are user-editable data, not a C# enum, so
+        // they live in their own table. status_id is nullable with ON DELETE SET NULL
+        // so removing a status never destroys leads.
+        [3] = """
+            CREATE TABLE lead_statuses (
+                id          INTEGER PRIMARY KEY AUTOINCREMENT,
+                name        TEXT NOT NULL UNIQUE,
+                sort_order  INTEGER NOT NULL DEFAULT 0
+            );
+
+            INSERT INTO lead_statuses (name, sort_order) VALUES
+                ('New', 0),
+                ('Contacted', 1),
+                ('Dead', 2);
+
+            CREATE TABLE leads (
+                id          INTEGER PRIMARY KEY AUTOINCREMENT,
+                name        TEXT,
+                company     TEXT,
+                phone       TEXT,
+                email       TEXT,
+                status_id   INTEGER REFERENCES lead_statuses(id) ON DELETE SET NULL,
+                notes       TEXT,
+                created_at  TEXT NOT NULL DEFAULT (datetime('now')),
+                updated_at  TEXT NOT NULL DEFAULT (datetime('now'))
+            );
+
+            CREATE INDEX idx_leads_status  ON leads(status_id);
+            CREATE INDEX idx_leads_created ON leads(created_at);
+            """,
+
+        // v4: lead -> company conversion. A converted lead is KEPT (it's proof the
+        // cold call worked) and linked to the company it became.
+        //
+        // is_won marks the "converted" status structurally rather than by name, so
+        // the user can freely rename it in Settings without breaking conversion.
+        [4] = """
+            ALTER TABLE lead_statuses ADD COLUMN is_won INTEGER NOT NULL DEFAULT 0;
+
+            INSERT INTO lead_statuses (name, sort_order, is_won) VALUES ('Won', 3, 1);
+
+            ALTER TABLE leads ADD COLUMN converted_company_id INTEGER
+                REFERENCES companies(id) ON DELETE SET NULL;
+
+            CREATE INDEX idx_leads_converted ON leads(converted_company_id);
+            """,
     };
 
     public static void Apply(SqliteConnection conn)

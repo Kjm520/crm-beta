@@ -8,6 +8,7 @@ using Haystack.Views.Contacts;
 using Haystack.Views.Workflow;
 using Haystack.Views.Activity;
 using Haystack.Views.Companies;
+using Haystack.Views.Leads;
 using Haystack.Views.Settings;
 
 namespace Haystack;
@@ -121,6 +122,12 @@ public partial class MainWindow : Window
     {
         if (MainContent is null) return;
         MainContent.Content = new WorkflowView();
+    }
+
+    private void Nav_Leads(object sender, RoutedEventArgs e)
+    {
+        if (MainContent is null) return;
+        MainContent.Content = new LeadsView();
     }
 
     private void Nav_Activity(object sender, RoutedEventArgs e)

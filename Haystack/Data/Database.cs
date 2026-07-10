@@ -24,7 +24,6 @@ public static class Database
         SqliteDateTimeHandlers.Register();
 
         using var conn = GetConnection();
-        conn.Execute("PRAGMA foreign_keys = ON;");
         Migrations.Apply(conn);
     }
 
@@ -34,6 +33,10 @@ public static class Database
             throw new InvalidOperationException("Database not initialized.");
         var conn = new SqliteConnection(_connectionString);
         conn.Open();
+        // PRAGMA foreign_keys is PER-CONNECTION, and every repository call opens a
+        // fresh connection - so it must be set here, not just once at startup.
+        // Without this, ON DELETE CASCADE / SET NULL silently never fire.
+        conn.Execute("PRAGMA foreign_keys = ON;");
         return conn;
     }
 

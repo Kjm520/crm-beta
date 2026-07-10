@@ -130,6 +130,8 @@
                         <RadioButton Style="{StaticResource NavButton}"
                                      Checked="Nav_Contacts">Contacts</RadioButton>
                         <RadioButton Style="{StaticResource NavButton}"
+                                     Checked="Nav_Leads">Leads</RadioButton>
+                        <RadioButton Style="{StaticResource NavButton}"
                                      Checked="Nav_Activity">Activity</RadioButton>
                     </StackPanel>
                 </Border>

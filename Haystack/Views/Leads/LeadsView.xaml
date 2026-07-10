@@ -1,0 +1,107 @@
+<UserControl x:Class="Haystack.Views.Leads.LeadsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid Margin="28,24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="16" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="16" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Leads" Style="{StaticResource TextDisplaySmall}" Grid.Column="0" />
+            <Button Content="+ New Lead" Style="{StaticResource ButtonPrimary}"
+                    Grid.Column="1" VerticalAlignment="Bottom"
+                    Click="NewLead_Click" />
+        </Grid>
+
+        <!-- Search -->
+        <TextBox Grid.Row="2"
+                 Style="{StaticResource InputField}"
+                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                 MaxWidth="400"
+                 HorizontalAlignment="Left" />
+
+        <!-- Lead list -->
+        <Border Grid.Row="4" Style="{StaticResource CardPanel}" Padding="0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <!-- Column headers -->
+                <Border Grid.Row="0"
+                        BorderBrush="{StaticResource BorderSubtleBrush}"
+                        BorderThickness="0,0,0,1"
+                        Padding="16,0">
+                    <Grid Height="34">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1.6*" />
+                            <ColumnDefinition Width="1.6*" />
+                            <ColumnDefinition Width="130" />
+                            <ColumnDefinition Width="1.8*" />
+                            <ColumnDefinition Width="110" />
+                            <ColumnDefinition Width="110" />
+                            <ColumnDefinition Width="36" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="NAME"    Style="{StaticResource TextCaption}" VerticalAlignment="Center" />
+                        <TextBlock Grid.Column="1" Text="COMPANY" Style="{StaticResource TextCaption}" VerticalAlignment="Center" />
+                        <TextBlock Grid.Column="2" Text="PHONE"   Style="{StaticResource TextCaption}" VerticalAlignment="Center" />
+                        <TextBlock Grid.Column="3" Text="EMAIL"   Style="{StaticResource TextCaption}" VerticalAlignment="Center" />
+                        <TextBlock Grid.Column="4" Text="STATUS"  Style="{StaticResource TextCaption}" VerticalAlignment="Center" />
+                        <TextBlock Grid.Column="5" Text="CREATED" Style="{StaticResource TextCaption}" VerticalAlignment="Center" />
+                    </Grid>
+                </Border>
+
+                <!-- Rows -->
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <ItemsControl ItemsSource="{Binding Leads}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Style="{StaticResource RowButton}"
+                                            Click="LeadRow_Click"
+                                            Tag="{Binding Id}">
+                                        <Border Padding="16,0" Background="Transparent">
+                                            <Grid Height="36">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="1.6*" />
+                                                    <ColumnDefinition Width="1.6*" />
+                                                    <ColumnDefinition Width="130" />
+                                                    <ColumnDefinition Width="1.8*" />
+                                                    <ColumnDefinition Width="110" />
+                                                    <ColumnDefinition Width="110" />
+                                                    <ColumnDefinition Width="36" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0" Text="{Binding Name}"       Style="{StaticResource TextBody}"          VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                                                <TextBlock Grid.Column="1" Text="{Binding Company}"    Style="{StaticResource TextBodySecondary}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                                                <TextBlock Grid.Column="2" Text="{Binding Phone}"      Style="{StaticResource TextBodySecondary}" VerticalAlignment="Center" />
+                                                <TextBlock Grid.Column="3" Text="{Binding Email}"      Style="{StaticResource TextBodySecondary}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                                                <TextBlock Grid.Column="4" Text="{Binding StatusName}" Style="{StaticResource TextBodySecondary}" VerticalAlignment="Center" />
+                                                <TextBlock Grid.Column="5" Text="{Binding CreatedAt, StringFormat='MMM d, yyyy'}" Style="{StaticResource TextBodySecondary}" VerticalAlignment="Center" />
+                                            </Grid>
+                                        </Border>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <TextBlock Text="No leads yet. Add one with + New Lead."
+                                   Style="{StaticResource TextBodySecondary}"
+                                   Margin="16,14,0,0"
+                                   Visibility="{Binding Leads.Count, Converter={StaticResource ZeroToVisibleConverter}}" />
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>
