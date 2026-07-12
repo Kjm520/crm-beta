@@ -20,37 +20,31 @@
             CornerRadius="10">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="36" />
+                <RowDefinition Height="32" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <!-- Title bar -->
             <Border Grid.Row="0"
-                    Height="36"
+                    Height="32"
                     Background="{StaticResource BackgroundMidBrush}"
                     BorderBrush="{StaticResource BorderSubtleBrush}"
                     BorderThickness="0,0,0,1"
                     CornerRadius="9,9,0,0"
                     MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
-                <Grid Margin="16,0">
+                <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="Settings"
                                Style="{StaticResource TextSubheading}"
-                               VerticalAlignment="Center" />
+                               VerticalAlignment="Center" Margin="16,0,0,0" />
                     <Button Grid.Column="1"
-                            Style="{StaticResource ButtonClose}"
-                            Width="26" Height="26" Padding="0"
-                            Margin="0,0,-4,0"
-                            Click="Close_Click">
-                        <Grid Width="10" Height="10">
-                            <Line X1="0" Y1="0" X2="10" Y2="10" Stroke="{StaticResource TextSecondaryBrush}" StrokeThickness="1" SnapsToDevicePixels="True" />
-                            <Line X1="0" Y1="10" X2="10" Y2="0" Stroke="{StaticResource TextSecondaryBrush}" StrokeThickness="1" SnapsToDevicePixels="True" />
-                        </Grid>
-                    </Button>
+                            Style="{StaticResource WindowCloseButton}"
+                            VerticalAlignment="Stretch"
+                            Click="Close_Click" />
                 </Grid>
             </Border>
 
@@ -58,35 +52,65 @@
             <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
                 <StackPanel Margin="24,20">
 
+                    <!-- Appearance -->
+                    <Border Style="{StaticResource CardPanel}" Margin="0,0,0,16">
+                        <StackPanel>
+                            <TextBlock Text="APPEARANCE" Style="{StaticResource TextSubheading}" Margin="0,0,0,4" />
+                            <TextBlock Text="Switch between the light and dark theme."
+                                       Style="{StaticResource TextBodySecondary}"
+                                       Margin="0,0,0,12" TextWrapping="Wrap" />
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="Dark mode"
+                                           Style="{StaticResource TextBody}" VerticalAlignment="Center" />
+                                <CheckBox Grid.Column="1"
+                                          Style="{StaticResource ToggleSwitch}"
+                                          IsChecked="{Binding IsDarkMode}" />
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
                     <!-- Navigation tab order -->
                     <Border Style="{StaticResource CardPanel}" Margin="0,0,0,16">
                         <StackPanel>
                             <TextBlock Text="NAVIGATION" Style="{StaticResource TextSubheading}" Margin="0,0,0,4" />
-                            <TextBlock Text="Reorder the tabs in the left panel."
+                            <TextBlock Text="Drag the handles to reorder the tabs in the left panel."
                                        Style="{StaticResource TextBodySecondary}"
                                        Margin="0,0,0,12" TextWrapping="Wrap" />
                             <ItemsControl ItemsSource="{Binding NavItems}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Border BorderBrush="{StaticResource BorderSubtleBrush}"
+                                        <!-- Whole row is a drop target; the grip on the left starts the drag. -->
+                                        <Border AllowDrop="True"
+                                                Background="Transparent"
+                                                BorderBrush="{StaticResource BorderSubtleBrush}"
                                                 BorderThickness="0,0,0,1"
-                                                Padding="0,6">
+                                                DragOver="NavRow_DragOver"
+                                                Drop="NavRow_Drop">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
                                                     <ColumnDefinition Width="*" />
-                                                    <ColumnDefinition Width="Auto" />
-                                                    <ColumnDefinition Width="Auto" />
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Grid.Column="0" Text="{Binding Label}"
+                                                <!-- Drag handle -->
+                                                <Border Grid.Column="0"
+                                                        Background="Transparent"
+                                                        Cursor="SizeAll"
+                                                        Padding="6,10" Margin="0,0,6,0"
+                                                        ToolTip="Drag to reorder"
+                                                        PreviewMouseLeftButtonDown="NavHandle_PreviewMouseLeftButtonDown"
+                                                        PreviewMouseMove="NavHandle_PreviewMouseMove">
+                                                    <StackPanel VerticalAlignment="Center">
+                                                        <Rectangle Width="14" Height="1.5" Margin="0,1.5" Fill="{StaticResource TextMutedBrush}" />
+                                                        <Rectangle Width="14" Height="1.5" Margin="0,1.5" Fill="{StaticResource TextMutedBrush}" />
+                                                        <Rectangle Width="14" Height="1.5" Margin="0,1.5" Fill="{StaticResource TextMutedBrush}" />
+                                                    </StackPanel>
+                                                </Border>
+                                                <TextBlock Grid.Column="1" Text="{Binding Label}"
                                                            Style="{StaticResource TextBody}" VerticalAlignment="Center" />
-                                                <Button Grid.Column="1" Content="Up"
-                                                        Style="{StaticResource ButtonGhost}"
-                                                        Padding="12,4" FontSize="12" Margin="0,0,8,0"
-                                                        Click="MoveNavUp_Click" Tag="{Binding}" />
-                                                <Button Grid.Column="2" Content="Down"
-                                                        Style="{StaticResource ButtonGhost}"
-                                                        Padding="12,4" FontSize="12"
-                                                        Click="MoveNavDown_Click" Tag="{Binding}" />
                                             </Grid>
                                         </Border>
                                     </DataTemplate>

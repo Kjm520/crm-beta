@@ -11,6 +11,10 @@ public partial class SettingsWindow : Window
 {
     private readonly SettingsViewModel _vm = new();
 
+    // Nav drag-reorder state.
+    private NavItem? _navDragItem;
+    private Point _navDragStart;
+
     public SettingsWindow()
     {
         InitializeComponent();
@@ -20,14 +24,46 @@ public partial class SettingsWindow : Window
     private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         => DragMove();
 
-    private void MoveNavUp_Click(object sender, RoutedEventArgs e)
+    // --- Nav tab drag-to-reorder -----------------------------------------
+
+    private void NavHandle_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
-        if (sender is Button { Tag: NavItem item }) _vm.MoveNavUp(item);
+        if (sender is FrameworkElement { DataContext: NavItem item })
+        {
+            _navDragItem = item;
+            _navDragStart = e.GetPosition(null);
+        }
     }
 
-    private void MoveNavDown_Click(object sender, RoutedEventArgs e)
+    private void NavHandle_PreviewMouseMove(object sender, MouseEventArgs e)
     {
-        if (sender is Button { Tag: NavItem item }) _vm.MoveNavDown(item);
+        if (_navDragItem is null || e.LeftButton != MouseButtonState.Pressed) return;
+
+        var pos = e.GetPosition(null);
+        if (Math.Abs(pos.X - _navDragStart.X) < SystemParameters.MinimumHorizontalDragDistance &&
+            Math.Abs(pos.Y - _navDragStart.Y) < SystemParameters.MinimumVerticalDragDistance)
+            return;
+
+        var dragged = _navDragItem;
+        _navDragItem = null; // clear before the blocking drag loop
+        DragDrop.DoDragDrop((DependencyObject)sender, dragged, DragDropEffects.Move);
+    }
+
+    private void NavRow_DragOver(object sender, DragEventArgs e)
+    {
+        e.Effects = e.Data.GetDataPresent(typeof(NavItem))
+            ? DragDropEffects.Move
+            : DragDropEffects.None;
+        e.Handled = true;
+    }
+
+    private void NavRow_Drop(object sender, DragEventArgs e)
+    {
+        if (sender is FrameworkElement { DataContext: NavItem target } &&
+            e.Data.GetData(typeof(NavItem)) is NavItem dragged)
+        {
+            _vm.MoveNav(dragged, target);
+        }
     }
 
     private void AddStatus_Click(object sender, RoutedEventArgs e)

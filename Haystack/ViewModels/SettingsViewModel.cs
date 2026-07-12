@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using Haystack.Data;
 using Haystack.Models;
 using Haystack.Navigation;
+using Haystack.Theming;
 using Haystack.ViewModels.Base;
 
 namespace Haystack.ViewModels;
@@ -23,11 +24,21 @@ public partial class SettingsViewModel : ViewModelBase
     [ObservableProperty]
     private ObservableCollection<NavItem> _navItems = [];
 
+    // Appearance
+    [ObservableProperty]
+    private bool _isDarkMode;
+
     public SettingsViewModel()
     {
+        // Seed the toggle from the live theme without re-triggering a swap.
+        _isDarkMode = ThemeManager.IsDark;
+
         LoadStatuses();
         LoadNav();
     }
+
+    partial void OnIsDarkModeChanged(bool value)
+        => ThemeManager.Apply(value ? ThemeManager.Dark : ThemeManager.Light);
 
     public void LoadStatuses()
     {
@@ -40,16 +51,16 @@ public partial class SettingsViewModel : ViewModelBase
             NavRegistry.InSavedOrder(_appSettings.Get(NavRegistry.OrderSettingKey)));
     }
 
-    public void MoveNavUp(NavItem item)
+    /// <summary>Moves <paramref name="item"/> to the position of <paramref name="target"/>
+    /// (drag-and-drop reorder) and persists the new order.</summary>
+    public void MoveNav(NavItem item, NavItem target)
     {
-        var i = NavItems.IndexOf(item);
-        if (i > 0) { NavItems.Move(i, i - 1); SaveNavOrder(); }
-    }
+        var from = NavItems.IndexOf(item);
+        var to = NavItems.IndexOf(target);
+        if (from < 0 || to < 0 || from == to) return;
 
-    public void MoveNavDown(NavItem item)
-    {
-        var i = NavItems.IndexOf(item);
-        if (i >= 0 && i < NavItems.Count - 1) { NavItems.Move(i, i + 1); SaveNavOrder(); }
+        NavItems.Move(from, to);
+        SaveNavOrder();
     }
 
     private void SaveNavOrder()

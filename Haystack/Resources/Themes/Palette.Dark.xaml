@@ -1,0 +1,36 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- ═══════════════════════════════════════════
+         DARK palette — slate charcoal with a faint steel-blue tint.
+         Same keys as Palette.Light.xaml; swapped in live by ThemeManager.
+    ═══════════════════════════════════════════ -->
+
+    <!-- Surfaces (deep → elevated, each a step lighter) -->
+    <Color x:Key="BackgroundDeepColor">#FF181C22</Color>
+    <Color x:Key="BackgroundMidColor">#FF20262E</Color>
+    <Color x:Key="BackgroundPanelColor">#FF262D36</Color>
+    <Color x:Key="BackgroundElevatedColor">#FF2F3741</Color>
+    <Color x:Key="BorderSubtleColor">#FF333B45</Color>
+    <Color x:Key="BorderAccentColor">#FF3D4856</Color>
+
+    <!-- Accent (green reads well on slate; hover nudged brighter for dark) -->
+    <Color x:Key="AccentPrimaryColor">#FF3FA463</Color>
+    <Color x:Key="AccentPrimaryHoverColor">#FF49B270</Color>
+    <Color x:Key="AccentGlowColor">#383FA463</Color>
+
+    <!-- Status (kept vivid; readable on dark) -->
+    <Color x:Key="StatusGreenColor">#FF3BA85F</Color>
+    <Color x:Key="StatusAmberColor">#FFE0A020</Color>
+    <Color x:Key="StatusRedColor">#FFE05442</Color>
+    <Color x:Key="StatusGreenGlowColor">#333BA85F</Color>
+    <Color x:Key="StatusAmberGlowColor">#33E0A020</Color>
+    <Color x:Key="StatusRedGlowColor">#33E05442</Color>
+
+    <!-- Text -->
+    <Color x:Key="TextPrimaryColor">#FFE7ECE8</Color>
+    <Color x:Key="TextSecondaryColor">#FFA9B4AC</Color>
+    <Color x:Key="TextMutedColor">#FF717C74</Color>
+    <Color x:Key="TextAccentColor">#FF56BE7C</Color>
+
+</ResourceDictionary>

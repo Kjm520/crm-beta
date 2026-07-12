@@ -97,7 +97,7 @@
                                     <Storyboard>
                                         <ColorAnimation Storyboard.TargetName="Root"
                                                         Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                        To="{StaticResource BackgroundElevatedColor}"
+                                                        To="{DynamicResource BackgroundElevatedColor}"
                                                         Duration="0:0:0.15" />
                                     </Storyboard>
                                 </VisualState>
@@ -140,6 +140,108 @@
         </Setter>
     </Style>
 
+    <!-- ═══════════════════════════════════════════
+         Window caption buttons (min / max / close)
+         Full-height sections flush to the title-bar edge, like a standard window.
+         IsHitTestVisibleInChrome lets them receive clicks even though the title bar
+         sits in the custom window chrome.
+    ═══════════════════════════════════════════ -->
+    <Style x:Key="WindowCaptionButton" TargetType="Button">
+        <Setter Property="Background"      Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Width"           Value="46" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="Cursor"          Value="Arrow" />
+        <Setter Property="Focusable"       Value="False" />
+        <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+    </Style>
+
+    <!-- Minimize -->
+    <Style x:Key="WindowMinimizeButton" TargetType="Button" BasedOn="{StaticResource WindowCaptionButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Root" Background="{TemplateBinding Background}">
+                        <Rectangle Width="10" Height="1" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                   Fill="{StaticResource TextSecondaryBrush}" SnapsToDevicePixels="True" />
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="Root"
+                                                        Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                        To="{DynamicResource BackgroundElevatedColor}" Duration="0:0:0.1" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Maximize / restore -->
+    <Style x:Key="WindowMaximizeButton" TargetType="Button" BasedOn="{StaticResource WindowCaptionButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Root" Background="{TemplateBinding Background}">
+                        <Border Width="10" Height="10" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                BorderBrush="{StaticResource TextSecondaryBrush}" BorderThickness="1" SnapsToDevicePixels="True" />
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="Root"
+                                                        Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                        To="{DynamicResource BackgroundElevatedColor}" Duration="0:0:0.1" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Close: red hover, white glyph on hover, rounded to match the window corner. -->
+    <Style x:Key="WindowCloseButton" TargetType="Button" BasedOn="{StaticResource WindowCaptionButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Root" Background="{TemplateBinding Background}" CornerRadius="0,9,0,0">
+                        <Path x:Name="Glyph" Data="M0,0 L10,10 M0,10 L10,0"
+                              StrokeThickness="1" SnapsToDevicePixels="True"
+                              VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Path.Stroke>
+                                <SolidColorBrush x:Name="GlyphBrush" Color="{DynamicResource TextSecondaryColor}" />
+                            </Path.Stroke>
+                        </Path>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="Root"
+                                                        Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                        To="{DynamicResource StatusRedColor}" Duration="0:0:0.1" />
+                                        <ColorAnimation Storyboard.TargetName="GlyphBrush"
+                                                        Storyboard.TargetProperty="Color"
+                                                        To="#FFFFFFFF" Duration="0:0:0.1" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!-- Full-width chromeless clickable table row with a subtle hover tint. -->
     <Style x:Key="RowButton" TargetType="Button">
         <Setter Property="Background"           Value="Transparent" />
@@ -162,7 +264,7 @@
                                     <Storyboard>
                                         <ColorAnimation Storyboard.TargetName="Root"
                                                         Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                        To="{StaticResource BackgroundDeepColor}"
+                                                        To="{DynamicResource BackgroundDeepColor}"
                                                         Duration="0:0:0.1" />
                                     </Storyboard>
                                 </VisualState>
@@ -332,7 +434,7 @@
                                     <Storyboard>
                                         <ColorAnimation Storyboard.TargetName="Root"
                                                         Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                        To="{StaticResource BackgroundPanelColor}"
+                                                        To="{DynamicResource BackgroundPanelColor}"
                                                         Duration="0:0:0.1" />
                                     </Storyboard>
                                 </VisualState>
@@ -343,7 +445,7 @@
                                     <Storyboard>
                                         <ColorAnimation Storyboard.TargetName="Root"
                                                         Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                        To="{StaticResource AccentGlowColor}"
+                                                        To="{DynamicResource AccentGlowColor}"
                                                         Duration="0" />
                                     </Storyboard>
                                 </VisualState>
@@ -351,7 +453,7 @@
                                     <Storyboard>
                                         <ColorAnimation Storyboard.TargetName="Root"
                                                         Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                        To="{StaticResource AccentGlowColor}"
+                                                        To="{DynamicResource AccentGlowColor}"
                                                         Duration="0" />
                                     </Storyboard>
                                 </VisualState>
@@ -399,7 +501,7 @@
                                     <Storyboard>
                                         <ColorAnimation Storyboard.TargetName="Root"
                                                         Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                        To="{StaticResource BackgroundElevatedColor}"
+                                                        To="{DynamicResource BackgroundElevatedColor}"
                                                         Duration="0:0:0.12" />
                                         <ColorAnimation Storyboard.TargetName="ActiveBar"
                                                         Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
@@ -414,8 +516,52 @@
                                     <Storyboard>
                                         <ColorAnimation Storyboard.TargetName="Root"
                                                         Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                        To="{StaticResource BackgroundElevatedColor}"
+                                                        To="{DynamicResource BackgroundElevatedColor}"
                                                         Duration="0:0:0.12" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ═══════════════════════════════════════════
+         Toggle switch (styled CheckBox)
+    ═══════════════════════════════════════════ -->
+    <Style x:Key="ToggleSwitch" TargetType="CheckBox">
+        <Setter Property="Cursor"            Value="Hand" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="CheckBox">
+                    <Border x:Name="Track" Width="42" Height="22" CornerRadius="11"
+                            Background="{StaticResource TextMutedBrush}">
+                        <Border x:Name="Knob" Width="16" Height="16" CornerRadius="8"
+                                HorizontalAlignment="Left" Margin="3,0,0,0"
+                                Background="#FFFFFFFF"
+                                RenderTransformOrigin="0.5,0.5">
+                            <Border.RenderTransform>
+                                <TranslateTransform x:Name="KnobShift" X="0" />
+                            </Border.RenderTransform>
+                        </Border>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CheckStates">
+                                <VisualState x:Name="Unchecked" />
+                                <VisualState x:Name="Checked">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="Track"
+                                                        Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                        To="{DynamicResource AccentPrimaryColor}" Duration="0:0:0.15" />
+                                        <DoubleAnimation Storyboard.TargetName="KnobShift"
+                                                         Storyboard.TargetProperty="X"
+                                                         To="20" Duration="0:0:0.15">
+                                            <DoubleAnimation.EasingFunction>
+                                                <QuadraticEase EasingMode="EaseInOut" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>

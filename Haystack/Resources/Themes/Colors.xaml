@@ -2,65 +2,36 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <!-- ═══════════════════════════════════════════
-         Base Palette
+         Brushes.
+         Each brush pulls its colour from the active palette (Palette.Light.xaml /
+         Palette.Dark.xaml) via DynamicResource. Because the whole app references
+         these brush OBJECTS by StaticResource, swapping the palette dictionary
+         mutates each brush's colour and every control repaints — that's what makes
+         the light/dark switch apply live. See Haystack.Theming.ThemeManager.
     ═══════════════════════════════════════════ -->
-    <Color x:Key="BackgroundDeepColor">#FFF5F7F5</Color>
-    <Color x:Key="BackgroundMidColor">#FFFAFBFA</Color>
-    <Color x:Key="BackgroundPanelColor">#FFFFFFFF</Color>
-    <Color x:Key="BackgroundElevatedColor">#FFFFFFFF</Color>
-    <Color x:Key="BorderSubtleColor">#FFE0E5DF</Color>
-    <Color x:Key="BorderAccentColor">#FFC2D4C0</Color>
 
-    <!-- ═══════════════════════════════════════════
-         Accent
-    ═══════════════════════════════════════════ -->
-    <Color x:Key="AccentPrimaryColor">#FF3A9A5C</Color>
-    <Color x:Key="AccentPrimaryHoverColor">#FF2E8B4E</Color>
-    <Color x:Key="AccentGlowColor">#203A9A5C</Color>
+    <SolidColorBrush x:Key="BackgroundDeepBrush"     Color="{DynamicResource BackgroundDeepColor}" />
+    <SolidColorBrush x:Key="BackgroundMidBrush"      Color="{DynamicResource BackgroundMidColor}" />
+    <SolidColorBrush x:Key="BackgroundPanelBrush"    Color="{DynamicResource BackgroundPanelColor}" />
+    <SolidColorBrush x:Key="BackgroundElevatedBrush" Color="{DynamicResource BackgroundElevatedColor}" />
+    <SolidColorBrush x:Key="BorderSubtleBrush"       Color="{DynamicResource BorderSubtleColor}" />
+    <SolidColorBrush x:Key="BorderAccentBrush"       Color="{DynamicResource BorderAccentColor}" />
 
-    <!-- ═══════════════════════════════════════════
-         Status Colors
-    ═══════════════════════════════════════════ -->
-    <Color x:Key="StatusGreenColor">#FF2D8E4F</Color>
-    <Color x:Key="StatusAmberColor">#FFD4880E</Color>
-    <Color x:Key="StatusRedColor">#FFD44030</Color>
-    <Color x:Key="StatusGreenGlowColor">#202D8E4F</Color>
-    <Color x:Key="StatusAmberGlowColor">#20D4880E</Color>
-    <Color x:Key="StatusRedGlowColor">#20D44030</Color>
+    <SolidColorBrush x:Key="AccentPrimaryBrush"      Color="{DynamicResource AccentPrimaryColor}" />
+    <SolidColorBrush x:Key="AccentPrimaryHoverBrush" Color="{DynamicResource AccentPrimaryHoverColor}" />
+    <SolidColorBrush x:Key="AccentGlowBrush"         Color="{DynamicResource AccentGlowColor}" />
 
-    <!-- ═══════════════════════════════════════════
-         Text
-    ═══════════════════════════════════════════ -->
-    <Color x:Key="TextPrimaryColor">#FF1A2B1E</Color>
-    <Color x:Key="TextSecondaryColor">#FF5A6E5E</Color>
-    <Color x:Key="TextMutedColor">#FF94A698</Color>
-    <Color x:Key="TextAccentColor">#FF3A9A5C</Color>
+    <SolidColorBrush x:Key="StatusGreenBrush"         Color="{DynamicResource StatusGreenColor}" />
+    <SolidColorBrush x:Key="StatusAmberBrush"         Color="{DynamicResource StatusAmberColor}" />
+    <SolidColorBrush x:Key="StatusRedBrush"           Color="{DynamicResource StatusRedColor}" />
+    <SolidColorBrush x:Key="StatusGreenGlowBrush"     Color="{DynamicResource StatusGreenGlowColor}" />
+    <SolidColorBrush x:Key="StatusAmberGlowBrush"     Color="{DynamicResource StatusAmberGlowColor}" />
+    <SolidColorBrush x:Key="StatusRedGlowBrush"       Color="{DynamicResource StatusRedGlowColor}" />
 
-    <!-- ═══════════════════════════════════════════
-         Brushes
-    ═══════════════════════════════════════════ -->
-    <SolidColorBrush x:Key="BackgroundDeepBrush"     Color="{StaticResource BackgroundDeepColor}" />
-    <SolidColorBrush x:Key="BackgroundMidBrush"      Color="{StaticResource BackgroundMidColor}" />
-    <SolidColorBrush x:Key="BackgroundPanelBrush"    Color="{StaticResource BackgroundPanelColor}" />
-    <SolidColorBrush x:Key="BackgroundElevatedBrush" Color="{StaticResource BackgroundElevatedColor}" />
-    <SolidColorBrush x:Key="BorderSubtleBrush"       Color="{StaticResource BorderSubtleColor}" />
-    <SolidColorBrush x:Key="BorderAccentBrush"       Color="{StaticResource BorderAccentColor}" />
-
-    <SolidColorBrush x:Key="AccentPrimaryBrush"      Color="{StaticResource AccentPrimaryColor}" />
-    <SolidColorBrush x:Key="AccentPrimaryHoverBrush" Color="{StaticResource AccentPrimaryHoverColor}" />
-    <SolidColorBrush x:Key="AccentGlowBrush"         Color="{StaticResource AccentGlowColor}" />
-
-    <SolidColorBrush x:Key="StatusGreenBrush"         Color="{StaticResource StatusGreenColor}" />
-    <SolidColorBrush x:Key="StatusAmberBrush"         Color="{StaticResource StatusAmberColor}" />
-    <SolidColorBrush x:Key="StatusRedBrush"           Color="{StaticResource StatusRedColor}" />
-    <SolidColorBrush x:Key="StatusGreenGlowBrush"     Color="{StaticResource StatusGreenGlowColor}" />
-    <SolidColorBrush x:Key="StatusAmberGlowBrush"     Color="{StaticResource StatusAmberGlowColor}" />
-    <SolidColorBrush x:Key="StatusRedGlowBrush"       Color="{StaticResource StatusRedGlowColor}" />
-
-    <SolidColorBrush x:Key="TextPrimaryBrush"        Color="{StaticResource TextPrimaryColor}" />
-    <SolidColorBrush x:Key="TextSecondaryBrush"      Color="{StaticResource TextSecondaryColor}" />
-    <SolidColorBrush x:Key="TextMutedBrush"          Color="{StaticResource TextMutedColor}" />
-    <SolidColorBrush x:Key="TextAccentBrush"         Color="{StaticResource TextAccentColor}" />
+    <SolidColorBrush x:Key="TextPrimaryBrush"        Color="{DynamicResource TextPrimaryColor}" />
+    <SolidColorBrush x:Key="TextSecondaryBrush"      Color="{DynamicResource TextSecondaryColor}" />
+    <SolidColorBrush x:Key="TextMutedBrush"          Color="{DynamicResource TextMutedColor}" />
+    <SolidColorBrush x:Key="TextAccentBrush"         Color="{DynamicResource TextAccentColor}" />
 
     <!-- Translucent panel overlay -->
     <SolidColorBrush x:Key="GlassPanelBrush"         Color="#0A3A9A5C" />

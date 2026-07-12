@@ -6,6 +6,10 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <!-- Active palette (colours only). Kept first so the brushes below
+                     resolve against it; swapped for Palette.Dark.xaml at runtime by
+                     Haystack.Theming.ThemeManager. -->
+                <ResourceDictionary Source="Resources/Themes/Palette.Light.xaml" />
                 <ResourceDictionary Source="Resources/Themes/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Themes/Typography.xaml" />
                 <ResourceDictionary Source="Resources/Themes/Controls.xaml" />
