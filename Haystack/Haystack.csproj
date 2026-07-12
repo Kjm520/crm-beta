@@ -17,6 +17,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <!-- App imagery embedded for XAML use. NOTE: the .ico is deliberately NOT here -
+         it's claimed by <ApplicationIcon> and can't also be a Resource, so the
+         title-bar mark uses this separate PNG copy instead. -->
+    <Resource Include="Assets\Images\haystack-32.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.1" />
     <PackageReference Include="Dapper" Version="2.1.72" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.5" />

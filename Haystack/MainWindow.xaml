@@ -39,7 +39,10 @@
                     </Grid.ColumnDefinitions>
 
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Column="0">
-                        <Ellipse Width="8" Height="8" Fill="{StaticResource AccentPrimaryBrush}" Margin="0,0,10,0" />
+                        <Image Source="/Assets/Images/haystack-32.png"
+                               Width="16" Height="16" Margin="0,0,10,0"
+                               VerticalAlignment="Center"
+                               RenderOptions.BitmapScalingMode="HighQuality" />
                         <TextBlock Text="HAYSTACK"
                                    Style="{StaticResource TextSubheading}"
                                    VerticalAlignment="Center" />
