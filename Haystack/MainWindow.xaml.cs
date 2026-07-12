@@ -3,12 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Microsoft.Win32;
 using Haystack.Data;
-using Haystack.Views.Dashboard;
-using Haystack.Views.Contacts;
-using Haystack.Views.Workflow;
-using Haystack.Views.Activity;
-using Haystack.Views.Companies;
-using Haystack.Views.Leads;
+using Haystack.Navigation;
 using Haystack.Views.Settings;
 
 namespace Haystack;
@@ -72,10 +67,52 @@ public partial class MainWindow : Window
         ModalScrim.BeginAnimation(OpacityProperty, fade);
     }
 
+    private readonly AppSettingsRepository _appSettings = new();
+
     public MainWindow()
     {
         InitializeComponent();
-        MainContent.Content = new DashboardView();
+        BuildNav();
+    }
+
+    /// <summary>
+    /// (Re)builds the left-panel nav buttons from NavRegistry in the user's saved
+    /// order. Preserves the currently selected tab across a rebuild.
+    /// </summary>
+    private void BuildNav()
+    {
+        // Remember which tab is selected so a reorder doesn't jump us elsewhere.
+        string? currentKey = null;
+        foreach (var child in NavPanel.Children)
+            if (child is RadioButton { IsChecked: true, Tag: NavItem sel }) { currentKey = sel.Key; break; }
+
+        // Clear existing nav buttons but keep the MENU header (a TextBlock).
+        for (var i = NavPanel.Children.Count - 1; i >= 0; i--)
+            if (NavPanel.Children[i] is RadioButton) NavPanel.Children.RemoveAt(i);
+
+        var items = NavRegistry.InSavedOrder(_appSettings.Get(NavRegistry.OrderSettingKey));
+        var navStyle = (Style)FindResource("NavButton");
+
+        RadioButton? first = null, toSelect = null;
+        foreach (var item in items)
+        {
+            var rb = new RadioButton { Style = navStyle, Content = item.Label, Tag = item };
+            rb.Checked += NavItem_Checked;
+            NavPanel.Children.Add(rb);
+
+            first ??= rb;
+            if (item.Key == currentKey) toSelect = rb;
+        }
+
+        // Selecting fires Checked, which loads the view.
+        if (toSelect is not null) toSelect.IsChecked = true;
+        else if (first is not null) first.IsChecked = true;
+    }
+
+    private void NavItem_Checked(object sender, RoutedEventArgs e)
+    {
+        if (MainContent is not null && sender is RadioButton { Tag: NavItem item })
+            MainContent.Content = item.CreateView();
     }
 
     private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -100,45 +137,14 @@ public partial class MainWindow : Window
             ? WindowState.Normal
             : WindowState.Maximized;
 
-    private void Nav_Dashboard(object sender, RoutedEventArgs e)
-    {
-        if (MainContent is null) return;
-        MainContent.Content = new DashboardView();
-    }
-
-    private void Nav_Companies(object sender, RoutedEventArgs e)
-    {
-        if (MainContent is null) return;
-        MainContent.Content = new CompaniesView();
-    }
-
-    private void Nav_Contacts(object sender, RoutedEventArgs e)
-    {
-        if (MainContent is null) return;
-        MainContent.Content = new ContactsView();
-    }
-
-    private void Nav_Workflow(object sender, RoutedEventArgs e)
-    {
-        if (MainContent is null) return;
-        MainContent.Content = new WorkflowView();
-    }
-
-    private void Nav_Leads(object sender, RoutedEventArgs e)
-    {
-        if (MainContent is null) return;
-        MainContent.Content = new LeadsView();
-    }
-
-    private void Nav_Activity(object sender, RoutedEventArgs e)
-    {
-        if (MainContent is null) return;
-        MainContent.Content = new ActivityView();
-    }
-
     private void Settings_Click(object sender, RoutedEventArgs e)
     {
+        // Rebuild the nav only if the tab order actually changed in Settings, so
+        // simply opening/closing Settings doesn't reset the current tab.
+        var before = _appSettings.Get(NavRegistry.OrderSettingKey);
         ShowModal(new SettingsWindow());
+        var after = _appSettings.Get(NavRegistry.OrderSettingKey);
+        if (before != after) BuildNav();
     }
 
     private void BackupDatabase_Click(object sender, RoutedEventArgs e)

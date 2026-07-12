@@ -157,6 +157,15 @@ internal static class Migrations
 
             CREATE INDEX idx_leads_converted ON leads(converted_company_id);
             """,
+
+        // v5: generic key-value store for app-level preferences (first use: nav tab
+        // order). Reusable for future settings; travels with the DB backup.
+        [5] = """
+            CREATE TABLE app_settings (
+                key    TEXT PRIMARY KEY,
+                value  TEXT
+            );
+            """,
     };
 
     public static void Apply(SqliteConnection conn)

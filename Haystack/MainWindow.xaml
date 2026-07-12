@@ -119,23 +119,12 @@
                         Background="{StaticResource BackgroundMidBrush}"
                         BorderBrush="{StaticResource BorderSubtleBrush}"
                         BorderThickness="0,0,1,0">
-                    <StackPanel Margin="8,12">
+                    <!-- Nav buttons are built in code from NavRegistry so their order
+                         can be user-customized (see MainWindow.BuildNav). -->
+                    <StackPanel x:Name="NavPanel" Margin="8,12">
                         <TextBlock Text="MENU"
                                    Style="{StaticResource TextCaption}"
                                    Margin="16,0,0,8" />
-                        <RadioButton Style="{StaticResource NavButton}"
-                                     IsChecked="True"
-                                     Checked="Nav_Dashboard">Dashboard</RadioButton>
-                        <RadioButton Style="{StaticResource NavButton}"
-                                     Checked="Nav_Workflow" Content="Workflow"/>
-                        <RadioButton Style="{StaticResource NavButton}"
-                                     Checked="Nav_Companies">Companies</RadioButton>
-                        <RadioButton Style="{StaticResource NavButton}"
-                                     Checked="Nav_Contacts">Contacts</RadioButton>
-                        <RadioButton Style="{StaticResource NavButton}"
-                                     Checked="Nav_Leads">Leads</RadioButton>
-                        <RadioButton Style="{StaticResource NavButton}"
-                                     Checked="Nav_Activity">Activity</RadioButton>
                     </StackPanel>
                 </Border>
 

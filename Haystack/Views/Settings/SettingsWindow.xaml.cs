@@ -2,6 +2,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Haystack.Models;
+using Haystack.Navigation;
 using Haystack.ViewModels;
 
 namespace Haystack.Views.Settings;
@@ -18,6 +19,16 @@ public partial class SettingsWindow : Window
 
     private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         => DragMove();
+
+    private void MoveNavUp_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is Button { Tag: NavItem item }) _vm.MoveNavUp(item);
+    }
+
+    private void MoveNavDown_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is Button { Tag: NavItem item }) _vm.MoveNavDown(item);
+    }
 
     private void AddStatus_Click(object sender, RoutedEventArgs e)
     {

@@ -58,6 +58,43 @@
             <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
                 <StackPanel Margin="24,20">
 
+                    <!-- Navigation tab order -->
+                    <Border Style="{StaticResource CardPanel}" Margin="0,0,0,16">
+                        <StackPanel>
+                            <TextBlock Text="NAVIGATION" Style="{StaticResource TextSubheading}" Margin="0,0,0,4" />
+                            <TextBlock Text="Reorder the tabs in the left panel."
+                                       Style="{StaticResource TextBodySecondary}"
+                                       Margin="0,0,0,12" TextWrapping="Wrap" />
+                            <ItemsControl ItemsSource="{Binding NavItems}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border BorderBrush="{StaticResource BorderSubtleBrush}"
+                                                BorderThickness="0,0,0,1"
+                                                Padding="0,6">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0" Text="{Binding Label}"
+                                                           Style="{StaticResource TextBody}" VerticalAlignment="Center" />
+                                                <Button Grid.Column="1" Content="Up"
+                                                        Style="{StaticResource ButtonGhost}"
+                                                        Padding="12,4" FontSize="12" Margin="0,0,8,0"
+                                                        Click="MoveNavUp_Click" Tag="{Binding}" />
+                                                <Button Grid.Column="2" Content="Down"
+                                                        Style="{StaticResource ButtonGhost}"
+                                                        Padding="12,4" FontSize="12"
+                                                        Click="MoveNavDown_Click" Tag="{Binding}" />
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+
                     <!-- Lead statuses (user-editable) -->
                     <Border Style="{StaticResource CardPanel}" Margin="0,0,0,16">
                         <StackPanel>

@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Haystack.Data;
 using Haystack.Models;
+using Haystack.Navigation;
 using Haystack.ViewModels.Base;
 
 namespace Haystack.ViewModels;
@@ -10,6 +11,7 @@ namespace Haystack.ViewModels;
 public partial class SettingsViewModel : ViewModelBase
 {
     private readonly LeadStatusRepository _statusRepo = new();
+    private readonly AppSettingsRepository _appSettings = new();
 
     [ObservableProperty]
     private ObservableCollection<LeadStatus> _leadStatuses = [];
@@ -17,12 +19,41 @@ public partial class SettingsViewModel : ViewModelBase
     [ObservableProperty]
     private string _newStatusName = string.Empty;
 
-    public SettingsViewModel() => LoadStatuses();
+    // Left-panel tabs, in their current order, for the reorder UI.
+    [ObservableProperty]
+    private ObservableCollection<NavItem> _navItems = [];
+
+    public SettingsViewModel()
+    {
+        LoadStatuses();
+        LoadNav();
+    }
 
     public void LoadStatuses()
     {
         LeadStatuses = new ObservableCollection<LeadStatus>(_statusRepo.GetAll());
     }
+
+    public void LoadNav()
+    {
+        NavItems = new ObservableCollection<NavItem>(
+            NavRegistry.InSavedOrder(_appSettings.Get(NavRegistry.OrderSettingKey)));
+    }
+
+    public void MoveNavUp(NavItem item)
+    {
+        var i = NavItems.IndexOf(item);
+        if (i > 0) { NavItems.Move(i, i - 1); SaveNavOrder(); }
+    }
+
+    public void MoveNavDown(NavItem item)
+    {
+        var i = NavItems.IndexOf(item);
+        if (i >= 0 && i < NavItems.Count - 1) { NavItems.Move(i, i + 1); SaveNavOrder(); }
+    }
+
+    private void SaveNavOrder()
+        => _appSettings.Set(NavRegistry.OrderSettingKey, string.Join(",", NavItems.Select(n => n.Key)));
 
     /// <summary>Adds a status. Returns an error message, or null on success.</summary>
     public string? AddStatus()
