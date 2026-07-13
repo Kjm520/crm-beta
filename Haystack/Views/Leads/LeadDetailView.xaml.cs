@@ -2,6 +2,7 @@ using System.Windows;
 using System.Windows.Input;
 using Haystack.Data;
 using Haystack.ViewModels;
+using Haystack.Views.Dialogs;
 
 namespace Haystack.Views.Leads;
 
@@ -88,12 +89,12 @@ public partial class LeadDetailView : Window
 
     private void Delete_Click(object sender, RoutedEventArgs e)
     {
-        var confirm = MessageBox.Show(this,
-            $"Delete this lead?\n\n{_vm.Lead.DisplayName}",
+        var confirmed = ConfirmWindow.Ask(this,
             "Delete lead",
-            MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            _vm.Lead.DisplayName,
+            "This can't be undone.");
 
-        if (confirm != MessageBoxResult.Yes) return;
+        if (!confirmed) return;
 
         _repo.Delete(_vm.Lead.Id);
         Close();

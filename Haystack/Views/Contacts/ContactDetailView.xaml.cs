@@ -2,6 +2,7 @@ using System.Windows;
 using System.Windows.Input;
 using Haystack.Models;
 using Haystack.ViewModels;
+using Haystack.Views.Dialogs;
 
 namespace Haystack.Views.Contacts;
 
@@ -45,13 +46,12 @@ public partial class ContactDetailView : Window
 
     private void Delete_Click(object sender, RoutedEventArgs e)
     {
-        var confirm = MessageBox.Show(this,
-            $"Delete this contact?\n\n{_vm.Contact.Name}\n\n" +
-            "Their logged interactions will be deleted too. This can't be undone.",
+        var confirmed = ConfirmWindow.Ask(this,
             "Delete contact",
-            MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            _vm.Contact.Name,
+            "Their logged interactions will be deleted too. This can't be undone.");
 
-        if (confirm != MessageBoxResult.Yes) return;
+        if (!confirmed) return;
 
         _vm.DeleteContact();
         Close();

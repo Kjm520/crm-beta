@@ -3,6 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Haystack.ViewModels;
 using Haystack.Views.Contacts;
+using Haystack.Views.Dialogs;
 
 namespace Haystack.Views.Companies;
 
@@ -78,12 +79,12 @@ public partial class CompanyDetailView : Window
             ? "This company has no contacts."
             : $"This will also delete its {contactCount} contact(s) and all their logged interactions.";
 
-        var confirm = MessageBox.Show(this,
-            $"Delete this company?\n\n{_vm.Company.Name}\n\n{cascade}\n\nThis can't be undone.",
+        var confirmed = ConfirmWindow.Ask(this,
             "Delete company",
-            MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            _vm.Company.Name,
+            $"{cascade} This can't be undone.");
 
-        if (confirm != MessageBoxResult.Yes) return;
+        if (!confirmed) return;
 
         _vm.DeleteCompany();
         Close();

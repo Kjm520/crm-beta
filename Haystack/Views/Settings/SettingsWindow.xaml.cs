@@ -6,6 +6,7 @@ using System.Windows.Media.Animation;
 using Haystack.Models;
 using Haystack.Navigation;
 using Haystack.ViewModels;
+using Haystack.Views.Dialogs;
 
 namespace Haystack.Views.Settings;
 
@@ -201,13 +202,10 @@ public partial class SettingsWindow : Window
         if (sender is not Button { Tag: LeadStatus status }) return;
 
         var message = status.LeadCount > 0
-            ? $"Delete the status \"{status.Name}\"?\n\n{status.LeadCount} lead(s) use it. They will be kept, but become unassigned."
-            : $"Delete the status \"{status.Name}\"?";
+            ? $"{status.LeadCount} lead(s) use this status. They will be kept, but become unassigned."
+            : "No leads use this status.";
 
-        var confirm = MessageBox.Show(this, message, "Delete status",
-            MessageBoxButton.YesNo, MessageBoxImage.Warning);
-
-        if (confirm == MessageBoxResult.Yes)
+        if (ConfirmWindow.Ask(this, "Delete status", status.Name, message))
             _vm.DeleteStatusCommand.Execute(status);
     }
 

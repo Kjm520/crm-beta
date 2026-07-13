@@ -63,6 +63,42 @@
         </Setter>
     </Style>
 
+    <!-- Danger button: same shape as primary, in the status red, for the confirm
+         side of a destructive dialog. Hover/press shift opacity rather than swapping
+         to a second red, so it needs no extra palette key in either theme. -->
+    <Style x:Key="ButtonDanger" TargetType="Button">
+        <Setter Property="Background"      Value="{DynamicResource StatusRedBrush}" />
+        <Setter Property="Foreground"      Value="#FFFFFFFF" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding"         Value="20,9" />
+        <Setter Property="FontSize"        Value="13" />
+        <Setter Property="FontWeight"      Value="SemiBold" />
+        <Setter Property="Cursor"          Value="Hand" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Root"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="6"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Root" Property="Opacity" Value="0.88" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Root" Property="Opacity" Value="1" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Root" Property="Opacity" Value="0.45" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!-- Ghost button (outline only) -->
     <Style x:Key="ButtonGhost" TargetType="Button">
         <Setter Property="Background"       Value="Transparent" />
