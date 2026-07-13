@@ -51,17 +51,22 @@ public partial class SettingsViewModel : ViewModelBase
             NavRegistry.InSavedOrder(_appSettings.Get(NavRegistry.OrderSettingKey)));
     }
 
-    /// <summary>Moves <paramref name="item"/> to the position of <paramref name="target"/>
-    /// (drag-and-drop reorder) and persists the new order.</summary>
-    public void MoveNav(NavItem item, NavItem target)
+    /// <summary>
+    /// Moves a nav tab to a new index. Called repeatedly while a drag is in flight
+    /// (once per row crossed), so it deliberately does NOT persist — the order is
+    /// written once the drag settles, via <see cref="CommitNavOrder"/>.
+    /// </summary>
+    public void MoveNav(int from, int to)
     {
-        var from = NavItems.IndexOf(item);
-        var to = NavItems.IndexOf(target);
-        if (from < 0 || to < 0 || from == to) return;
+        if (from == to) return;
+        if (from < 0 || from >= NavItems.Count) return;
+        if (to   < 0 || to   >= NavItems.Count) return;
 
         NavItems.Move(from, to);
-        SaveNavOrder();
     }
+
+    /// <summary>Persists the current tab order (once, when a reorder drag finishes).</summary>
+    public void CommitNavOrder() => SaveNavOrder();
 
     private void SaveNavOrder()
         => _appSettings.Set(NavRegistry.OrderSettingKey, string.Join(",", NavItems.Select(n => n.Key)));

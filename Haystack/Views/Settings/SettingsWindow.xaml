@@ -80,16 +80,20 @@
                             <TextBlock Text="Drag the handles to reorder the tabs in the left panel."
                                        Style="{StaticResource TextBodySecondary}"
                                        Margin="0,0,0,12" TextWrapping="Wrap" />
-                            <ItemsControl ItemsSource="{Binding NavItems}">
+                            <!-- Reorder is a live mouse-capture drag (see SettingsWindow.xaml.cs):
+                                 the list holds capture for the whole gesture, so move/up arrive
+                                 here rather than on whichever row is under the cursor. -->
+                            <ItemsControl x:Name="NavList"
+                                          ItemsSource="{Binding NavItems}"
+                                          MouseMove="NavList_MouseMove"
+                                          PreviewMouseLeftButtonUp="NavList_MouseLeftButtonUp"
+                                          LostMouseCapture="NavList_LostMouseCapture">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <!-- Whole row is a drop target; the grip on the left starts the drag. -->
-                                        <Border AllowDrop="True"
-                                                Background="Transparent"
+                                        <!-- The grip on the left starts the drag. -->
+                                        <Border Background="Transparent"
                                                 BorderBrush="{DynamicResource BorderSubtleBrush}"
-                                                BorderThickness="0,0,0,1"
-                                                DragOver="NavRow_DragOver"
-                                                Drop="NavRow_Drop">
+                                                BorderThickness="0,0,0,1">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="Auto" />
@@ -101,8 +105,7 @@
                                                         Cursor="SizeAll"
                                                         Padding="6,10" Margin="0,0,6,0"
                                                         ToolTip="Drag to reorder"
-                                                        PreviewMouseLeftButtonDown="NavHandle_PreviewMouseLeftButtonDown"
-                                                        PreviewMouseMove="NavHandle_PreviewMouseMove">
+                                                        PreviewMouseLeftButtonDown="NavHandle_PreviewMouseLeftButtonDown">
                                                     <StackPanel VerticalAlignment="Center">
                                                         <Rectangle Width="14" Height="1.5" Margin="0,1.5" Fill="{DynamicResource TextMutedBrush}" />
                                                         <Rectangle Width="14" Height="1.5" Margin="0,1.5" Fill="{DynamicResource TextMutedBrush}" />
