@@ -98,8 +98,13 @@
                                 <TextBlock Text="STATUS" Style="{StaticResource TextFieldLabel}" />
                                 <ComboBox Style="{StaticResource InputCombo}"
                                           ItemsSource="{Binding Statuses}"
-                                          SelectedItem="{Binding SelectedStatus}"
-                                          DisplayMemberPath="Name" />
+                                          SelectedItem="{Binding SelectedStatus}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Name}" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
                             </StackPanel>
                         </Grid>
                     </Border>

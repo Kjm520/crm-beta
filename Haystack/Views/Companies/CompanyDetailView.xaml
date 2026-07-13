@@ -95,15 +95,10 @@
                                           SelectedItem="{Binding Company.Status}" />
                             </StackPanel>
 
-                            <StackPanel Grid.Column="0" Grid.Row="4">
-                                <TextBlock Text="CITY" Style="{StaticResource TextFieldLabel}" />
+                            <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="4">
+                                <TextBlock Text="LOCATION" Style="{StaticResource TextFieldLabel}" />
                                 <TextBox Style="{StaticResource InputField}"
-                                         Text="{Binding Company.City, UpdateSourceTrigger=PropertyChanged}" />
-                            </StackPanel>
-                            <StackPanel Grid.Column="2" Grid.Row="4">
-                                <TextBlock Text="STATE" Style="{StaticResource TextFieldLabel}" />
-                                <TextBox Style="{StaticResource InputField}"
-                                         Text="{Binding Company.State, UpdateSourceTrigger=PropertyChanged}" />
+                                         Text="{Binding Company.Location, UpdateSourceTrigger=PropertyChanged}" />
                             </StackPanel>
                         </Grid>
                     </Border>

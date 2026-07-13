@@ -79,7 +79,7 @@
                         <TextBlock Grid.Column="1" Text="COMPANY"      Style="{StaticResource TextCaption}" VerticalAlignment="Center" />
                         <TextBlock Grid.Column="2" Text="TYPE"         Style="{StaticResource TextCaption}" VerticalAlignment="Center" />
                         <TextBlock Grid.Column="3" Text="STATUS"       Style="{StaticResource TextCaption}" VerticalAlignment="Center" />
-                        <TextBlock Grid.Column="4" Text="CITY"         Style="{StaticResource TextCaption}" VerticalAlignment="Center" />
+                        <TextBlock Grid.Column="4" Text="LOCATION"     Style="{StaticResource TextCaption}" VerticalAlignment="Center" />
                         <TextBlock Grid.Column="5" Text="LAST CONTACT" Style="{StaticResource TextCaption}" VerticalAlignment="Center" />
                         <TextBlock Grid.Column="6" Text="DAYS SINCE"   Style="{StaticResource TextCaption}" VerticalAlignment="Center" />
                     </Grid>
@@ -108,7 +108,7 @@
                                             <TextBlock Grid.Column="1" Text="{Binding CompanyName}" Style="{StaticResource TextBodySecondary}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
                                             <TextBlock Grid.Column="2" Text="{Binding Type}"    Style="{StaticResource TextBodySecondary}" VerticalAlignment="Center" />
                                             <TextBlock Grid.Column="3" Text="{Binding Status}"  Style="{StaticResource TextBodySecondary}" VerticalAlignment="Center" />
-                                            <TextBlock Grid.Column="4" Text="{Binding City}"    Style="{StaticResource TextBodySecondary}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                                            <TextBlock Grid.Column="4" Text="{Binding Location}" Style="{StaticResource TextBodySecondary}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
                                             <TextBlock Grid.Column="5" Text="{Binding LastInteractionDate, StringFormat='MMM d, yyyy'}" Style="{StaticResource TextBodySecondary}" VerticalAlignment="Center" />
                                             <TextBlock Grid.Column="6" Text="{Binding DaysSinceLastInteractionDisplay}"                 Style="{StaticResource TextBodySecondary}" VerticalAlignment="Center" />
                                         </Grid>

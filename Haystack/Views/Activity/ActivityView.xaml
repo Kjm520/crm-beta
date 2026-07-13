@@ -33,8 +33,13 @@
                         <TextBlock Text="CONTACT" Style="{StaticResource TextFieldLabel}" />
                         <ComboBox Style="{StaticResource InputCombo}"
                                   ItemsSource="{Binding ContactList}"
-                                  SelectedItem="{Binding SelectedContact}"
-                                  DisplayMemberPath="Name" />
+                                  SelectedItem="{Binding SelectedContact}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                     </StackPanel>
                     <StackPanel Grid.Column="2">
                         <TextBlock Text="SUMMARY" Style="{StaticResource TextFieldLabel}" />

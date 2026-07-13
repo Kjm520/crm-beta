@@ -35,9 +35,14 @@ public class Lead
     // Populated by join query for display.
     public string? StatusName { get; set; }
 
-    /// <summary>What to show in a list when a lead has no name (falls back to company).</summary>
+    /// <summary>
+    /// How to label this lead (falls back to the company when it has no name).
+    /// Empty for a lead that has neither — i.e. a new, not-yet-filled-in one, whose
+    /// modal title should read blank like Contact's and Company's do. Validation
+    /// requires Name or Company, so a saved lead always labels as something.
+    /// </summary>
     public string DisplayName =>
         !string.IsNullOrWhiteSpace(Name) ? Name!
         : !string.IsNullOrWhiteSpace(Company) ? Company!
-        : "(untitled lead)";
+        : string.Empty;
 }

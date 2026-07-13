@@ -17,8 +17,7 @@ public class ContactRepository
             c.status        AS Status,
             c.phone         AS Phone,
             c.email         AS Email,
-            c.city          AS City,
-            c.state         AS State,
+            c.location      AS Location,
             c.notes         AS Notes,
             c.created_at    AS CreatedAt,
             c.updated_at    AS UpdatedAt,
@@ -71,8 +70,8 @@ public class ContactRepository
     {
         using var conn = Database.GetConnection();
         return conn.ExecuteScalar<int>(@"
-            INSERT INTO contacts (company_id, name, title, type, status, phone, email, city, state, notes, created_at, updated_at)
-            VALUES (@CompanyId, @Name, @Title, @Type, @Status, @Phone, @Email, @City, @State, @Notes, datetime('now'), datetime('now'));
+            INSERT INTO contacts (company_id, name, title, type, status, phone, email, location, notes, created_at, updated_at)
+            VALUES (@CompanyId, @Name, @Title, @Type, @Status, @Phone, @Email, @Location, @Notes, datetime('now'), datetime('now'));
             SELECT last_insert_rowid();
         ", contact);
     }
@@ -89,8 +88,7 @@ public class ContactRepository
                 status     = @Status,
                 phone      = @Phone,
                 email      = @Email,
-                city       = @City,
-                state      = @State,
+                location   = @Location,
                 notes      = @Notes,
                 updated_at = datetime('now')
             WHERE id = @Id
@@ -108,7 +106,7 @@ public class ContactRepository
         using var conn = Database.GetConnection();
         var like = $"%{query}%";
         return conn.Query<Contact>(SelectContact + @"
-            WHERE c.name LIKE @like OR co.name LIKE @like OR c.city LIKE @like
+            WHERE c.name LIKE @like OR co.name LIKE @like OR c.location LIKE @like
             GROUP BY c.id
             ORDER BY c.name
         ", new { like });

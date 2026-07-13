@@ -81,10 +81,18 @@
                             <!-- Company (required) -->
                             <StackPanel Grid.Column="2" Grid.Row="0">
                                 <TextBlock Text="COMPANY" Style="{StaticResource TextFieldLabel}" />
+                                <!-- ItemTemplate, not DisplayMemberPath: the custom InputCombo
+                                     template renders the closed box via SelectionBoxItemTemplate,
+                                     which DisplayMemberPath doesn't feed (it showed the type name). -->
                                 <ComboBox Style="{StaticResource InputCombo}"
                                           ItemsSource="{Binding Companies}"
-                                          SelectedItem="{Binding SelectedCompany}"
-                                          DisplayMemberPath="Name" />
+                                          SelectedItem="{Binding SelectedCompany}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Name}" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
                             </StackPanel>
 
                             <!-- Title -->

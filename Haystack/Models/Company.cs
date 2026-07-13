@@ -8,8 +8,7 @@ public class Company
     public ContactStatus Status { get; set; } = ContactStatus.Active;
     public string? Phone { get; set; }
     public string? Email { get; set; }
-    public string? City { get; set; }
-    public string? State { get; set; }
+    public string? Location { get; set; }
     public string? Notes { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }

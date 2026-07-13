@@ -166,6 +166,44 @@ internal static class Migrations
                 value  TEXT
             );
             """,
+
+        // v6: drop the "Vendor" contact type. It was the last member of the
+        // ContactType enum (value 3), so removing it from C# leaves 0-2 untouched —
+        // but any row already stored as 3 would deserialize to an undefined enum
+        // value. Re-home those rows on Customer (0) so no record is left dangling.
+        [6] = """
+            UPDATE companies SET type = 0 WHERE type = 3;
+            UPDATE contacts  SET type = 0 WHERE type = 3;
+            """,
+
+        // v7: merge city + state into one free-text `location` field. Two columns
+        // implied a structure the data never had (no validation, no lookups on
+        // state) and cost two inputs to fill; one "Austin, TX" box matches how the
+        // user actually thinks about it. Backfill joins the old pair with ", ",
+        // tolerating either side being empty, then leaves NULL when both were.
+        [7] = """
+            ALTER TABLE companies ADD COLUMN location TEXT;
+            UPDATE companies SET location =
+                COALESCE(NULLIF(TRIM(city), ''), '')
+                || CASE WHEN NULLIF(TRIM(city), '') IS NOT NULL
+                         AND NULLIF(TRIM(state), '') IS NOT NULL
+                        THEN ', ' ELSE '' END
+                || COALESCE(NULLIF(TRIM(state), ''), '');
+            UPDATE companies SET location = NULL WHERE location = '';
+            ALTER TABLE companies DROP COLUMN city;
+            ALTER TABLE companies DROP COLUMN state;
+
+            ALTER TABLE contacts ADD COLUMN location TEXT;
+            UPDATE contacts SET location =
+                COALESCE(NULLIF(TRIM(city), ''), '')
+                || CASE WHEN NULLIF(TRIM(city), '') IS NOT NULL
+                         AND NULLIF(TRIM(state), '') IS NOT NULL
+                        THEN ', ' ELSE '' END
+                || COALESCE(NULLIF(TRIM(state), ''), '');
+            UPDATE contacts SET location = NULL WHERE location = '';
+            ALTER TABLE contacts DROP COLUMN city;
+            ALTER TABLE contacts DROP COLUMN state;
+            """,
     };
 
     public static void Apply(SqliteConnection conn)

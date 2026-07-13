@@ -14,8 +14,7 @@ public class CompanyRepository
             co.status       AS Status,
             co.phone        AS Phone,
             co.email        AS Email,
-            co.city         AS City,
-            co.state        AS State,
+            co.location     AS Location,
             co.notes        AS Notes,
             co.created_at   AS CreatedAt,
             co.updated_at   AS UpdatedAt,
@@ -47,8 +46,8 @@ public class CompanyRepository
     {
         using var conn = Database.GetConnection();
         return conn.ExecuteScalar<int>(@"
-            INSERT INTO companies (name, type, status, phone, email, city, state, notes, created_at, updated_at)
-            VALUES (@Name, @Type, @Status, @Phone, @Email, @City, @State, @Notes, datetime('now'), datetime('now'));
+            INSERT INTO companies (name, type, status, phone, email, location, notes, created_at, updated_at)
+            VALUES (@Name, @Type, @Status, @Phone, @Email, @Location, @Notes, datetime('now'), datetime('now'));
             SELECT last_insert_rowid();
         ", company);
     }
@@ -63,8 +62,7 @@ public class CompanyRepository
                 status     = @Status,
                 phone      = @Phone,
                 email      = @Email,
-                city       = @City,
-                state      = @State,
+                location   = @Location,
                 notes      = @Notes,
                 updated_at = datetime('now')
             WHERE id = @Id
@@ -83,7 +81,7 @@ public class CompanyRepository
         using var conn = Database.GetConnection();
         var like = $"%{query}%";
         return conn.Query<Company>(SelectCompany + @"
-            WHERE co.name LIKE @like OR co.city LIKE @like
+            WHERE co.name LIKE @like OR co.location LIKE @like
             GROUP BY co.id
             ORDER BY co.name
         ", new { like });
