@@ -7,9 +7,11 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <!-- Active palette (colours only). Kept first so the brushes below
-                     resolve against it; swapped for Palette.Dark.xaml at runtime by
-                     Haystack.Theming.ThemeManager. -->
-                <ResourceDictionary Source="Resources/Themes/Palette.Light.xaml" />
+                     resolve against it; swapped at runtime by Haystack.Theming.ThemeManager,
+                     which applies the saved theme at startup. Dark is loaded here because
+                     it's the default for a new user — starting on the light palette would
+                     paint one light frame before the swap for everyone who hasn't opted out. -->
+                <ResourceDictionary Source="Resources/Themes/Palette.Dark.xaml" />
                 <ResourceDictionary Source="Resources/Themes/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Themes/Typography.xaml" />
                 <ResourceDictionary Source="Resources/Themes/Controls.xaml" />

@@ -18,12 +18,16 @@ public static class ThemeManager
     private static readonly AppSettingsRepository _settings = new();
 
     /// <summary>The theme currently applied.</summary>
-    public static string Current { get; private set; } = Light;
+    public static string Current { get; private set; } = Dark;
 
     public static bool IsDark => Current == Dark;
 
-    /// <summary>The theme saved in app settings (defaults to light).</summary>
-    public static string Saved => _settings.Get(SettingKey) == Dark ? Dark : Light;
+    /// <summary>
+    /// The theme saved in app settings. Dark is the default: a new user has nothing
+    /// saved, and only an explicit choice of light opts out. (Anything unrecognised
+    /// in the setting also lands on dark rather than silently reverting.)
+    /// </summary>
+    public static string Saved => _settings.Get(SettingKey) == Light ? Light : Dark;
 
     /// <summary>
     /// Applies a theme. Replaces the palette dictionary (first merged dictionary
