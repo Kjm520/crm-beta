@@ -50,8 +50,7 @@ public partial class LeadDetailView : Window
         var problem = _vm.Validate();
         if (problem is not null)
         {
-            MessageBox.Show(this, problem, "Can't save yet",
-                MessageBoxButton.OK, MessageBoxImage.Information);
+            ConfirmWindow.Alert(this, "Can't save yet", problem);
             return;
         }
 
@@ -64,25 +63,26 @@ public partial class LeadDetailView : Window
         var problem = _vm.ValidateConvert();
         if (problem is not null)
         {
-            MessageBox.Show(this, problem, "Can't convert",
-                MessageBoxButton.OK, MessageBoxImage.Information);
+            ConfirmWindow.Alert(this, "Can't convert", problem);
             return;
         }
 
-        var confirm = MessageBox.Show(this,
-            $"Create a company from this lead?\n\n{_vm.Lead.Company}\n\n" +
-            "The lead is kept and marked as won, linked to the new company.",
+        // Not destructive: the lead is kept, so this gets the green confirm button.
+        var confirmed = ConfirmWindow.Ask(this,
             "Convert lead",
-            MessageBoxButton.YesNo, MessageBoxImage.Question);
+            _vm.Lead.Company ?? string.Empty,
+            "This creates a company from the lead. The lead is kept and marked as won, linked to the new company.",
+            confirmLabel: "Convert",
+            destructive: false);
 
-        if (confirm != MessageBoxResult.Yes) return;
+        if (!confirmed) return;
 
         _vm.ConvertToCompany();
 
-        MessageBox.Show(this,
-            $"\"{_vm.Lead.Company}\" is now a company.\n\nAdd contacts to it from the Companies tab.",
+        ConfirmWindow.Alert(this,
             "Lead converted",
-            MessageBoxButton.OK, MessageBoxImage.Information);
+            "Add contacts to it from the Companies tab.",
+            subject: $"\"{_vm.Lead.Company}\" is now a company.");
 
         Close();
     }

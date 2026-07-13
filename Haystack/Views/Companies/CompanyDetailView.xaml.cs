@@ -35,10 +35,8 @@ public partial class CompanyDetailView : Window
         {
             if (!_vm.SaveCompany())
             {
-                MessageBox.Show(this,
-                    "Enter a company name before adding contacts.",
-                    "Company name required",
-                    MessageBoxButton.OK, MessageBoxImage.Information);
+                ConfirmWindow.Alert(this, "Company name required",
+                    "Enter a company name before adding contacts.");
                 return;
             }
         }
@@ -63,8 +61,7 @@ public partial class CompanyDetailView : Window
         var problem = _vm.Validate();
         if (problem is not null)
         {
-            MessageBox.Show(this, problem, "Can't save yet",
-                MessageBoxButton.OK, MessageBoxImage.Information);
+            ConfirmWindow.Alert(this, "Can't save yet", problem);
             return;
         }
 

@@ -35,8 +35,7 @@ public partial class ContactDetailView : Window
         var problem = _vm.Validate();
         if (problem is not null)
         {
-            MessageBox.Show(this, problem, "Can't save yet",
-                MessageBoxButton.OK, MessageBoxImage.Information);
+            ConfirmWindow.Alert(this, "Can't save yet", problem);
             return;
         }
 

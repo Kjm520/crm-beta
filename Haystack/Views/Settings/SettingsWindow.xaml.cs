@@ -180,8 +180,7 @@ public partial class SettingsWindow : Window
     {
         var problem = _vm.AddStatus();
         if (problem is not null)
-            MessageBox.Show(this, problem, "Can't add status",
-                MessageBoxButton.OK, MessageBoxImage.Information);
+            ConfirmWindow.Alert(this, "Can't add status", problem);
     }
 
     private void RenameStatus_Click(object sender, RoutedEventArgs e)
@@ -193,8 +192,7 @@ public partial class SettingsWindow : Window
 
         var problem = _vm.RenameStatus(status, prompt.Value);
         if (problem is not null)
-            MessageBox.Show(this, problem, "Can't rename status",
-                MessageBoxButton.OK, MessageBoxImage.Information);
+            ConfirmWindow.Alert(this, "Can't rename status", problem);
     }
 
     private void DeleteStatus_Click(object sender, RoutedEventArgs e)

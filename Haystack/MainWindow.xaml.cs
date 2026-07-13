@@ -4,6 +4,7 @@ using System.Windows.Input;
 using Microsoft.Win32;
 using Haystack.Data;
 using Haystack.Navigation;
+using Haystack.Views.Dialogs;
 using Haystack.Views.Settings;
 
 namespace Haystack;
@@ -182,17 +183,15 @@ public partial class MainWindow : Window
         try
         {
             Database.Backup(dialog.FileName);
-            MessageBox.Show(this,
-                $"Backup saved to:\n{dialog.FileName}",
-                "Backup complete",
-                MessageBoxButton.OK, MessageBoxImage.Information);
+            ConfirmWindow.Alert(this, "Backup complete",
+                dialog.FileName,
+                subject: "Backup saved to:");
         }
         catch (Exception ex)
         {
-            MessageBox.Show(this,
-                $"Backup failed:\n{ex.Message}",
-                "Backup error",
-                MessageBoxButton.OK, MessageBoxImage.Error);
+            ConfirmWindow.Alert(this, "Backup error",
+                ex.Message,
+                subject: "Backup failed.");
         }
     }
 }
