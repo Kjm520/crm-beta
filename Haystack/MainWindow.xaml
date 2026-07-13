@@ -14,8 +14,8 @@
         <WindowChrome CaptionHeight="0" ResizeBorderThickness="6" />
     </WindowChrome.WindowChrome>
 
-    <Border Background="{StaticResource BackgroundDeepBrush}"
-            BorderBrush="{StaticResource BorderSubtleBrush}"
+    <Border Background="{DynamicResource BackgroundDeepBrush}"
+            BorderBrush="{DynamicResource BorderSubtleBrush}"
             BorderThickness="1"
             CornerRadius="10">
         <Grid>
@@ -27,8 +27,8 @@
             <!-- Title Bar -->
             <Border Grid.Row="0"
                     Height="32"
-                    Background="{StaticResource BackgroundMidBrush}"
-                    BorderBrush="{StaticResource BorderSubtleBrush}"
+                    Background="{DynamicResource BackgroundMidBrush}"
+                    BorderBrush="{DynamicResource BorderSubtleBrush}"
                     BorderThickness="0,0,0,1"
                     CornerRadius="9,9,0,0"
                     MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
@@ -49,28 +49,35 @@
 
                         <!-- Divider between brand and menu -->
                         <Border Width="1" Height="16"
-                                Background="{StaticResource BorderSubtleBrush}"
+                                Background="{DynamicResource BorderSubtleBrush}"
                                 Margin="18,0,0,0"
                                 VerticalAlignment="Center" />
 
-                        <!-- Compact menu bar (VS Code style) -->
-                        <Menu Background="Transparent"
-                              VerticalAlignment="Center"
-                              Margin="4,0,0,0"
-                              Foreground="{StaticResource TextSecondaryBrush}">
-                            <Menu.Resources>
-                                <Style TargetType="MenuItem">
-                                    <Setter Property="Padding" Value="7,3" />
-                                </Style>
-                            </Menu.Resources>
-                            <MenuItem Header="_File">
-                                <MenuItem Header="Settings" Click="Settings_Click" />
-                                <Separator />
-                                <MenuItem Header="Backup Database…" Click="BackupDatabase_Click" />
-                                <Separator />
-                                <MenuItem Header="Exit" Click="CloseButton_Click" />
-                            </MenuItem>
-                        </Menu>
+                        <!-- Custom File menu (in-house, themed; replaces native Menu) -->
+                        <ToggleButton x:Name="FileMenuButton"
+                                      Content="File"
+                                      Style="{StaticResource MenuBarToggle}"
+                                      Margin="4,0,0,0" />
+                        <Popup x:Name="FileMenuPopup"
+                               PlacementTarget="{Binding ElementName=FileMenuButton}"
+                               Placement="Bottom" VerticalOffset="3"
+                               StaysOpen="False" AllowsTransparency="True"
+                               IsOpen="{Binding IsChecked, ElementName=FileMenuButton}">
+                            <Border Background="{DynamicResource BackgroundPanelBrush}"
+                                    BorderBrush="{DynamicResource BorderSubtleBrush}"
+                                    BorderThickness="1" CornerRadius="6"
+                                    Padding="4" MinWidth="200" Margin="0,0,8,8">
+                                <Border.Effect>
+                                    <DropShadowEffect Color="#000000" BlurRadius="16" ShadowDepth="3" Opacity="0.3" Direction="270" />
+                                </Border.Effect>
+                                <StackPanel>
+                                    <Button Content="Settings"          Style="{StaticResource MenuDropItem}" Click="FileMenuSettings_Click" />
+                                    <Button Content="Backup Database…"  Style="{StaticResource MenuDropItem}" Click="FileMenuBackup_Click" />
+                                    <Border Height="1" Margin="6,4" Background="{DynamicResource BorderSubtleBrush}" />
+                                    <Button Content="Exit"              Style="{StaticResource MenuDropItem}" Click="FileMenuExit_Click" />
+                                </StackPanel>
+                            </Border>
+                        </Popup>
                     </StackPanel>
 
                     <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Stretch">
@@ -90,8 +97,8 @@
 
                 <!-- Sidebar -->
                 <Border Grid.Column="0"
-                        Background="{StaticResource BackgroundMidBrush}"
-                        BorderBrush="{StaticResource BorderSubtleBrush}"
+                        Background="{DynamicResource BackgroundMidBrush}"
+                        BorderBrush="{DynamicResource BorderSubtleBrush}"
                         BorderThickness="0,0,1,0">
                     <!-- Nav buttons are built in code from NavRegistry so their order
                          can be user-customized (see MainWindow.BuildNav). -->

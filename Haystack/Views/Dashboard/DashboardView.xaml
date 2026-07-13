@@ -39,7 +39,7 @@
                     <StackPanel>
                         <TextBlock Text="NEEDS ATTENTION" Style="{StaticResource TextCaption}" Margin="0,0,0,8" />
                         <TextBlock Text="{Binding StaleContacts.Count}" Style="{StaticResource TextStatNumber}"
-                                   Foreground="{StaticResource StatusAmberBrush}" />
+                                   Foreground="{DynamicResource StatusAmberBrush}" />
                     </StackPanel>
                 </Border>
             </Grid>
@@ -56,7 +56,7 @@
                 <Border Grid.Column="0" Style="{StaticResource CardPanel}">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
-                            <Ellipse Width="6" Height="6" Fill="{StaticResource StatusAmberBrush}"
+                            <Ellipse Width="6" Height="6" Fill="{DynamicResource StatusAmberBrush}"
                                      VerticalAlignment="Center" Margin="0,0,8,0" />
                             <TextBlock Text="NEEDS ATTENTION" Style="{StaticResource TextSubheading}" />
                         </StackPanel>
@@ -64,7 +64,7 @@
                         <ItemsControl ItemsSource="{Binding StaleContacts}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Border BorderBrush="{StaticResource BorderSubtleBrush}"
+                                    <Border BorderBrush="{DynamicResource BorderSubtleBrush}"
                                             BorderThickness="0,0,0,1"
                                             Padding="0,10">
                                         <Grid>
@@ -77,10 +77,10 @@
                                                 <TextBlock Text="{Binding CompanyName}" Style="{StaticResource TextBodySecondary}" />
                                             </StackPanel>
                                             <Border Grid.Column="1" VerticalAlignment="Center"
-                                                    Background="{StaticResource StatusAmberGlowBrush}"
+                                                    Background="{DynamicResource StatusAmberGlowBrush}"
                                                     CornerRadius="4" Padding="8,3">
                                                 <TextBlock Style="{StaticResource TextCaption}"
-                                                           Foreground="{StaticResource StatusAmberBrush}">
+                                                           Foreground="{DynamicResource StatusAmberBrush}">
                                                     <Run Text="{Binding DaysSinceLastInteraction, Mode=OneWay}" />
                                                     <Run Text="days" />
                                                 </TextBlock>
@@ -106,7 +106,7 @@
                     <Border Style="{StaticResource CardPanel}" Margin="0,0,0,16">
                         <StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                                <Ellipse Width="6" Height="6" Fill="{StaticResource AccentPrimaryBrush}"
+                                <Ellipse Width="6" Height="6" Fill="{DynamicResource AccentPrimaryBrush}"
                                          VerticalAlignment="Center" Margin="0,0,8,0" />
                                 <TextBlock Text="FOLLOW-UPS" Style="{StaticResource TextSubheading}" />
                             </StackPanel>
@@ -133,7 +133,7 @@
                     <Border Style="{StaticResource CardPanel}">
                         <StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                                <Ellipse Width="6" Height="6" Fill="{StaticResource StatusGreenBrush}"
+                                <Ellipse Width="6" Height="6" Fill="{DynamicResource StatusGreenBrush}"
                                          VerticalAlignment="Center" Margin="0,0,8,0" />
                                 <TextBlock Text="RECENT ACTIVITY" Style="{StaticResource TextSubheading}" />
                             </StackPanel>

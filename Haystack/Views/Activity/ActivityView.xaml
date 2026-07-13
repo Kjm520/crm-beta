@@ -50,10 +50,7 @@
                     <StackPanel Grid.Column="6">
                         <TextBlock Text="DATE" Style="{StaticResource TextFieldLabel}" />
                         <DatePicker SelectedDate="{Binding NewInteractionDate}"
-                                    Height="32"
-                                    VerticalContentAlignment="Center"
-                                    Foreground="{StaticResource TextPrimaryBrush}"
-                                    Background="{StaticResource BackgroundElevatedBrush}" />
+                                    Style="{StaticResource ThemedDatePicker}" />
                     </StackPanel>
                 </Grid>
                 <Button Content="Log" Style="{StaticResource ButtonPrimary}"
@@ -71,7 +68,7 @@
                     <ItemsControl ItemsSource="{Binding Activity}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border BorderBrush="{StaticResource BorderSubtleBrush}"
+                                <Border BorderBrush="{DynamicResource BorderSubtleBrush}"
                                         BorderThickness="0,0,0,1"
                                         Padding="0,10">
                                     <Grid>

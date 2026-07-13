@@ -1,8 +1,18 @@
 
 
-1. Please change that tab ux manipulation to draggable handle bars instead of the up down buttons. 
 
-2. After that please add a dark mode setting that follows a similarly smooth either slate charcoal style or darkened steel blue, 
+search fields are still placeholders
 
-3. Please update the minimize, maximize, and close buttons so that instead of them being a single rounded square per icon, they become actual sections of the header bar. Similar to how most other apps work. I'll include a screenshot example here: ![alt text](image.png). Also while doing this, the header bar is very slightly too tall. It needs to shave off about 2 to 4 px. This todo is true for both the main window and all of the modal/panels that we can open. 
 
+there's no responsive visual when using the handle bars to drag and reorder the tabs in settings. It kinda defeats the purpose of using the handle bars
+
+
+The native windows delete prompt modal is very ugly
+
+Customer type "Vendor" can be removed entirely
+
+
+City and state fields can be combined into a single Location field
+
+
+The default prefilled text in the drop down for Company when creating a new contact still shows "Haystack.Models.Company" until you open the drop down, where you see companies. But if you select one, the field still shows "Haystack.Models.Company".

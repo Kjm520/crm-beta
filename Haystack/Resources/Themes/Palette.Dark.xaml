@@ -33,4 +33,28 @@
     <Color x:Key="TextMutedColor">#FF717C74</Color>
     <Color x:Key="TextAccentColor">#FF56BE7C</Color>
 
+    <!-- ── Brushes ──────────────────────────────── -->
+    <SolidColorBrush x:Key="BackgroundDeepBrush"     Color="{StaticResource BackgroundDeepColor}" />
+    <SolidColorBrush x:Key="BackgroundMidBrush"      Color="{StaticResource BackgroundMidColor}" />
+    <SolidColorBrush x:Key="BackgroundPanelBrush"    Color="{StaticResource BackgroundPanelColor}" />
+    <SolidColorBrush x:Key="BackgroundElevatedBrush" Color="{StaticResource BackgroundElevatedColor}" />
+    <SolidColorBrush x:Key="BorderSubtleBrush"       Color="{StaticResource BorderSubtleColor}" />
+    <SolidColorBrush x:Key="BorderAccentBrush"       Color="{StaticResource BorderAccentColor}" />
+
+    <SolidColorBrush x:Key="AccentPrimaryBrush"      Color="{StaticResource AccentPrimaryColor}" />
+    <SolidColorBrush x:Key="AccentPrimaryHoverBrush" Color="{StaticResource AccentPrimaryHoverColor}" />
+    <SolidColorBrush x:Key="AccentGlowBrush"         Color="{StaticResource AccentGlowColor}" />
+
+    <SolidColorBrush x:Key="StatusGreenBrush"         Color="{StaticResource StatusGreenColor}" />
+    <SolidColorBrush x:Key="StatusAmberBrush"         Color="{StaticResource StatusAmberColor}" />
+    <SolidColorBrush x:Key="StatusRedBrush"           Color="{StaticResource StatusRedColor}" />
+    <SolidColorBrush x:Key="StatusGreenGlowBrush"     Color="{StaticResource StatusGreenGlowColor}" />
+    <SolidColorBrush x:Key="StatusAmberGlowBrush"     Color="{StaticResource StatusAmberGlowColor}" />
+    <SolidColorBrush x:Key="StatusRedGlowBrush"       Color="{StaticResource StatusRedGlowColor}" />
+
+    <SolidColorBrush x:Key="TextPrimaryBrush"        Color="{StaticResource TextPrimaryColor}" />
+    <SolidColorBrush x:Key="TextSecondaryBrush"      Color="{StaticResource TextSecondaryColor}" />
+    <SolidColorBrush x:Key="TextMutedBrush"          Color="{StaticResource TextMutedColor}" />
+    <SolidColorBrush x:Key="TextAccentBrush"         Color="{StaticResource TextAccentColor}" />
+
 </ResourceDictionary>

@@ -10,7 +10,7 @@
         <Setter Property="FontFamily" Value="{StaticResource PrimaryFont}" />
         <Setter Property="FontSize" Value="32" />
         <Setter Property="FontWeight" Value="Light" />
-        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
         <Setter Property="LineHeight" Value="40" />
     </Style>
 
@@ -18,7 +18,7 @@
         <Setter Property="FontFamily" Value="{StaticResource PrimaryFont}" />
         <Setter Property="FontSize" Value="22" />
         <Setter Property="FontWeight" Value="Light" />
-        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
     </Style>
 
     <!-- Headings -->
@@ -26,14 +26,14 @@
         <Setter Property="FontFamily" Value="{StaticResource PrimaryFont}" />
         <Setter Property="FontSize" Value="16" />
         <Setter Property="FontWeight" Value="SemiBold" />
-        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
     </Style>
 
     <Style x:Key="TextSubheading" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource PrimaryFont}" />
         <Setter Property="FontSize" Value="13" />
         <Setter Property="FontWeight" Value="SemiBold" />
-        <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}" />
     </Style>
 
     <!-- Body -->
@@ -41,7 +41,7 @@
         <Setter Property="FontFamily" Value="{StaticResource PrimaryFont}" />
         <Setter Property="FontSize" Value="13" />
         <Setter Property="FontWeight" Value="Normal" />
-        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
         <Setter Property="LineHeight" Value="20" />
     </Style>
 
@@ -49,14 +49,14 @@
         <Setter Property="FontFamily" Value="{StaticResource PrimaryFont}" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="FontWeight" Value="Normal" />
-        <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}" />
     </Style>
 
     <Style x:Key="TextCaption" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource PrimaryFont}" />
         <Setter Property="FontSize" Value="11" />
         <Setter Property="FontWeight" Value="Normal" />
-        <Setter Property="Foreground" Value="{StaticResource TextMutedBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextMutedBrush}" />
     </Style>
 
     <!-- Label above fields -->
@@ -64,7 +64,7 @@
         <Setter Property="FontFamily" Value="{StaticResource PrimaryFont}" />
         <Setter Property="FontSize" Value="11" />
         <Setter Property="FontWeight" Value="SemiBold" />
-        <Setter Property="Foreground" Value="{StaticResource TextMutedBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextMutedBrush}" />
         <Setter Property="Margin" Value="0,0,0,4" />
     </Style>
 
@@ -73,7 +73,7 @@
         <Setter Property="FontFamily" Value="{StaticResource PrimaryFont}" />
         <Setter Property="FontSize" Value="36" />
         <Setter Property="FontWeight" Value="Thin" />
-        <Setter Property="Foreground" Value="{StaticResource AccentPrimaryBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource AccentPrimaryBrush}" />
     </Style>
 
 </ResourceDictionary>

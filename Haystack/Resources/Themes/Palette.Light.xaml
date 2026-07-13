@@ -2,10 +2,10 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <!-- ═══════════════════════════════════════════
-         LIGHT palette — colour values only.
-         Brushes (Colors.xaml) reference these keys via DynamicResource so that
-         swapping this dictionary for Palette.Dark.xaml at runtime recolours the
-         whole app live. See Haystack.Theming.ThemeManager.
+         LIGHT palette — colours AND the brushes that use them.
+         The whole app references these brushes via DynamicResource, so swapping
+         this dictionary for Palette.Dark.xaml at runtime recolours everything
+         live. See Haystack.Theming.ThemeManager.
     ═══════════════════════════════════════════ -->
 
     <!-- Surfaces -->
@@ -34,5 +34,29 @@
     <Color x:Key="TextSecondaryColor">#FF5A6E5E</Color>
     <Color x:Key="TextMutedColor">#FF94A698</Color>
     <Color x:Key="TextAccentColor">#FF3A9A5C</Color>
+
+    <!-- ── Brushes ──────────────────────────────── -->
+    <SolidColorBrush x:Key="BackgroundDeepBrush"     Color="{StaticResource BackgroundDeepColor}" />
+    <SolidColorBrush x:Key="BackgroundMidBrush"      Color="{StaticResource BackgroundMidColor}" />
+    <SolidColorBrush x:Key="BackgroundPanelBrush"    Color="{StaticResource BackgroundPanelColor}" />
+    <SolidColorBrush x:Key="BackgroundElevatedBrush" Color="{StaticResource BackgroundElevatedColor}" />
+    <SolidColorBrush x:Key="BorderSubtleBrush"       Color="{StaticResource BorderSubtleColor}" />
+    <SolidColorBrush x:Key="BorderAccentBrush"       Color="{StaticResource BorderAccentColor}" />
+
+    <SolidColorBrush x:Key="AccentPrimaryBrush"      Color="{StaticResource AccentPrimaryColor}" />
+    <SolidColorBrush x:Key="AccentPrimaryHoverBrush" Color="{StaticResource AccentPrimaryHoverColor}" />
+    <SolidColorBrush x:Key="AccentGlowBrush"         Color="{StaticResource AccentGlowColor}" />
+
+    <SolidColorBrush x:Key="StatusGreenBrush"         Color="{StaticResource StatusGreenColor}" />
+    <SolidColorBrush x:Key="StatusAmberBrush"         Color="{StaticResource StatusAmberColor}" />
+    <SolidColorBrush x:Key="StatusRedBrush"           Color="{StaticResource StatusRedColor}" />
+    <SolidColorBrush x:Key="StatusGreenGlowBrush"     Color="{StaticResource StatusGreenGlowColor}" />
+    <SolidColorBrush x:Key="StatusAmberGlowBrush"     Color="{StaticResource StatusAmberGlowColor}" />
+    <SolidColorBrush x:Key="StatusRedGlowBrush"       Color="{StaticResource StatusRedGlowColor}" />
+
+    <SolidColorBrush x:Key="TextPrimaryBrush"        Color="{StaticResource TextPrimaryColor}" />
+    <SolidColorBrush x:Key="TextSecondaryBrush"      Color="{StaticResource TextSecondaryColor}" />
+    <SolidColorBrush x:Key="TextMutedBrush"          Color="{StaticResource TextMutedColor}" />
+    <SolidColorBrush x:Key="TextAccentBrush"         Color="{StaticResource TextAccentColor}" />
 
 </ResourceDictionary>

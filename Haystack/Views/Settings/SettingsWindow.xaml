@@ -14,8 +14,8 @@
         <WindowChrome CaptionHeight="0" ResizeBorderThickness="0" />
     </WindowChrome.WindowChrome>
 
-    <Border Background="{StaticResource BackgroundDeepBrush}"
-            BorderBrush="{StaticResource BorderSubtleBrush}"
+    <Border Background="{DynamicResource BackgroundDeepBrush}"
+            BorderBrush="{DynamicResource BorderSubtleBrush}"
             BorderThickness="1"
             CornerRadius="10">
         <Grid>
@@ -28,8 +28,8 @@
             <!-- Title bar -->
             <Border Grid.Row="0"
                     Height="32"
-                    Background="{StaticResource BackgroundMidBrush}"
-                    BorderBrush="{StaticResource BorderSubtleBrush}"
+                    Background="{DynamicResource BackgroundMidBrush}"
+                    BorderBrush="{DynamicResource BorderSubtleBrush}"
                     BorderThickness="0,0,0,1"
                     CornerRadius="9,9,0,0"
                     MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
@@ -86,7 +86,7 @@
                                         <!-- Whole row is a drop target; the grip on the left starts the drag. -->
                                         <Border AllowDrop="True"
                                                 Background="Transparent"
-                                                BorderBrush="{StaticResource BorderSubtleBrush}"
+                                                BorderBrush="{DynamicResource BorderSubtleBrush}"
                                                 BorderThickness="0,0,0,1"
                                                 DragOver="NavRow_DragOver"
                                                 Drop="NavRow_Drop">
@@ -104,9 +104,9 @@
                                                         PreviewMouseLeftButtonDown="NavHandle_PreviewMouseLeftButtonDown"
                                                         PreviewMouseMove="NavHandle_PreviewMouseMove">
                                                     <StackPanel VerticalAlignment="Center">
-                                                        <Rectangle Width="14" Height="1.5" Margin="0,1.5" Fill="{StaticResource TextMutedBrush}" />
-                                                        <Rectangle Width="14" Height="1.5" Margin="0,1.5" Fill="{StaticResource TextMutedBrush}" />
-                                                        <Rectangle Width="14" Height="1.5" Margin="0,1.5" Fill="{StaticResource TextMutedBrush}" />
+                                                        <Rectangle Width="14" Height="1.5" Margin="0,1.5" Fill="{DynamicResource TextMutedBrush}" />
+                                                        <Rectangle Width="14" Height="1.5" Margin="0,1.5" Fill="{DynamicResource TextMutedBrush}" />
+                                                        <Rectangle Width="14" Height="1.5" Margin="0,1.5" Fill="{DynamicResource TextMutedBrush}" />
                                                     </StackPanel>
                                                 </Border>
                                                 <TextBlock Grid.Column="1" Text="{Binding Label}"
@@ -131,7 +131,7 @@
                             <ItemsControl ItemsSource="{Binding LeadStatuses}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Border BorderBrush="{StaticResource BorderSubtleBrush}"
+                                        <Border BorderBrush="{DynamicResource BorderSubtleBrush}"
                                                 BorderThickness="0,0,0,1"
                                                 Padding="0,6">
                                             <Grid>
@@ -218,8 +218,8 @@
 
             <!-- Footer -->
             <Border Grid.Row="2"
-                    Background="{StaticResource BackgroundMidBrush}"
-                    BorderBrush="{StaticResource BorderSubtleBrush}"
+                    Background="{DynamicResource BackgroundMidBrush}"
+                    BorderBrush="{DynamicResource BorderSubtleBrush}"
                     BorderThickness="0,1,0,0"
                     CornerRadius="0,0,9,9"
                     Padding="24,12">

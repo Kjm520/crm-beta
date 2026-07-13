@@ -2,38 +2,12 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <!-- ═══════════════════════════════════════════
-         Brushes.
-         Each brush pulls its colour from the active palette (Palette.Light.xaml /
-         Palette.Dark.xaml) via DynamicResource. Because the whole app references
-         these brush OBJECTS by StaticResource, swapping the palette dictionary
-         mutates each brush's colour and every control repaints — that's what makes
-         the light/dark switch apply live. See Haystack.Theming.ThemeManager.
+         Theme-agnostic brushes (same in light and dark).
+         Palette-dependent colours/brushes live in Palette.Light.xaml /
+         Palette.Dark.xaml and are swapped live by ThemeManager.
     ═══════════════════════════════════════════ -->
 
-    <SolidColorBrush x:Key="BackgroundDeepBrush"     Color="{DynamicResource BackgroundDeepColor}" />
-    <SolidColorBrush x:Key="BackgroundMidBrush"      Color="{DynamicResource BackgroundMidColor}" />
-    <SolidColorBrush x:Key="BackgroundPanelBrush"    Color="{DynamicResource BackgroundPanelColor}" />
-    <SolidColorBrush x:Key="BackgroundElevatedBrush" Color="{DynamicResource BackgroundElevatedColor}" />
-    <SolidColorBrush x:Key="BorderSubtleBrush"       Color="{DynamicResource BorderSubtleColor}" />
-    <SolidColorBrush x:Key="BorderAccentBrush"       Color="{DynamicResource BorderAccentColor}" />
-
-    <SolidColorBrush x:Key="AccentPrimaryBrush"      Color="{DynamicResource AccentPrimaryColor}" />
-    <SolidColorBrush x:Key="AccentPrimaryHoverBrush" Color="{DynamicResource AccentPrimaryHoverColor}" />
-    <SolidColorBrush x:Key="AccentGlowBrush"         Color="{DynamicResource AccentGlowColor}" />
-
-    <SolidColorBrush x:Key="StatusGreenBrush"         Color="{DynamicResource StatusGreenColor}" />
-    <SolidColorBrush x:Key="StatusAmberBrush"         Color="{DynamicResource StatusAmberColor}" />
-    <SolidColorBrush x:Key="StatusRedBrush"           Color="{DynamicResource StatusRedColor}" />
-    <SolidColorBrush x:Key="StatusGreenGlowBrush"     Color="{DynamicResource StatusGreenGlowColor}" />
-    <SolidColorBrush x:Key="StatusAmberGlowBrush"     Color="{DynamicResource StatusAmberGlowColor}" />
-    <SolidColorBrush x:Key="StatusRedGlowBrush"       Color="{DynamicResource StatusRedGlowColor}" />
-
-    <SolidColorBrush x:Key="TextPrimaryBrush"        Color="{DynamicResource TextPrimaryColor}" />
-    <SolidColorBrush x:Key="TextSecondaryBrush"      Color="{DynamicResource TextSecondaryColor}" />
-    <SolidColorBrush x:Key="TextMutedBrush"          Color="{DynamicResource TextMutedColor}" />
-    <SolidColorBrush x:Key="TextAccentBrush"         Color="{DynamicResource TextAccentColor}" />
-
-    <!-- Translucent panel overlay -->
-    <SolidColorBrush x:Key="GlassPanelBrush"         Color="#0A3A9A5C" />
+    <!-- Translucent accent overlay -->
+    <SolidColorBrush x:Key="GlassPanelBrush" Color="#0A3A9A5C" />
 
 </ResourceDictionary>

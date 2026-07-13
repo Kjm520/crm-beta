@@ -137,6 +137,25 @@ public partial class MainWindow : Window
             ? WindowState.Normal
             : WindowState.Maximized;
 
+    // File-menu items: close the dropdown, then run the action.
+    private void FileMenuSettings_Click(object sender, RoutedEventArgs e)
+    {
+        FileMenuButton.IsChecked = false;
+        Settings_Click(sender, e);
+    }
+
+    private void FileMenuBackup_Click(object sender, RoutedEventArgs e)
+    {
+        FileMenuButton.IsChecked = false;
+        BackupDatabase_Click(sender, e);
+    }
+
+    private void FileMenuExit_Click(object sender, RoutedEventArgs e)
+    {
+        FileMenuButton.IsChecked = false;
+        Close();
+    }
+
     private void Settings_Click(object sender, RoutedEventArgs e)
     {
         // Rebuild the nav only if the tab order actually changed in Settings, so
