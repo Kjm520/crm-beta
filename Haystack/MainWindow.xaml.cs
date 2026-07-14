@@ -4,6 +4,7 @@ using System.Windows.Input;
 using Microsoft.Win32;
 using Haystack.Data;
 using Haystack.Navigation;
+using Haystack.Views.Common;
 using Haystack.Views.Dialogs;
 using Haystack.Views.Settings;
 
@@ -20,20 +21,6 @@ public partial class MainWindow : Window
     {
         var main = Application.Current.MainWindow as MainWindow;
         dialog.Owner = main;
-
-        // Fade the dialog window in together with the scrim so they read as one
-        // motion (the scrim lives in the main window; the dialog is its own Window).
-        dialog.Opacity = 0;
-        dialog.Loaded += (_, _) =>
-        {
-            var fadeIn = new System.Windows.Media.Animation.DoubleAnimation
-            {
-                From = 0, To = 1,
-                Duration = TimeSpan.FromMilliseconds(0),
-                EasingFunction = new System.Windows.Media.Animation.QuadraticEase()
-            };
-            dialog.BeginAnimation(OpacityProperty, fadeIn);
-        };
 
         main?.FadeScrim(true);
         try
@@ -159,12 +146,25 @@ public partial class MainWindow : Window
 
     private void Settings_Click(object sender, RoutedEventArgs e)
     {
-        // Rebuild the nav only if the tab order actually changed in Settings, so
-        // simply opening/closing Settings doesn't reset the current tab.
-        var before = _appSettings.Get(NavRegistry.OrderSettingKey);
+        // Rebuild the nav (which also recreates the current tab's view) only if
+        // something it renders actually changed in Settings — tab order or list
+        // columns — so simply opening/closing Settings doesn't reset the current
+        // tab's search/sort state.
+        var before = NavSettingsFingerprint();
         ShowModal(new SettingsWindow());
-        var after = _appSettings.Get(NavRegistry.OrderSettingKey);
-        if (before != after) BuildNav();
+        if (before != NavSettingsFingerprint()) BuildNav();
+    }
+
+    /// <summary>Every setting whose change requires rebuilding the nav/current view.</summary>
+    private string NavSettingsFingerprint()
+    {
+        var parts = new List<string?> { _appSettings.Get(NavRegistry.OrderSettingKey) };
+        foreach (var table in ListColumns.Tables)
+        {
+            parts.Add(_appSettings.Get(table.SettingsKey));
+            parts.Add(_appSettings.Get(ListColumns.WidthsKey(table.SettingsKey)));
+        }
+        return string.Join("|", parts);
     }
 
     private void BackupDatabase_Click(object sender, RoutedEventArgs e)

@@ -4,9 +4,8 @@
         Title="Settings"
         Width="660" Height="640"
         WindowStartupLocation="CenterOwner"
-        Background="Transparent"
+        Background="{DynamicResource BackgroundDeepBrush}"
         WindowStyle="None"
-        AllowsTransparency="True"
         ResizeMode="NoResize"
         ShowInTaskbar="False">
 
@@ -14,10 +13,8 @@
         <WindowChrome CaptionHeight="0" ResizeBorderThickness="0" />
     </WindowChrome.WindowChrome>
 
-    <Border Background="{DynamicResource BackgroundDeepBrush}"
-            BorderBrush="{DynamicResource BorderSubtleBrush}"
-            BorderThickness="1"
-            CornerRadius="10">
+    <!-- Rounding, border, and shadow are drawn natively by DWM (Theming/NativeChrome). -->
+    <Border Background="{DynamicResource BackgroundDeepBrush}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="32" />
@@ -31,7 +28,6 @@
                     Background="{DynamicResource BackgroundMidBrush}"
                     BorderBrush="{DynamicResource BorderSubtleBrush}"
                     BorderThickness="0,0,0,1"
-                    CornerRadius="9,9,0,0"
                     MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -122,11 +118,24 @@
                         </StackPanel>
                     </Border>
 
+                    <!-- List columns (per-table column visibility; checkboxes are
+                         built in code-behind from the ListColumns catalog) -->
+                    <Border Style="{StaticResource CardPanel}" Margin="0,0,0,16">
+                        <StackPanel>
+                            <TextBlock Text="LIST COLUMNS" Style="{StaticResource TextSubheading}" Margin="0,0,0,4" />
+                            <TextBlock Text="Choose which columns each list shows. Changes apply when the list is next opened. Reset widths returns a list's columns to their designed sizes after you've drag-resized them."
+                                       Style="{StaticResource TextBodySecondary}"
+                                       Margin="0,0,0,14" TextWrapping="Wrap" />
+                            <!-- One vertical checklist per table, side by side. -->
+                            <UniformGrid x:Name="ColumnsHost" Rows="1" />
+                        </StackPanel>
+                    </Border>
+
                     <!-- Lead statuses (user-editable) -->
                     <Border Style="{StaticResource CardPanel}" Margin="0,0,0,16">
                         <StackPanel>
                             <TextBlock Text="LEAD STATUSES" Style="{StaticResource TextSubheading}" Margin="0,0,0,4" />
-                            <TextBlock Text="Deleting a status keeps its leads; they simply become unassigned."
+                            <TextBlock Text="Deleting a status keeps its leads; they simply become unassigned. Statuses marked Closed count as finished (won, lost, dead) — the Leads list hides them unless its Show closed toggle is on."
                                        Style="{StaticResource TextBodySecondary}"
                                        Margin="0,0,0,12" TextWrapping="Wrap" />
 
@@ -143,6 +152,7 @@
                                                     <ColumnDefinition Width="90" />
                                                     <ColumnDefinition Width="Auto" />
                                                     <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="Auto" />
                                                 </Grid.ColumnDefinitions>
                                                 <TextBlock Grid.Column="0" Text="{Binding Name}"
                                                            Style="{StaticResource TextBody}" VerticalAlignment="Center" />
@@ -151,12 +161,21 @@
                                                     <Run Text="{Binding LeadCount, Mode=OneWay}" />
                                                     <Run Text="leads" />
                                                 </TextBlock>
-                                                <Button Grid.Column="2" Content="Rename"
+                                                <!-- OneTime: LeadStatus doesn't raise change notifications;
+                                                     the click handler persists the new value itself. -->
+                                                <CheckBox Grid.Column="2" Content="Closed"
+                                                          Style="{StaticResource InputCheck}"
+                                                          FontSize="12" Margin="0,0,14,0"
+                                                          VerticalAlignment="Center"
+                                                          IsChecked="{Binding IsClosed, Mode=OneTime}"
+                                                          Click="StatusClosed_Click"
+                                                          Tag="{Binding}" />
+                                                <Button Grid.Column="3" Content="Rename"
                                                         Style="{StaticResource ButtonGhost}"
                                                         Padding="10,4" FontSize="12" Margin="0,0,8,0"
                                                         Click="RenameStatus_Click"
                                                         Tag="{Binding}" />
-                                                <Button Grid.Column="3" Content="Delete"
+                                                <Button Grid.Column="4" Content="Delete"
                                                         Style="{StaticResource ButtonGhost}"
                                                         Padding="10,4" FontSize="12"
                                                         Click="DeleteStatus_Click"
@@ -224,7 +243,6 @@
                     Background="{DynamicResource BackgroundMidBrush}"
                     BorderBrush="{DynamicResource BorderSubtleBrush}"
                     BorderThickness="0,1,0,0"
-                    CornerRadius="0,0,9,9"
                     Padding="24,12">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button Content="Close" Style="{StaticResource ButtonPrimary}"

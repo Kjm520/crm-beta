@@ -10,6 +10,7 @@ public partial class App : Application
     {
         Database.Initialize();
         ThemeManager.ApplySaved();
+        NativeChrome.Initialize();
 
         var window = new MainWindow();
         window.Show();

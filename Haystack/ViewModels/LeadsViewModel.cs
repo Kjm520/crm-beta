@@ -9,7 +9,10 @@ namespace Haystack.ViewModels;
 
 public partial class LeadsViewModel : ViewModelBase
 {
+    private const string ShowClosedKey = "leads.showClosed";
+
     private readonly LeadRepository _repo = new();
+    private readonly AppSettingsRepository _appSettings = new();
 
     [ObservableProperty]
     private ObservableCollection<Lead> _leads = [];
@@ -17,13 +20,33 @@ public partial class LeadsViewModel : ViewModelBase
     [ObservableProperty]
     private string _searchText = string.Empty;
 
+    /// <summary>
+    /// Whether leads on a closed status (won/lost/dead — see LeadStatus.IsClosed)
+    /// are shown. Off by default: a closed lead needs nothing further, so it's
+    /// noise in the working list. Persisted so the choice survives restarts.
+    /// </summary>
+    [ObservableProperty]
+    private bool _showClosed;
+
+    public LeadsViewModel()
+    {
+        // Seed from settings via the backing field so restoring the saved value
+        // doesn't re-save it or trigger a search before the first Load.
+        _showClosed = _appSettings.Get(ShowClosedKey) == "1";
+    }
+
     partial void OnSearchTextChanged(string value) => Search();
 
-    [RelayCommand]
-    public void Load()
+    partial void OnShowClosedChanged(bool value)
     {
-        Leads = new ObservableCollection<Lead>(_repo.GetAll());
+        _appSettings.Set(ShowClosedKey, value ? "1" : "0");
+        Search();
     }
+
+    // Load defers to Search so a reload (e.g. after a detail modal closes) keeps
+    // respecting whatever is typed in the search box.
+    [RelayCommand]
+    public void Load() => Search();
 
     [RelayCommand]
     public void Search()
@@ -32,7 +55,21 @@ public partial class LeadsViewModel : ViewModelBase
             ? _repo.GetAll()
             : _repo.Search(SearchText);
 
-        Leads = new ObservableCollection<Lead>(results);
+        if (!ShowClosed)
+            results = results.Where(l => !l.StatusIsClosed);
+
+        Refill(results);
+    }
+
+    /// <summary>
+    /// Refills the list in place — never replaces the collection. The table
+    /// sorts through the collection's view (see TableHeader), and swapping in a
+    /// new collection would throw away the user's sort on every keystroke/reload.
+    /// </summary>
+    private void Refill(IEnumerable<Lead> rows)
+    {
+        Leads.Clear();
+        foreach (var row in rows) Leads.Add(row);
     }
 
     [RelayCommand]

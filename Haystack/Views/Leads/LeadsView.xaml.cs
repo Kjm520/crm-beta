@@ -1,6 +1,9 @@
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using Haystack.Models;
 using Haystack.ViewModels;
+using Haystack.Views.Common;
 
 namespace Haystack.Views.Leads;
 
@@ -13,6 +16,10 @@ public partial class LeadsView : UserControl
         InitializeComponent();
         DataContext = _vm;
         _vm.LoadCommand.Execute(null);
+
+        var spec = (TableColumns)Resources["Spec"];
+        ListColumns.Apply(spec, ListColumns.LeadsKey);
+        _ = new TableHeader(HeaderPanel, spec, RowsList, ListColumns.LeadsKey);
     }
 
     private void NewLead_Click(object sender, RoutedEventArgs e)
@@ -21,12 +28,12 @@ public partial class LeadsView : UserControl
         _vm.LoadCommand.Execute(null);
     }
 
-    private void LeadRow_Click(object sender, RoutedEventArgs e)
+    private void LeadRow_Click(object sender, MouseButtonEventArgs e)
     {
-        if (sender is not Button { Tag: int leadId })
+        if (sender is not ListBoxItem { Content: Lead lead })
             return;
 
-        MainWindow.ShowModal(new LeadDetailView(leadId));
+        MainWindow.ShowModal(new LeadDetailView(lead.Id));
         _vm.LoadCommand.Execute(null);
     }
 }

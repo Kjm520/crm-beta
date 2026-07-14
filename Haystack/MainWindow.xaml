@@ -5,19 +5,18 @@
         Width="1280" Height="800"
         MinWidth="960" MinHeight="600"
         WindowStartupLocation="CenterScreen"
-        Background="Transparent"
+        Background="{DynamicResource BackgroundDeepBrush}"
         WindowStyle="None"
-        AllowsTransparency="True"
         ResizeMode="CanResizeWithGrip">
 
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0" ResizeBorderThickness="6" />
     </WindowChrome.WindowChrome>
 
-    <Border Background="{DynamicResource BackgroundDeepBrush}"
-            BorderBrush="{DynamicResource BorderSubtleBrush}"
-            BorderThickness="1"
-            CornerRadius="10">
+    <!-- Corner rounding, the window border, and the drop shadow are all drawn
+         natively by DWM (see Theming/NativeChrome), so nothing here rounds or
+         outlines itself — the OS clips the window to its radius. -->
+    <Border Background="{DynamicResource BackgroundDeepBrush}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="32" />
@@ -30,7 +29,6 @@
                     Background="{DynamicResource BackgroundMidBrush}"
                     BorderBrush="{DynamicResource BorderSubtleBrush}"
                     BorderThickness="0,0,0,1"
-                    CornerRadius="9,9,0,0"
                     MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -118,7 +116,6 @@
             <Border x:Name="ModalScrim"
                     Grid.Row="0" Grid.RowSpan="2"
                     Background="#66000000"
-                    CornerRadius="10"
                     Opacity="0"
                     Visibility="Collapsed" />
         </Grid>

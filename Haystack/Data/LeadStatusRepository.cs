@@ -14,6 +14,7 @@ public class LeadStatusRepository
                 s.name               AS Name,
                 s.sort_order         AS SortOrder,
                 s.is_won             AS IsWon,
+                s.is_closed          AS IsClosed,
                 COUNT(l.id)          AS LeadCount
             FROM lead_statuses s
             LEFT JOIN leads l ON l.status_id = s.id
@@ -41,8 +42,8 @@ public class LeadStatusRepository
     {
         using var conn = Database.GetConnection();
         return conn.ExecuteScalar<int>(@"
-            INSERT INTO lead_statuses (name, sort_order, is_won)
-            VALUES (@Name, @SortOrder, @IsWon);
+            INSERT INTO lead_statuses (name, sort_order, is_won, is_closed)
+            VALUES (@Name, @SortOrder, @IsWon, @IsClosed);
             SELECT last_insert_rowid();
         ", status);
     }
@@ -53,7 +54,8 @@ public class LeadStatusRepository
         conn.Execute(@"
             UPDATE lead_statuses SET
                 name       = @Name,
-                sort_order = @SortOrder
+                sort_order = @SortOrder,
+                is_closed  = @IsClosed
             WHERE id = @Id
         ", status);
     }

@@ -4,9 +4,8 @@
         Title="Prompt"
         Width="420" SizeToContent="Height"
         WindowStartupLocation="CenterOwner"
-        Background="Transparent"
+        Background="{DynamicResource BackgroundDeepBrush}"
         WindowStyle="None"
-        AllowsTransparency="True"
         ResizeMode="NoResize"
         ShowInTaskbar="False">
 
@@ -14,10 +13,8 @@
         <WindowChrome CaptionHeight="0" ResizeBorderThickness="0" />
     </WindowChrome.WindowChrome>
 
-    <Border Background="{DynamicResource BackgroundDeepBrush}"
-            BorderBrush="{DynamicResource BorderSubtleBrush}"
-            BorderThickness="1"
-            CornerRadius="10">
+    <!-- Rounding, border, and shadow are drawn natively by DWM (Theming/NativeChrome). -->
+    <Border Background="{DynamicResource BackgroundDeepBrush}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="32" />
@@ -31,7 +28,6 @@
                     Background="{DynamicResource BackgroundMidBrush}"
                     BorderBrush="{DynamicResource BorderSubtleBrush}"
                     BorderThickness="0,0,0,1"
-                    CornerRadius="9,9,0,0"
                     MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
                 <Grid Margin="16,0">
                     <TextBlock x:Name="TitleText"
@@ -53,7 +49,6 @@
                     Background="{DynamicResource BackgroundMidBrush}"
                     BorderBrush="{DynamicResource BorderSubtleBrush}"
                     BorderThickness="0,1,0,0"
-                    CornerRadius="0,0,9,9"
                     Padding="24,12">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button Content="Cancel" Style="{StaticResource ButtonGhost}"

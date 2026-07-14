@@ -35,6 +35,10 @@ public class Lead
     // Populated by join query for display.
     public string? StatusName { get; set; }
 
+    // Populated by join query: whether the assigned status is flagged closed
+    // (finished — won/lost/dead). Statusless leads count as open.
+    public bool StatusIsClosed { get; set; }
+
     /// <summary>
     /// How to label this lead (falls back to the company when it has no name).
     /// Empty for a lead that has neither — i.e. a new, not-yet-filled-in one, whose

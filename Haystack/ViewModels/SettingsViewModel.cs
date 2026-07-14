@@ -103,6 +103,16 @@ public partial class SettingsViewModel : ViewModelBase
         return null;
     }
 
+    /// <summary>
+    /// Flags whether a status means "finished" (won/lost/dead). Leads on a closed
+    /// status are hidden from the Leads list unless its "Show closed" toggle is on.
+    /// </summary>
+    public void SetStatusClosed(LeadStatus status, bool closed)
+    {
+        status.IsClosed = closed;
+        _statusRepo.Update(status);
+    }
+
     [RelayCommand]
     public void DeleteStatus(LeadStatus status)
     {

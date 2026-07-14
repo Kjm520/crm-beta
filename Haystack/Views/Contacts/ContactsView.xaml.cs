@@ -1,7 +1,9 @@
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using Haystack.Models;
 using Haystack.ViewModels;
-using Haystack.Views.Contacts;
+using Haystack.Views.Common;
 
 namespace Haystack.Views.Contacts;
 
@@ -14,6 +16,10 @@ public partial class ContactsView : UserControl
         InitializeComponent();
         DataContext = _vm;
         _vm.LoadCommand.Execute(null);
+
+        var spec = (TableColumns)Resources["Spec"];
+        ListColumns.Apply(spec, ListColumns.ContactsKey);
+        _ = new TableHeader(HeaderPanel, spec, RowsList, ListColumns.ContactsKey);
     }
 
     private void NewContact_Click(object sender, RoutedEventArgs e)
@@ -24,12 +30,12 @@ public partial class ContactsView : UserControl
         _vm.LoadCommand.Execute(null);
     }
 
-    private void ContactRow_Click(object sender, RoutedEventArgs e)
+    private void ContactRow_Click(object sender, MouseButtonEventArgs e)
     {
-        if (sender is not Button { Tag: int contactId })
+        if (sender is not ListBoxItem { Content: Contact contact })
             return;
 
-        MainWindow.ShowModal(new ContactDetailView(contactId));
+        MainWindow.ShowModal(new ContactDetailView(contact.Id));
         _vm.LoadCommand.Execute(null);
     }
 }

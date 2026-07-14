@@ -5,9 +5,8 @@
         Title="Company"
         Width="760" Height="680"
         WindowStartupLocation="CenterOwner"
-        Background="Transparent"
+        Background="{DynamicResource BackgroundDeepBrush}"
         WindowStyle="None"
-        AllowsTransparency="True"
         ResizeMode="NoResize"
         ShowInTaskbar="False">
 
@@ -15,10 +14,8 @@
         <WindowChrome CaptionHeight="0" ResizeBorderThickness="0" />
     </WindowChrome.WindowChrome>
 
-    <Border Background="{DynamicResource BackgroundDeepBrush}"
-            BorderBrush="{DynamicResource BorderSubtleBrush}"
-            BorderThickness="1"
-            CornerRadius="10">
+    <!-- Rounding, border, and shadow are drawn natively by DWM (Theming/NativeChrome). -->
+    <Border Background="{DynamicResource BackgroundDeepBrush}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="32" />
@@ -32,7 +29,6 @@
                     Background="{DynamicResource BackgroundMidBrush}"
                     BorderBrush="{DynamicResource BorderSubtleBrush}"
                     BorderThickness="0,0,0,1"
-                    CornerRadius="9,9,0,0"
                     MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -95,7 +91,7 @@
                                           SelectedItem="{Binding Company.Status}" />
                             </StackPanel>
 
-                            <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="4">
+                            <StackPanel Grid.Column="0" Grid.Row="4">
                                 <TextBlock Text="LOCATION" Style="{StaticResource TextFieldLabel}" />
                                 <TextBox Style="{StaticResource InputField}"
                                          Text="{Binding Company.Location, UpdateSourceTrigger=PropertyChanged}" />
@@ -187,7 +183,6 @@
                     Background="{DynamicResource BackgroundMidBrush}"
                     BorderBrush="{DynamicResource BorderSubtleBrush}"
                     BorderThickness="0,1,0,0"
-                    CornerRadius="0,0,9,9"
                     Padding="24,12">
                 <Grid>
                     <Grid.ColumnDefinitions>

@@ -204,6 +204,18 @@ internal static class Migrations
             ALTER TABLE contacts DROP COLUMN city;
             ALTER TABLE contacts DROP COLUMN state;
             """,
+
+        // v8: closed lead statuses. "Closed" means finished — won, lost, dead —
+        // so the Leads list can hide those rows by default. A flag rather than a
+        // name match (same reasoning as is_won) so statuses can be renamed and
+        // user-created ones marked closed in Settings. Backfill: the won status
+        // is closed by definition; 'Dead' is the seeded terminal status, and
+        // 'Lost' is matched in case the user already added one by that name.
+        [8] = """
+            ALTER TABLE lead_statuses ADD COLUMN is_closed INTEGER NOT NULL DEFAULT 0;
+            UPDATE lead_statuses SET is_closed = 1
+            WHERE is_won = 1 OR name COLLATE NOCASE IN ('dead', 'lost');
+            """,
     };
 
     public static void Apply(SqliteConnection conn)

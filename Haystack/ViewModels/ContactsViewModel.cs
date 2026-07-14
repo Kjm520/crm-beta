@@ -25,11 +25,10 @@ public partial class ContactsViewModel : ViewModelBase
         Search();
     }
 
+    // Load defers to Search so a reload (e.g. after a detail modal closes) keeps
+    // respecting whatever is typed in the search box.
     [RelayCommand]
-    public void Load()
-    {
-        Contacts = new ObservableCollection<Contact>(_repo.GetAll());
-    }
+    public void Load() => Search();
 
     [RelayCommand]
     public void Search()
@@ -38,7 +37,18 @@ public partial class ContactsViewModel : ViewModelBase
             ? _repo.GetAll()
             : _repo.Search(SearchText);
 
-        Contacts = new ObservableCollection<Contact>(results);
+        Refill(results);
+    }
+
+    /// <summary>
+    /// Refills the list in place — never replaces the collection. The table
+    /// sorts through the collection's view (see TableHeader), and swapping in a
+    /// new collection would throw away the user's sort on every keystroke/reload.
+    /// </summary>
+    private void Refill(IEnumerable<Contact> rows)
+    {
+        Contacts.Clear();
+        foreach (var row in rows) Contacts.Add(row);
     }
 
     [RelayCommand]

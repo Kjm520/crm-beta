@@ -16,6 +16,7 @@ public class LeadRepository
             l.email                AS Email,
             l.status_id            AS StatusId,
             s.name                 AS StatusName,
+            COALESCE(s.is_closed, 0) AS StatusIsClosed,
             l.notes                AS Notes,
             l.converted_company_id AS ConvertedCompanyId,
             l.created_at           AS CreatedAt,

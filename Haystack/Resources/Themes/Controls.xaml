@@ -209,12 +209,13 @@
         </Setter>
     </Style>
 
-    <!-- Close: red hover, white glyph on hover, rounded to match the window corner. -->
+    <!-- Close: red hover, white glyph on hover. Square — DWM clips the window
+         (and anything drawn in it) to the native corner radius. -->
     <Style x:Key="WindowCloseButton" TargetType="Button" BasedOn="{StaticResource WindowCaptionButton}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border x:Name="Root" Background="{TemplateBinding Background}" CornerRadius="0,9,0,0">
+                    <Border x:Name="Root" Background="{TemplateBinding Background}">
                         <Path x:Name="Glyph" Data="M0,0 L10,10 M0,10 L10,0"
                               StrokeThickness="1" SnapsToDevicePixels="True"
                               Stroke="{DynamicResource TextSecondaryBrush}"
@@ -499,6 +500,169 @@
                             </Trigger.ExitActions>
                         </Trigger>
                     </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Plain themed tick-box (the ToggleSwitch above is for on/off settings; this
+         is the compact checkbox used in popup menus and inline rows). -->
+    <Style x:Key="InputCheck" TargetType="CheckBox">
+        <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
+        <Setter Property="FontFamily" Value="{StaticResource PrimaryFont}" />
+        <Setter Property="FontSize"   Value="13" />
+        <Setter Property="Cursor"     Value="Hand" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="CheckBox">
+                    <StackPanel Orientation="Horizontal" Background="Transparent">
+                        <Border x:Name="Box" Width="16" Height="16" CornerRadius="4"
+                                Background="{DynamicResource BackgroundElevatedBrush}"
+                                BorderBrush="{DynamicResource BorderSubtleBrush}"
+                                BorderThickness="1"
+                                VerticalAlignment="Center">
+                            <Path x:Name="Tick" Data="M 3 7 L 6 10 L 11 4"
+                                  Stroke="#FFFFFFFF" StrokeThickness="1.6"
+                                  Visibility="Collapsed"
+                                  HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ContentPresenter Margin="8,0,0,0" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Box" Property="BorderBrush" Value="{DynamicResource AccentPrimaryBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="Box"  Property="Background"  Value="{DynamicResource AccentPrimaryBrush}" />
+                            <Setter TargetName="Box"  Property="BorderBrush" Value="{DynamicResource AccentPrimaryBrush}" />
+                            <Setter TargetName="Tick" Property="Visibility"  Value="Visible" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ═══════════════════════════════════════════
+         List table (in-house)
+         Hand-built table: a TableRowPanel (Views/Common) lays out the header and
+         every row against one shared column spec in a single measure pass, so
+         the first rendered frame is the final one (the DataGrid this replaced
+         settled star widths one deferred pass after first render, which flashed
+         mis-laid-out headers on every fresh view). Sorting lives in TableHeader;
+         rows are ListBoxItems purely for virtualization and act as click targets
+         that open detail modals — selection is deliberately invisible.
+    ═══════════════════════════════════════════ -->
+
+    <!-- Cell text: TextBody for the lead column, TextBodySecondary for the rest.
+         The right margin is the inter-column gutter — cells are otherwise flush
+         against the next column's start, and trimmed text would touch it. Margin
+         is part of a TextBlock's measured size, so auto-fit includes it. -->
+    <Style x:Key="CellPrimary" TargetType="TextBlock" BasedOn="{StaticResource TextBody}">
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="TextTrimming"      Value="CharacterEllipsis" />
+        <Setter Property="Margin"            Value="0,0,12,0" />
+    </Style>
+    <Style x:Key="CellSecondary" TargetType="TextBlock" BasedOn="{StaticResource TextBodySecondary}">
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="TextTrimming"      Value="CharacterEllipsis" />
+        <Setter Property="Margin"            Value="0,0,12,0" />
+    </Style>
+
+    <!-- Header cell: chromeless click target built by TableHeader (label + sort arrow). -->
+    <Style x:Key="TableHeaderCell" TargetType="Button">
+        <Setter Property="Background"      Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Cursor"          Value="Hand" />
+        <Setter Property="Focusable"       Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Root" Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Root" Property="Background" Value="{DynamicResource BackgroundElevatedBrush}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Row container: RowButton's look on a ListBoxItem (hover tint, bottom rule,
+         no selection or focus chrome — clicking a row opens its detail modal). -->
+    <Style x:Key="ListTableRow" TargetType="ListBoxItem">
+        <Setter Property="Background"       Value="Transparent" />
+        <Setter Property="BorderBrush"      Value="{DynamicResource BorderSubtleBrush}" />
+        <Setter Property="BorderThickness"  Value="0,0,0,1" />
+        <Setter Property="Padding"          Value="16,0" />
+        <Setter Property="Cursor"           Value="Hand" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBoxItem">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter VerticalAlignment="Center" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource BackgroundElevatedBrush}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Scrollbar floats over the rows instead of claiming a layout column, so
+         its appearance can never change the content width — header and rows stay
+         aligned no matter how long the list is. -->
+    <Style x:Key="OverlayScroll" TargetType="ScrollViewer">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ScrollViewer">
+                    <Grid>
+                        <ScrollContentPresenter x:Name="PART_ScrollContentPresenter"
+                                                CanContentScroll="{TemplateBinding CanContentScroll}" />
+                        <ScrollBar x:Name="PART_VerticalScrollBar"
+                                   Orientation="Vertical"
+                                   HorizontalAlignment="Right"
+                                   Maximum="{TemplateBinding ScrollableHeight}"
+                                   ViewportSize="{TemplateBinding ViewportHeight}"
+                                   Value="{TemplateBinding VerticalOffset}"
+                                   Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- The rows host: a ListBox purely for its UI virtualization (large lead
+         lists realize only the rows on screen), pixel-smooth scrolling, and
+         container recycling. -->
+    <Style x:Key="ListTableRows" TargetType="ListBox">
+        <Setter Property="Background"      Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding"         Value="0" />
+        <Setter Property="ItemContainerStyle" Value="{StaticResource ListTableRow}" />
+        <Setter Property="ScrollViewer.CanContentScroll"            Value="True" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+        <Setter Property="VirtualizingPanel.IsVirtualizing"   Value="True" />
+        <Setter Property="VirtualizingPanel.VirtualizationMode" Value="Recycling" />
+        <Setter Property="VirtualizingPanel.ScrollUnit"       Value="Pixel" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBox">
+                    <ScrollViewer Style="{StaticResource OverlayScroll}"
+                                  Focusable="False"
+                                  CanContentScroll="{TemplateBinding ScrollViewer.CanContentScroll}">
+                        <ItemsPresenter />
+                    </ScrollViewer>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
