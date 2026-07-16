@@ -70,9 +70,25 @@ public partial class ContactDetailViewModel : ViewModelBase
         Contact.CompanyId = SelectedCompany!.Id;
         Contact.UpdatedAt = DateTime.UtcNow;
         if (Contact.Id == 0)
+        {
             Contact.Id = _contactRepo.Insert(Contact);
+
+            // Baseline activity: every contact starts with a "Contact created"
+            // note, so day-since-contact math is always anchored in real data
+            // (no "never contacted" sentinel leaking into stale lists) and the
+            // history records when the relationship began.
+            _interactionRepo.Insert(new Interaction
+            {
+                ContactId = Contact.Id,
+                Type = InteractionType.Note,
+                Date = DateTime.Now,
+                Summary = "Contact created",
+            });
+        }
         else
+        {
             _contactRepo.Update(Contact);
+        }
         return true;
     }
 

@@ -22,50 +22,44 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="16" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="16" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <!-- Header -->
+        <!-- Header: title, closed filter, search, actions on one row -->
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <TextBlock Text="Leads" Style="{StaticResource TextDisplaySmall}" Grid.Column="0" />
-            <Button Content="+ New Lead" Style="{StaticResource ButtonPrimary}"
-                    Grid.Column="1" VerticalAlignment="Bottom"
-                    Click="NewLead_Click" />
-        </Grid>
-
-        <!-- Search + closed filter -->
-        <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-
-            <TextBox Grid.Column="0"
-                     Width="400"
-                     Style="{StaticResource InputField}"
-                     Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" />
 
             <!-- Closed = finished (won / lost / dead — flagged per status in Settings).
                  Hidden from the list by default; this brings them back. -->
-            <TextBlock Grid.Column="2" Text="Show closed"
+            <TextBlock Grid.Column="1" Text="Show closed"
                        Style="{StaticResource TextBodySecondary}"
-                       VerticalAlignment="Center" />
-            <CheckBox Grid.Column="3"
+                       VerticalAlignment="Bottom" Margin="0,0,0,8" />
+            <CheckBox Grid.Column="2"
                       Style="{StaticResource ToggleSwitch}"
-                      IsChecked="{Binding ShowClosed}"
-                      Margin="8,0,0,0" />
+                      VerticalAlignment="Bottom"
+                      Margin="8,0,16,5"
+                      IsChecked="{Binding ShowClosed}" />
+
+            <TextBox Grid.Column="3"
+                     Width="260"
+                     VerticalAlignment="Bottom"
+                     Margin="0,0,12,0"
+                     Style="{StaticResource SearchField}"
+                     Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" />
+            <Button Content="+ New Lead" Style="{StaticResource ButtonPrimary}"
+                    Grid.Column="4" VerticalAlignment="Bottom"
+                    Click="NewLead_Click" />
         </Grid>
 
         <!-- Lead list -->
-        <Border Grid.Row="4" Style="{StaticResource CardPanel}" Padding="0">
+        <Border Grid.Row="2" Style="{StaticResource CardPanel}" Padding="0">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -76,7 +70,7 @@
                 <Border Grid.Row="0"
                         BorderBrush="{DynamicResource BorderSubtleBrush}"
                         BorderThickness="0,0,0,1"
-                        Padding="16,0">
+                        Padding="8,0">
                     <common:TableRowPanel x:Name="HeaderPanel" Height="34" />
                 </Border>
 

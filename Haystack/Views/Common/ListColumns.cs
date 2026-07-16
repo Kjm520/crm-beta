@@ -4,18 +4,15 @@ using Haystack.Data;
 namespace Haystack.Views.Common;
 
 /// <summary>
-/// The column catalog for the list tables, plus load/save/apply of the user's
-/// column choices: which columns are hidden (edited in Settings, LIST COLUMNS)
-/// and any widths they've been resized to (dragged in the table header — see
-/// TableHeader). Both are applied to a view's column spec at construction,
-/// before first layout, so a table only ever renders in its chosen shape.
+/// Load/save/apply for the list tables' user column choices: which columns are
+/// hidden and any widths they've been resized to — both managed live on the
+/// tables themselves via the header's right-click menu (see TableHeader), and
+/// applied back to a view's column spec at construction, before first layout,
+/// so a table only ever renders in its chosen shape.
 ///
 /// Stored per table in app_settings as CSVs — hidden headers, and
 /// "header:pixels" width overrides — keyed by header text rather than index, so
 /// a saved choice survives columns being added or reordered in code later.
-///
-/// The catalogs mirror each view's TableColumns spec: a column added to a view's
-/// XAML must be added to its table here too, or Settings won't offer it.
 /// </summary>
 public static class ListColumns
 {
@@ -23,19 +20,7 @@ public static class ListColumns
     public const string CompaniesKey = "columns.companies";
     public const string LeadsKey     = "columns.leads";
 
-    public record Table(string SettingsKey, string Title, string[] Columns);
-
-    public static readonly Table[] Tables =
-    [
-        new(ContactsKey, "Contacts",
-            ["NAME", "COMPANY", "TYPE", "STATUS", "LOCATION", "LAST CONTACT", "DAYS SINCE"]),
-        new(CompaniesKey, "Companies",
-            ["NAME", "TYPE", "STATUS", "LOCATION", "CONTACTS", "LAST CONTACT", "DAYS SINCE"]),
-        new(LeadsKey, "Leads",
-            ["NAME", "COMPANY", "PHONE", "EMAIL", "STATUS", "CREATED"]),
-    ];
-
-    public static HashSet<string> Hidden(string settingsKey) =>
+    private static HashSet<string> Hidden(string settingsKey) =>
         (new AppSettingsRepository().Get(settingsKey) ?? string.Empty)
             .Split(',', StringSplitOptions.RemoveEmptyEntries)
             .ToHashSet();
@@ -55,6 +40,10 @@ public static class ListColumns
 
         foreach (var column in columns)
         {
+            // Remember the XAML-designed width before overriding, so "Reset
+            // column widths" has something to restore.
+            column.DefaultWidth = column.Width;
+
             if (hidden.Contains(column.Header))
                 column.Visible = false;
             if (widths.TryGetValue(column.Header, out var pixels))
@@ -77,9 +66,17 @@ public static class ListColumns
             columns.Where(c => !c.Width.IsStar)
                    .Select(c => $"{c.Header}:{(int)Math.Round(c.Width.Value)}")));
 
-    /// <summary>Returns a table's columns to their designed widths (on next open).</summary>
-    public static void ResetWidths(string settingsKey) =>
-        new AppSettingsRepository().Set(WidthsKey(settingsKey), string.Empty);
+    /// <summary>
+    /// Clears a table's saved choices — hidden columns and resized widths — so
+    /// it opens in its designed default from now on. (The live spec is reset by
+    /// TableHeader, which calls this.)
+    /// </summary>
+    public static void Reset(string settingsKey)
+    {
+        var settings = new AppSettingsRepository();
+        settings.Set(settingsKey, string.Empty);
+        settings.Set(WidthsKey(settingsKey), string.Empty);
+    }
 
     private static Dictionary<string, double> ParseWidths(string? csv)
     {

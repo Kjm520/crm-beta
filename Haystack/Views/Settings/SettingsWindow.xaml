@@ -118,19 +118,6 @@
                         </StackPanel>
                     </Border>
 
-                    <!-- List columns (per-table column visibility; checkboxes are
-                         built in code-behind from the ListColumns catalog) -->
-                    <Border Style="{StaticResource CardPanel}" Margin="0,0,0,16">
-                        <StackPanel>
-                            <TextBlock Text="LIST COLUMNS" Style="{StaticResource TextSubheading}" Margin="0,0,0,4" />
-                            <TextBlock Text="Choose which columns each list shows. Changes apply when the list is next opened. Reset widths returns a list's columns to their designed sizes after you've drag-resized them."
-                                       Style="{StaticResource TextBodySecondary}"
-                                       Margin="0,0,0,14" TextWrapping="Wrap" />
-                            <!-- One vertical checklist per table, side by side. -->
-                            <UniformGrid x:Name="ColumnsHost" Rows="1" />
-                        </StackPanel>
-                    </Border>
-
                     <!-- Lead statuses (user-editable) -->
                     <Border Style="{StaticResource CardPanel}" Margin="0,0,0,16">
                         <StackPanel>
@@ -226,11 +213,29 @@
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="6" />
                                     <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="6" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="6" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="6" />
+                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Application" Style="{StaticResource TextBodySecondary}" />
                                 <TextBlock Grid.Row="0" Grid.Column="1" Text="Haystack"    Style="{StaticResource TextBody}" />
                                 <TextBlock Grid.Row="2" Grid.Column="0" Text="Publisher"   Style="{StaticResource TextBodySecondary}" />
                                 <TextBlock Grid.Row="2" Grid.Column="1" Text="K1 Apps"     Style="{StaticResource TextBody}" />
+                                <!-- Version and Build set in code-behind from AppInfo;
+                                     the build number is the repo's commit count. -->
+                                <TextBlock Grid.Row="4" Grid.Column="0" Text="Version"     Style="{StaticResource TextBodySecondary}" />
+                                <TextBlock Grid.Row="4" Grid.Column="1" x:Name="VersionText" Style="{StaticResource TextBody}" />
+                                <TextBlock Grid.Row="6" Grid.Column="0" Text="Build"       Style="{StaticResource TextBodySecondary}" />
+                                <TextBlock Grid.Row="6" Grid.Column="1" x:Name="BuildText" Style="{StaticResource TextBody}" />
+                                <TextBlock Grid.Row="8" Grid.Column="0" Text="Website"     Style="{StaticResource TextBodySecondary}" />
+                                <TextBlock Grid.Row="8" Grid.Column="1" Style="{StaticResource TextBody}">
+                                    <Hyperlink Style="{StaticResource LinkText}"
+                                               NavigateUri="https://k1apps.dev"
+                                               RequestNavigate="Website_RequestNavigate">k1apps.dev</Hyperlink>
+                                </TextBlock>
                             </Grid>
                         </StackPanel>
                     </Border>

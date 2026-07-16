@@ -81,7 +81,7 @@
                             <StackPanel Grid.Column="0" Grid.Row="2">
                                 <TextBlock Text="TYPE" Style="{StaticResource TextFieldLabel}" />
                                 <ComboBox Style="{StaticResource InputCombo}"
-                                          ItemsSource="{Binding ContactTypes}"
+                                          ItemsSource="{Binding CompanyTypes}"
                                           SelectedItem="{Binding Company.Type}" />
                             </StackPanel>
                             <StackPanel Grid.Column="2" Grid.Row="2">
@@ -97,6 +97,30 @@
                                          Text="{Binding Company.Location, UpdateSourceTrigger=PropertyChanged}" />
                             </StackPanel>
                         </Grid>
+                    </Border>
+
+                    <!-- Maintenance: relationship-upkeep rules for this company.
+                         Its own card because more upkeep settings will land here. -->
+                    <Border Style="{StaticResource CardPanel}" Margin="0,0,0,16">
+                        <StackPanel>
+                            <TextBlock Text="MAINTENANCE" Style="{StaticResource TextSubheading}" Margin="0,0,0,4" />
+                            <TextBlock Text="Activity logged on this company or any of its contacts counts. Overdue companies surface in the alert bell. Leave empty to not monitor."
+                                       Style="{StaticResource TextBodySecondary}"
+                                       Margin="0,0,0,12" TextWrapping="Wrap" />
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="16" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="CONTACT EVERY (DAYS)" Style="{StaticResource TextFieldLabel}" />
+                                    <TextBox Style="{StaticResource InputField}"
+                                             behaviors:DigitsOnlyBehavior.Enabled="True"
+                                             Text="{Binding Company.ContactEveryDays, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}" />
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
                     </Border>
 
                     <!-- Contacts at this company -->

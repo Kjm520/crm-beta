@@ -73,8 +73,8 @@ public partial class CompanyDetailView : Window
     {
         var contactCount = _vm.Contacts.Count;
         var cascade = contactCount == 0
-            ? "This company has no contacts."
-            : $"This will also delete its {contactCount} contact(s) and all their logged interactions.";
+            ? "This will also delete any associated activity."
+            : $"This will also delete its {contactCount} contact(s) and all their activity.";
 
         var confirmed = ConfirmWindow.Ask(this,
             "Delete company",

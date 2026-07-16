@@ -216,6 +216,35 @@ internal static class Migrations
             UPDATE lead_statuses SET is_closed = 1
             WHERE is_won = 1 OR name COLLATE NOCASE IN ('dead', 'lost');
             """,
+
+        // v9: companies no longer offer the "Carrier" type (value 2) — that type
+        // is for contacts. Re-home any company stored as Carrier on Customer (0)
+        // so no row holds a choice the form can't display (same treatment Vendor
+        // got in v6). Contacts keep Carrier untouched.
+        [9] = """
+            UPDATE companies SET type = 0 WHERE type = 2;
+            """,
+
+        // v10: relationship-monitoring cadence. "Contact every N days" per company
+        // (activity on it or any of its contacts counts) and per contact. NULL =
+        // not monitored; the alert bell derives overdue alerts from this at
+        // runtime — alerts themselves are never stored.
+        [10] = """
+            ALTER TABLE companies ADD COLUMN contact_every_days INTEGER;
+            ALTER TABLE contacts  ADD COLUMN contact_every_days INTEGER;
+            """,
+
+        // v11: baseline "Contact created" note (type 4 = Note) for every contact
+        // that has no interactions, dated at its creation. New contacts get this
+        // note at save time (ContactDetailViewModel); this backfills existing
+        // ones so day-since-contact math is always anchored in real data and the
+        // "never contacted" int.MaxValue sentinel can't leak into stale lists.
+        [11] = """
+            INSERT INTO interactions (contact_id, type, date, summary, created_at)
+            SELECT id, 4, created_at, 'Contact created', datetime('now')
+            FROM contacts
+            WHERE id NOT IN (SELECT DISTINCT contact_id FROM interactions);
+            """,
     };
 
     public static void Apply(SqliteConnection conn)

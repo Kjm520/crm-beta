@@ -31,4 +31,29 @@
     <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="3.0.0" />
   </ItemGroup>
 
+  <!-- Build number = the repo's commit count (K1's convention across projects).
+       Captured from git on every build and baked into the assembly, where
+       AppInfo reads it back — deliberately NOT an info file beside the exe,
+       which the single-file publish would turn into a separable sibling again.
+       Also appended to FileVersion (0.1.0 -> 0.1.0.247) so Explorer's file
+       Properties shows the build. Falls back to 0 (displayed as "dev") when git
+       or the repo isn't available. -->
+  <Target Name="EmbedBuildNumber" BeforeTargets="GetAssemblyAttributes" Condition="'$(DesignTimeBuild)' != 'true'">
+    <Exec Command="git rev-list --count HEAD"
+          WorkingDirectory="$(MSBuildProjectDirectory)"
+          ConsoleToMSBuild="true" ContinueOnError="true"
+          StandardOutputImportance="low" StandardErrorImportance="low">
+      <Output TaskParameter="ConsoleOutput" PropertyName="GitCommitCount" />
+      <Output TaskParameter="ExitCode" PropertyName="GitExitCode" />
+    </Exec>
+    <PropertyGroup>
+      <GitCommitCount Condition="'$(GitExitCode)' != '0' OR '$(GitCommitCount)' == ''">0</GitCommitCount>
+      <GitCommitCount>$(GitCommitCount.Trim())</GitCommitCount>
+      <FileVersion>$(FileVersion).$(GitCommitCount)</FileVersion>
+    </PropertyGroup>
+    <ItemGroup>
+      <AssemblyMetadata Include="BuildNumber" Value="$(GitCommitCount)" />
+    </ItemGroup>
+  </Target>
+
 </Project>

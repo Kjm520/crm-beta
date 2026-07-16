@@ -14,6 +14,21 @@ public class TableColumn
     public GridLength Width { get; set; } = new(1, GridUnitType.Star);
     public string? SortMember { get; set; }
     public bool Visible { get; set; } = true;
+
+    /// <summary>
+    /// The width declared in the view's XAML, captured by ListColumns.Apply
+    /// before any saved user resize overwrites <see cref="Width"/> — it's what
+    /// "Reset column widths" restores.
+    /// </summary>
+    public GridLength? DefaultWidth { get; set; }
+
+    /// <summary>
+    /// The narrowest this column may be made interactively. Computed by
+    /// TableHeader from the measured header label (plus cell insets and sort
+    /// arrow room), so a header can never be squeezed into an ellipsis by
+    /// dragging or auto-fit. 48 is the absolute floor until then.
+    /// </summary>
+    public double MinWidth { get; set; } = 48;
 }
 
 /// <summary>

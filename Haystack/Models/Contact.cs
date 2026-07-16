@@ -15,6 +15,13 @@ public class Contact
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 
+    /// <summary>
+    /// Relationship-monitoring cadence: this contact should see some activity at
+    /// least every this-many days. Null = not monitored. Drives
+    /// <see cref="IsOverdue"/> and the alert bell.
+    /// </summary>
+    public int? ContactEveryDays { get; set; }
+
     // Populated by join query for display (the owning company's name).
     public string? CompanyName { get; set; }
 
@@ -28,6 +35,18 @@ public class Contact
     public string DaysSinceLastInteractionDisplay => LastInteractionDate.HasValue
         ? DaysSinceLastInteraction.ToString()
         : "-";
+
+    /// <summary>
+    /// Days since the last activity, counting from creation when nothing was
+    /// ever logged — a new record gets its full cadence window before alarming,
+    /// but can't hide forever.
+    /// </summary>
+    public int EffectiveDaysSince => LastInteractionDate.HasValue
+        ? DaysSinceLastInteraction
+        : (int)(DateTime.Today - CreatedAt.Date).TotalDays;
+
+    /// <summary>True when a cadence is set and its window has lapsed.</summary>
+    public bool IsOverdue => ContactEveryDays is { } cadence && EffectiveDaysSince > cadence;
 }
 
 public enum ContactType

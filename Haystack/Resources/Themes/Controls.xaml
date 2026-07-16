@@ -268,7 +268,13 @@
         <Setter Property="BorderBrush"      Value="{DynamicResource BorderSubtleBrush}" />
         <Setter Property="BorderThickness"  Value="1" />
         <Setter Property="Height"           Value="32" />
-        <Setter Property="Padding"          Value="10,0" />
+        <!-- 8 + the text host's own 2px caret reserve + the 1px border = text at
+             11px, measured to land exactly on the combos' text edge (10 margin
+             + 1 border). NOTE: the template deliberately does NOT bind the
+             ScrollViewer's Margin to this Padding — the TextBox's internal text
+             host applies Control.Padding by itself, and binding it in the
+             template applied it twice (fields sat at 3 + 2×Padding). -->
+        <Setter Property="Padding"          Value="8,0" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="FontSize"         Value="13" />
         <Setter Property="SelectionBrush"   Value="{DynamicResource AccentPrimaryBrush}" />
@@ -281,10 +287,68 @@
                             BorderThickness="{TemplateBinding BorderThickness}"
                             CornerRadius="6">
                         <ScrollViewer x:Name="PART_ContentHost"
-                                      Margin="{TemplateBinding Padding}"
                                       VerticalAlignment="Center" />
                     </Border>
                     <ControlTemplate.Triggers>
+                        <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                            <Setter TargetName="Root" Property="BorderBrush" Value="{DynamicResource AccentPrimaryBrush}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Search variant of InputField: a magnifier glyph and a ghost "Search…"
+         prompt, so it reads as search rather than a stray input. Sits in the
+         page header row beside the + New button. The glyph column supplies the
+         left inset (the text host still applies Padding internally — see the
+         InputField note — so Padding here only pads the right side). -->
+    <Style x:Key="SearchField" TargetType="TextBox">
+        <Setter Property="Background"       Value="{DynamicResource BackgroundElevatedBrush}" />
+        <Setter Property="Foreground"       Value="{DynamicResource TextPrimaryBrush}" />
+        <Setter Property="CaretBrush"       Value="{DynamicResource AccentPrimaryBrush}" />
+        <Setter Property="BorderBrush"      Value="{DynamicResource BorderSubtleBrush}" />
+        <Setter Property="BorderThickness"  Value="1" />
+        <Setter Property="Height"           Value="32" />
+        <Setter Property="Padding"          Value="0,0,8,0" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="FontSize"         Value="13" />
+        <Setter Property="SelectionBrush"   Value="{DynamicResource AccentPrimaryBrush}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Border x:Name="Root"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="6">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="30" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Path Data="M 6.5 6.5 m -4.2 0 a 4.2 4.2 0 1 0 8.4 0 a 4.2 4.2 0 1 0 -8.4 0 M 9.8 9.8 L 13.2 13.2"
+                                  Stroke="{DynamicResource TextMutedBrush}"
+                                  StrokeThickness="1.4"
+                                  StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                                  Width="14" Height="14"
+                                  HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <ScrollViewer x:Name="PART_ContentHost" Grid.Column="1"
+                                          VerticalAlignment="Center" />
+                            <TextBlock x:Name="Prompt" Grid.Column="1"
+                                       Text="Search…"
+                                       Foreground="{DynamicResource TextMutedBrush}"
+                                       Margin="2,0,0,0"
+                                       VerticalAlignment="Center"
+                                       IsHitTestVisible="False"
+                                       Visibility="Collapsed" />
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Text" Value="">
+                            <Setter TargetName="Prompt" Property="Visibility" Value="Visible" />
+                        </Trigger>
                         <Trigger Property="IsKeyboardFocusWithin" Value="True">
                             <Setter TargetName="Root" Property="BorderBrush" Value="{DynamicResource AccentPrimaryBrush}" />
                         </Trigger>
@@ -319,6 +383,8 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="30" />
                                 </Grid.ColumnDefinitions>
+                                <!-- 10px text indent — the InputField's Padding is set to
+                                     land its text on this same edge (see the note there). -->
                                 <ContentPresenter Grid.Column="0"
                                                   Content="{TemplateBinding SelectionBoxItem}"
                                                   ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
@@ -384,7 +450,9 @@
     <Style TargetType="ComboBoxItem">
         <Setter Property="Foreground"  Value="{DynamicResource TextPrimaryBrush}" />
         <Setter Property="Background"  Value="Transparent" />
-        <Setter Property="Padding"     Value="12,8" />
+        <!-- 10 matches the closed box's text indent, so opening the dropdown
+             doesn't shift the text sideways. -->
+        <Setter Property="Padding"     Value="10,8" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ComboBoxItem">
@@ -521,10 +589,15 @@
                                 BorderBrush="{DynamicResource BorderSubtleBrush}"
                                 BorderThickness="1"
                                 VerticalAlignment="Center">
-                            <Path x:Name="Tick" Data="M 3 7 L 6 10 L 11 4"
-                                  Stroke="#FFFFFFFF" StrokeThickness="1.6"
-                                  Visibility="Collapsed"
-                                  HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <!-- Explicit 14x14 canvas with the tick drawn in its
+                                 coordinates keeps it optically centred; round
+                                 caps/joins keep it from looking jaggy at this size. -->
+                            <Path x:Name="Tick" Width="14" Height="14"
+                                  Data="M 3.6 7.4 L 6.1 9.9 L 10.4 4.3"
+                                  Stroke="#FFFFFFFF" StrokeThickness="1.7"
+                                  StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                                  StrokeLineJoin="Round"
+                                  Visibility="Collapsed" />
                         </Border>
                         <ContentPresenter Margin="8,0,0,0" VerticalAlignment="Center" />
                     </StackPanel>
@@ -555,18 +628,20 @@
     ═══════════════════════════════════════════ -->
 
     <!-- Cell text: TextBody for the lead column, TextBodySecondary for the rest.
-         The right margin is the inter-column gutter — cells are otherwise flush
-         against the next column's start, and trimmed text would touch it. Margin
-         is part of a TextBlock's measured size, so auto-fit includes it. -->
+         The 8px side margins are the in-cell insets: text sits 8 inside its own
+         column on both sides (so a hover highlight never touches the glyphs) and
+         neighbouring columns' text ends up 16 apart. Margins are part of a
+         TextBlock's measured size, so auto-fit includes them. Keep in sync with
+         the header content margin in TableHeader (HeaderInsets). -->
     <Style x:Key="CellPrimary" TargetType="TextBlock" BasedOn="{StaticResource TextBody}">
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="TextTrimming"      Value="CharacterEllipsis" />
-        <Setter Property="Margin"            Value="0,0,12,0" />
+        <Setter Property="Margin"            Value="8,0,8,0" />
     </Style>
     <Style x:Key="CellSecondary" TargetType="TextBlock" BasedOn="{StaticResource TextBodySecondary}">
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="TextTrimming"      Value="CharacterEllipsis" />
-        <Setter Property="Margin"            Value="0,0,12,0" />
+        <Setter Property="Margin"            Value="8,0,8,0" />
     </Style>
 
     <!-- Header cell: chromeless click target built by TableHeader (label + sort arrow). -->
@@ -597,7 +672,9 @@
         <Setter Property="Background"       Value="Transparent" />
         <Setter Property="BorderBrush"      Value="{DynamicResource BorderSubtleBrush}" />
         <Setter Property="BorderThickness"  Value="0,0,0,1" />
-        <Setter Property="Padding"          Value="16,0" />
+        <!-- 8 here + the cells' 8px inset = first column text 16 from the card
+             edge, matching the header (whose Border carries the same 8). -->
+        <Setter Property="Padding"          Value="8,0" />
         <Setter Property="Cursor"           Value="Hand" />
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
         <Setter Property="Template">
@@ -721,6 +798,19 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+
+    <!-- ═══════════════════════════════════════════
+         Inline link (Hyperlink inside a TextBlock)
+    ═══════════════════════════════════════════ -->
+    <Style x:Key="LinkText" TargetType="Hyperlink">
+        <Setter Property="Foreground" Value="{DynamicResource AccentPrimaryBrush}" />
+        <Setter Property="TextDecorations" Value="{x:Null}" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="TextDecorations" Value="Underline" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
     <!-- ═══════════════════════════════════════════

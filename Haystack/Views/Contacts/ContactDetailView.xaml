@@ -129,7 +129,38 @@
                                 <TextBox Style="{StaticResource InputField}"
                                          Text="{Binding Contact.Email, UpdateSourceTrigger=PropertyChanged}" />
                             </StackPanel>
+
+                            <!-- Location -->
+                            <StackPanel Grid.Column="2" Grid.Row="6">
+                                <TextBlock Text="LOCATION" Style="{StaticResource TextFieldLabel}" />
+                                <TextBox Style="{StaticResource InputField}"
+                                         Text="{Binding Contact.Location, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
                         </Grid>
+                    </Border>
+
+                    <!-- Maintenance: relationship-upkeep rules for this contact.
+                         Its own card because more upkeep settings will land here. -->
+                    <Border Style="{StaticResource CardPanel}" Margin="0,0,0,16">
+                        <StackPanel>
+                            <TextBlock Text="MAINTENANCE" Style="{StaticResource TextSubheading}" Margin="0,0,0,4" />
+                            <TextBlock Text="Overdue contacts surface in the alert bell. Leave empty to not monitor."
+                                       Style="{StaticResource TextBodySecondary}"
+                                       Margin="0,0,0,12" TextWrapping="Wrap" />
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="16" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="CONTACT EVERY (DAYS)" Style="{StaticResource TextFieldLabel}" />
+                                    <TextBox Style="{StaticResource InputField}"
+                                             behaviors:DigitsOnlyBehavior.Enabled="True"
+                                             Text="{Binding Contact.ContactEveryDays, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}" />
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
                     </Border>
 
                     <!-- Interaction history (read-only; logging now lives in the Activity tab) -->

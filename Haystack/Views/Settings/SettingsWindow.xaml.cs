@@ -6,7 +6,6 @@ using System.Windows.Media.Animation;
 using Haystack.Models;
 using Haystack.Navigation;
 using Haystack.ViewModels;
-using Haystack.Views.Common;
 using Haystack.Views.Dialogs;
 
 namespace Haystack.Views.Settings;
@@ -19,80 +18,17 @@ public partial class SettingsWindow : Window
     {
         InitializeComponent();
         DataContext = _vm;
-        BuildColumnChoosers();
+        VersionText.Text = AppInfo.Version;
+        BuildText.Text = AppInfo.Build;
     }
 
-    // --- List columns ------------------------------------------------------
-    //
-    // One vertical checklist per list table, side by side, built from the
-    // ListColumns catalog. Toggling writes straight to app_settings; open list
-    // views pick the change up when they're next created (MainWindow rebuilds
-    // the active tab if these settings changed while Settings was open).
-
-    private void BuildColumnChoosers()
+    private void Website_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
     {
-        var checkStyle = (Style)FindResource("InputCheck");
-        var labelStyle = (Style)FindResource("TextFieldLabel");
-
-        foreach (var table in ListColumns.Tables)
-        {
-            var hidden = ListColumns.Hidden(table.SettingsKey);
-
-            var group = new StackPanel { Margin = new Thickness(0, 0, 16, 0) };
-            group.Children.Add(new TextBlock
-            {
-                Text = table.Title.ToUpperInvariant(),
-                Style = labelStyle,
-                Margin = new Thickness(0, 0, 0, 8),
-            });
-
-            foreach (var name in table.Columns)
-            {
-                var box = new CheckBox
-                {
-                    Content = name,
-                    IsChecked = !hidden.Contains(name),
-                    Style = checkStyle,
-                    FontSize = 12,
-                    Margin = new Thickness(0, 4, 0, 4),
-                };
-                var column = name;
-                box.Click += (_, _) => ToggleColumn(table, column, box);
-                group.Children.Add(box);
-            }
-
-            var reset = new Button
-            {
-                Content = "Reset widths",
-                Style = (Style)FindResource("ButtonGhost"),
-                Padding = new Thickness(10, 4, 10, 4),
-                FontSize = 12,
-                Margin = new Thickness(0, 10, 0, 0),
-                HorizontalAlignment = HorizontalAlignment.Left,
-            };
-            reset.Click += (_, _) => ListColumns.ResetWidths(table.SettingsKey);
-            group.Children.Add(reset);
-
-            ColumnsHost.Children.Add(group);
-        }
-    }
-
-    private void ToggleColumn(ListColumns.Table table, string column, CheckBox box)
-    {
-        var hidden = ListColumns.Hidden(table.SettingsKey);
-
-        if (box.IsChecked == true) hidden.Remove(column);
-        else hidden.Add(column);
-
-        // Never allow hiding every column of a table — an all-blank list would
-        // look broken with nothing pointing at the cause.
-        if (table.Columns.All(hidden.Contains))
-        {
-            box.IsChecked = true;
-            return;
-        }
-
-        ListColumns.SaveHidden(table.SettingsKey, hidden);
+        // UseShellExecute hands the URL to the default browser (a bare
+        // Process.Start on a URL is not supported on .NET Core+).
+        System.Diagnostics.Process.Start(
+            new System.Diagnostics.ProcessStartInfo(e.Uri.AbsoluteUri) { UseShellExecute = true });
+        e.Handled = true;
     }
 
     private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

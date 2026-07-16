@@ -1,10 +1,14 @@
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Windows.Threading;
 using Microsoft.Win32;
+using Haystack.Alerts;
 using Haystack.Data;
 using Haystack.Navigation;
-using Haystack.Views.Common;
+using Haystack.Views.Companies;
+using Haystack.Views.Contacts;
 using Haystack.Views.Dialogs;
 using Haystack.Views.Settings;
 
@@ -30,6 +34,9 @@ public partial class MainWindow : Window
         finally
         {
             main?.FadeScrim(false);
+            // Modals are where activity gets logged and cadences get edited, so
+            // re-derive the alert bell whenever one closes.
+            main?.RefreshAlerts();
         }
     }
 
@@ -61,6 +68,101 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         BuildNav();
+
+        // Right-align the alerts popup under the bell (stock Bottom placement
+        // left-aligns, which would hang the panel off the window's right edge).
+        AlertsPopup.Placement = PlacementMode.Custom;
+        AlertsPopup.CustomPopupPlacementCallback = (size, target, _) =>
+            [new CustomPopupPlacement(
+                new Point(target.Width - size.Width, target.Height + 6),
+                PopupPrimaryAxis.Horizontal)];
+
+        RefreshAlerts();
+
+        // Slow rollover tick: day boundaries change how overdue things are even
+        // with no user action, so an app left open overnight stays truthful.
+        var alertTimer = new DispatcherTimer { Interval = TimeSpan.FromMinutes(30) };
+        alertTimer.Tick += (_, _) => RefreshAlerts();
+        alertTimer.Start();
+    }
+
+    // --- Alert bell ---------------------------------------------------------
+
+    private void AlertsButton_Checked(object sender, RoutedEventArgs e) => RefreshAlerts();
+
+    /// <summary>
+    /// Re-derives all alerts (see AlertCenter) and updates the bell badge and
+    /// panel. Called at startup, whenever any modal closes, when the bell is
+    /// opened, and on the rollover timer.
+    /// </summary>
+    private void RefreshAlerts()
+    {
+        var alerts = AlertCenter.GatherAll();
+
+        AlertBadge.Visibility = alerts.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+        AlertCount.Text = alerts.Count > 9 ? "9+" : alerts.Count.ToString();
+
+        BuildAlertsPanel(alerts);
+    }
+
+    private void BuildAlertsPanel(List<Alert> alerts)
+    {
+        AlertsList.Children.Clear();
+
+        if (alerts.Count == 0)
+        {
+            AlertsList.Children.Add(new TextBlock
+            {
+                Text = "Nothing needs attention.",
+                Style = (Style)FindResource("TextBodySecondary"),
+                Margin = new Thickness(10, 8, 10, 8),
+            });
+            return;
+        }
+
+        var itemStyle = (Style)FindResource("MenuDropItem");
+        var titleStyle = (Style)FindResource("TextBody");
+        var captionStyle = (Style)FindResource("TextCaption");
+
+        foreach (var group in alerts.GroupBy(a => a.Group))
+        {
+            AlertsList.Children.Add(new TextBlock
+            {
+                Text = group.Key,
+                Style = captionStyle,
+                Margin = new Thickness(10, 8, 10, 4),
+            });
+
+            foreach (var alert in group)
+            {
+                var content = new StackPanel();
+                content.Children.Add(new TextBlock { Text = alert.Title, Style = titleStyle });
+                content.Children.Add(new TextBlock
+                {
+                    Text = alert.Detail,
+                    Style = captionStyle,
+                    Margin = new Thickness(0, 1, 0, 0),
+                });
+
+                var item = new Button { Style = itemStyle, Content = content };
+                var opened = alert;
+                item.Click += (_, _) => OpenAlert(opened);
+                AlertsList.Children.Add(item);
+            }
+        }
+    }
+
+    private void OpenAlert(Alert alert)
+    {
+        AlertsButton.IsChecked = false;
+
+        ShowModal(alert.Target switch
+        {
+            AlertTarget.Company => new CompanyDetailView(alert.TargetId),
+            AlertTarget.Contact => new ContactDetailView(alert.TargetId),
+            _ => throw new ArgumentOutOfRangeException(nameof(alert)),
+        });
+        // ShowModal already re-derives the alerts when the modal closes.
     }
 
     /// <summary>
@@ -146,25 +248,14 @@ public partial class MainWindow : Window
 
     private void Settings_Click(object sender, RoutedEventArgs e)
     {
-        // Rebuild the nav (which also recreates the current tab's view) only if
-        // something it renders actually changed in Settings — tab order or list
-        // columns — so simply opening/closing Settings doesn't reset the current
-        // tab's search/sort state.
-        var before = NavSettingsFingerprint();
+        // Rebuild the nav only if the tab order actually changed in Settings, so
+        // simply opening/closing Settings doesn't reset the current tab. (Column
+        // choices don't need this: they're managed live on the tables themselves,
+        // via the header's right-click menu.)
+        var before = _appSettings.Get(NavRegistry.OrderSettingKey);
         ShowModal(new SettingsWindow());
-        if (before != NavSettingsFingerprint()) BuildNav();
-    }
-
-    /// <summary>Every setting whose change requires rebuilding the nav/current view.</summary>
-    private string NavSettingsFingerprint()
-    {
-        var parts = new List<string?> { _appSettings.Get(NavRegistry.OrderSettingKey) };
-        foreach (var table in ListColumns.Tables)
-        {
-            parts.Add(_appSettings.Get(table.SettingsKey));
-            parts.Add(_appSettings.Get(ListColumns.WidthsKey(table.SettingsKey)));
-        }
-        return string.Join("|", parts);
+        var after = _appSettings.Get(NavRegistry.OrderSettingKey);
+        if (before != after) BuildNav();
     }
 
     private void BackupDatabase_Click(object sender, RoutedEventArgs e)

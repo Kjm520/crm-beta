@@ -16,6 +16,7 @@ public class CompanyRepository
             co.email        AS Email,
             co.location     AS Location,
             co.notes        AS Notes,
+            co.contact_every_days AS ContactEveryDays,
             co.created_at   AS CreatedAt,
             co.updated_at   AS UpdatedAt,
             COUNT(DISTINCT c.id) AS ContactCount,
@@ -46,8 +47,8 @@ public class CompanyRepository
     {
         using var conn = Database.GetConnection();
         return conn.ExecuteScalar<int>(@"
-            INSERT INTO companies (name, type, status, phone, email, location, notes, created_at, updated_at)
-            VALUES (@Name, @Type, @Status, @Phone, @Email, @Location, @Notes, datetime('now'), datetime('now'));
+            INSERT INTO companies (name, type, status, phone, email, location, notes, contact_every_days, created_at, updated_at)
+            VALUES (@Name, @Type, @Status, @Phone, @Email, @Location, @Notes, @ContactEveryDays, datetime('now'), datetime('now'));
             SELECT last_insert_rowid();
         ", company);
     }
@@ -64,6 +65,7 @@ public class CompanyRepository
                 email      = @Email,
                 location   = @Location,
                 notes      = @Notes,
+                contact_every_days = @ContactEveryDays,
                 updated_at = datetime('now')
             WHERE id = @Id
         ", company);
@@ -74,16 +76,5 @@ public class CompanyRepository
         // Contacts (and their interactions) cascade-delete via the FK.
         using var conn = Database.GetConnection();
         conn.Execute("DELETE FROM companies WHERE id = @id", new { id });
-    }
-
-    public IEnumerable<Company> Search(string query)
-    {
-        using var conn = Database.GetConnection();
-        var like = $"%{query}%";
-        return conn.Query<Company>(SelectCompany + @"
-            WHERE co.name LIKE @like OR co.location LIKE @like
-            GROUP BY co.id
-            ORDER BY co.name
-        ", new { like });
     }
 }

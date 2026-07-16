@@ -26,12 +26,12 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="16" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="16" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <!-- Header -->
+        <!-- Header. Deliberately no search bar: Companies is the relations list —
+             the working set of actual customers — not the lead pipeline, and at
+             that size scanning a sortable table beats typing a query. -->
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -43,15 +43,8 @@
                     Click="NewCompany_Click" />
         </Grid>
 
-        <!-- Search -->
-        <TextBox Grid.Row="2"
-                 Width="400"
-                 HorizontalAlignment="Left"
-                 Style="{StaticResource InputField}"
-                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" />
-
         <!-- Company list -->
-        <Border Grid.Row="4" Style="{StaticResource CardPanel}" Padding="0">
+        <Border Grid.Row="2" Style="{StaticResource CardPanel}" Padding="0">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -62,7 +55,7 @@
                 <Border Grid.Row="0"
                         BorderBrush="{DynamicResource BorderSubtleBrush}"
                         BorderThickness="0,0,0,1"
-                        Padding="16,0">
+                        Padding="8,0">
                     <common:TableRowPanel x:Name="HeaderPanel" Height="34" />
                 </Border>
 
@@ -84,7 +77,19 @@
                                 <TextBlock Text="{Binding Location}"     Style="{StaticResource CellSecondary}" />
                                 <TextBlock Text="{Binding ContactCount}" Style="{StaticResource CellSecondary}" />
                                 <TextBlock Text="{Binding LastInteractionDate, StringFormat='MMM d, yyyy'}" Style="{StaticResource CellSecondary}" />
-                                <TextBlock Text="{Binding DaysSinceLastInteractionDisplay}" Style="{StaticResource CellSecondary}" />
+                                <!-- Reddens when past this company's contact cadence. -->
+                                <TextBlock Text="{Binding DaysSinceLastInteractionDisplay}">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock" BasedOn="{StaticResource CellSecondary}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsOverdue}" Value="True">
+                                                    <Setter Property="Foreground" Value="{DynamicResource StatusRedBrush}" />
+                                                    <Setter Property="FontWeight" Value="SemiBold" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
                             </common:TableRowPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>

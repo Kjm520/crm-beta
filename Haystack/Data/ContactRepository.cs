@@ -19,6 +19,7 @@ public class ContactRepository
             c.email         AS Email,
             c.location      AS Location,
             c.notes         AS Notes,
+            c.contact_every_days AS ContactEveryDays,
             c.created_at    AS CreatedAt,
             c.updated_at    AS UpdatedAt,
             MAX(i.date)     AS LastInteractionDate
@@ -70,8 +71,8 @@ public class ContactRepository
     {
         using var conn = Database.GetConnection();
         return conn.ExecuteScalar<int>(@"
-            INSERT INTO contacts (company_id, name, title, type, status, phone, email, location, notes, created_at, updated_at)
-            VALUES (@CompanyId, @Name, @Title, @Type, @Status, @Phone, @Email, @Location, @Notes, datetime('now'), datetime('now'));
+            INSERT INTO contacts (company_id, name, title, type, status, phone, email, location, notes, contact_every_days, created_at, updated_at)
+            VALUES (@CompanyId, @Name, @Title, @Type, @Status, @Phone, @Email, @Location, @Notes, @ContactEveryDays, datetime('now'), datetime('now'));
             SELECT last_insert_rowid();
         ", contact);
     }
@@ -90,6 +91,7 @@ public class ContactRepository
                 email      = @Email,
                 location   = @Location,
                 notes      = @Notes,
+                contact_every_days = @ContactEveryDays,
                 updated_at = datetime('now')
             WHERE id = @Id
         ", contact);
