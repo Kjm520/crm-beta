@@ -21,7 +21,7 @@ public partial class LeadsViewModel : ViewModelBase
     private string _searchText = string.Empty;
 
     /// <summary>
-    /// Whether leads on a closed status (won/lost/dead — see LeadStatus.IsClosed)
+    /// Whether leads on a closed status (won/lost/dead · see LeadStatus.IsClosed)
     /// are shown. Off by default: a closed lead needs nothing further, so it's
     /// noise in the working list. Persisted so the choice survives restarts.
     /// </summary>
@@ -62,7 +62,7 @@ public partial class LeadsViewModel : ViewModelBase
     }
 
     /// <summary>
-    /// Refills the list in place — never replaces the collection. The table
+    /// Refills the list in place · never replaces the collection. The table
     /// sorts through the collection's view (see TableHeader), and swapping in a
     /// new collection would throw away the user's sort on every keystroke/reload.
     /// </summary>

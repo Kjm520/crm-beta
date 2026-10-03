@@ -50,7 +50,7 @@
 
             <!-- Footer. The shared button styles are sized for the big detail modals,
                  where a 24,12 bar with 20,9 buttons is in proportion. This dialog is a
-                 fraction of that height, so the same footer read as a slab — hence the
+                 fraction of that height, so the same footer read as a slab · hence the
                  tighter padding here. Deliberately local: the large modals still want
                  the full-size version. -->
             <Border Grid.Row="2"

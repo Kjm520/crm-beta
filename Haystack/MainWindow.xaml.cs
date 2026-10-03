@@ -6,6 +6,7 @@ using System.Windows.Threading;
 using Microsoft.Win32;
 using Haystack.Alerts;
 using Haystack.Data;
+using Haystack.Models;
 using Haystack.Navigation;
 using Haystack.Views.Companies;
 using Haystack.Views.Contacts;
@@ -91,12 +92,13 @@ public partial class MainWindow : Window
     private void AlertsButton_Checked(object sender, RoutedEventArgs e) => RefreshAlerts();
 
     /// <summary>
-    /// Re-derives all alerts (see AlertCenter) and updates the bell badge and
-    /// panel. Called at startup, whenever any modal closes, when the bell is
-    /// opened, and on the rollover timer.
+    /// Runs the monitors (which materialize/resolve Workflow tasks), then
+    /// re-derives the bell from the result. Called at startup, whenever any
+    /// modal closes, when the bell is opened, and on the rollover timer.
     /// </summary>
     private void RefreshAlerts()
     {
+        MonitorEngine.Run();
         var alerts = AlertCenter.GatherAll();
 
         AlertBadge.Visibility = alerts.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
@@ -158,8 +160,8 @@ public partial class MainWindow : Window
 
         ShowModal(alert.Target switch
         {
-            AlertTarget.Company => new CompanyDetailView(alert.TargetId),
-            AlertTarget.Contact => new ContactDetailView(alert.TargetId),
+            RecordKind.Company => new CompanyDetailView(alert.TargetId),
+            RecordKind.Contact => new ContactDetailView(alert.TargetId),
             _ => throw new ArgumentOutOfRangeException(nameof(alert)),
         });
         // ShowModal already re-derives the alerts when the modal closes.

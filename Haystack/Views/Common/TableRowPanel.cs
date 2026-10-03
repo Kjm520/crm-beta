@@ -10,7 +10,7 @@ namespace Haystack.Views.Common;
 /// by factor. Hidden columns get zero width.
 ///
 /// Everything resolves from the width constraint alone, inside a single
-/// measure/arrange pass — this panel exists because the DataGrid it replaced
+/// measure/arrange pass · this panel exists because the DataGrid it replaced
 /// finalizes star widths one deferred pass AFTER first render, which flashed
 /// mis-laid-out headers on every freshly created view. Here the first rendered
 /// frame is, structurally, the final one.
@@ -31,8 +31,8 @@ public class TableRowPanel : Panel
     /// Change signal for mid-session spec edits (a header resize drag mutates the
     /// shared TableColumns, which no panel can observe by itself). TableHeader
     /// bumps this on the rows host after each change; being an INHERITED attached
-    /// property, the new value flows to every TableRowPanel in that subtree —
-    /// including rows the virtualizer realizes later — and each one re-measures.
+    /// property, the new value flows to every TableRowPanel in that subtree -
+    /// including rows the virtualizer realizes later · and each one re-measures.
     /// No per-panel event subscriptions, so recycled containers can't leak.
     /// </summary>
     public static readonly DependencyProperty LayoutVersionProperty =

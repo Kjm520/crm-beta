@@ -9,7 +9,7 @@ namespace Haystack.ViewModels;
 
 /// <summary>
 /// The Companies list. Deliberately has no search: this is the relations side
-/// of the app — the working set of actual customers — not the lead pipeline,
+/// of the app · the working set of actual customers · not the lead pipeline,
 /// and at that size scanning a sortable table beats typing a query.
 /// </summary>
 public partial class CompaniesViewModel : ViewModelBase
@@ -20,7 +20,7 @@ public partial class CompaniesViewModel : ViewModelBase
     private ObservableCollection<Company> _companies = [];
 
     /// <summary>
-    /// Refills the list in place — never replaces the collection. The table
+    /// Refills the list in place · never replaces the collection. The table
     /// sorts through the collection's view (see TableHeader), and swapping in a
     /// new collection would throw away the user's sort on every reload.
     /// </summary>

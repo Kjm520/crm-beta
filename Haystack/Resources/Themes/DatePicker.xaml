@@ -226,7 +226,7 @@
         <Setter Property="FontSize"       Value="13" />
         <!-- 8 + the text host's 2px caret reserve + the DatePicker's 1px border
              = text at 11px, matching InputField/InputCombo. Like InputField, the
-             template must NOT also bind the ScrollViewer's Margin to Padding —
+             template must NOT also bind the ScrollViewer's Margin to Padding -
              the internal text host applies Control.Padding by itself, and
              binding it doubled the indent. -->
         <Setter Property="Padding"        Value="8,0" />

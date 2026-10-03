@@ -43,7 +43,7 @@ public static class Database
     /// <summary>
     /// Writes a clean, consistent snapshot of the database to <paramref name="destinationPath"/>.
     /// Uses SQLite's VACUUM INTO, which produces a fully intact copy even while the
-    /// database is in use — safer than a raw file copy, which can catch in-flight writes.
+    /// database is in use · safer than a raw file copy, which can catch in-flight writes.
     /// </summary>
     public static void Backup(string destinationPath)
     {

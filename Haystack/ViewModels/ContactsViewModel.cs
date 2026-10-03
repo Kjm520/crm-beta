@@ -41,7 +41,7 @@ public partial class ContactsViewModel : ViewModelBase
     }
 
     /// <summary>
-    /// Refills the list in place — never replaces the collection. The table
+    /// Refills the list in place · never replaces the collection. The table
     /// sorts through the collection's view (see TableHeader), and swapping in a
     /// new collection would throw away the user's sort on every keystroke/reload.
     /// </summary>

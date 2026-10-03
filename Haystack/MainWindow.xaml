@@ -15,7 +15,7 @@
 
     <!-- Corner rounding, the window border, and the drop shadow are all drawn
          natively by DWM (see Theming/NativeChrome), so nothing here rounds or
-         outlines itself — the OS clips the window to its radius. -->
+         outlines itself · the OS clips the window to its radius. -->
     <Border Background="{DynamicResource BackgroundDeepBrush}">
         <Grid>
             <Grid.RowDefinitions>

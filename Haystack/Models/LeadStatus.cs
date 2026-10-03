@@ -17,7 +17,7 @@ public class LeadStatus
     public bool IsWon { get; set; }
 
     /// <summary>
-    /// Marks a status that means "finished" (won, lost, dead, …) — its leads need
+    /// Marks a status that means "finished" (won, lost, dead, …) · its leads need
     /// nothing further, so the Leads list hides them unless "Show closed" is on.
     /// A flag for the same rename-safety reason as <see cref="IsWon"/>.
     /// </summary>

@@ -8,11 +8,11 @@ namespace Haystack.Views.Dialogs;
 /// broke the app's look (and ignored dark mode entirely). This covers both shapes
 /// the app needs:
 ///
-/// <see cref="Ask"/> — a two-button confirmation, returning true only when the user
+/// <see cref="Ask"/> · a two-button confirmation, returning true only when the user
 /// actively confirms. Destructive calls get the red confirm button and leave focus on
 /// Cancel, so a stray Enter or Space can't delete anything.
 ///
-/// <see cref="Alert"/> — a one-button notice (validation, success, failure). Same
+/// <see cref="Alert"/> · a one-button notice (validation, success, failure). Same
 /// window with the Cancel button dropped, so the two never drift apart visually.
 /// </summary>
 public partial class ConfirmWindow : Window
@@ -27,7 +27,7 @@ public partial class ConfirmWindow : Window
         MessageText.Text = message;
         ConfirmButton.Content = confirmLabel;
 
-        // No subject (e.g. a plain question) — don't leave an empty line behind.
+        // No subject (e.g. a plain question) · don't leave an empty line behind.
         if (string.IsNullOrWhiteSpace(subject))
             SubjectText.Visibility = Visibility.Collapsed;
 
@@ -50,7 +50,7 @@ public partial class ConfirmWindow : Window
     /// Asks the user to confirm an action. Returns true only if they confirmed.
     /// </summary>
     /// <param name="subject">What's being acted on (a name), shown emphasized.</param>
-    /// <param name="message">What the action will do — cascades, irreversibility.</param>
+    /// <param name="message">What the action will do · cascades, irreversibility.</param>
     public static bool Ask(Window owner, string title, string subject, string message,
                            string confirmLabel = "Delete", bool destructive = true)
     {
@@ -63,7 +63,7 @@ public partial class ConfirmWindow : Window
     }
 
     /// <summary>
-    /// Tells the user something and waits for acknowledgement — the themed stand-in
+    /// Tells the user something and waits for acknowledgement · the themed stand-in
     /// for a one-button MessageBox (validation problems, results, errors).
     /// </summary>
     public static void Alert(Window owner, string title, string message, string subject = "")

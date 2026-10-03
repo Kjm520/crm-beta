@@ -6,8 +6,9 @@
     <UserControl.Resources>
         <!-- Single source of truth for this table's geometry: the header panel
              and every row lay out against this same spec (see TableRowPanel), so
-             they can never disagree. Settings' LIST COLUMNS choices are applied
-             to it in the constructor, before first layout. -->
+             they can never disagree. The user's saved column choices (header
+             right-click menu) are applied to it in the constructor, before
+             first layout. -->
         <common:TableColumns x:Key="Spec">
             <common:TableColumn Header="NAME"         Width="2.4*" SortMember="Name" />
             <common:TableColumn Header="TYPE"         Width="110"  SortMember="Type" />
@@ -19,6 +20,11 @@
             <!-- DAYS SINCE displays "-" for never-contacted; sorts by the day count
                  (int.MaxValue for never, so they land last ascending). -->
             <common:TableColumn Header="DAYS SINCE"   Width="90"   SortMember="DaysSinceLastInteraction" />
+            <!-- MAINTENANCE is the contact cadence ("every N days" from the detail
+                 view); ships hidden · shown via the header's right-click menu.
+                 Displays "-" for unmonitored; sorts by the day count (int.MaxValue
+                 for unmonitored, so they land last ascending). -->
+            <common:TableColumn Header="MAINTENANCE"  Width="110"  SortMember="ContactEveryDaysSort" Visible="False" />
         </common:TableColumns>
     </UserControl.Resources>
 
@@ -29,8 +35,8 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <!-- Header. Deliberately no search bar: Companies is the relations list —
-             the working set of actual customers — not the lead pipeline, and at
+        <!-- Header. Deliberately no search bar: Companies is the relations list -
+             the working set of actual customers · not the lead pipeline, and at
              that size scanning a sortable table beats typing a query. -->
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
@@ -90,6 +96,7 @@
                                         </Style>
                                     </TextBlock.Style>
                                 </TextBlock>
+                                <TextBlock Text="{Binding ContactEveryDaysDisplay}" Style="{StaticResource CellSecondary}" />
                             </common:TableRowPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>

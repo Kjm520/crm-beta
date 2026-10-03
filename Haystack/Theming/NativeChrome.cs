@@ -9,7 +9,7 @@ namespace Haystack.Theming;
 /// looking like Haystack: chromeless, rounded, shadowed.
 ///
 /// The windows used to fake rounded corners with AllowsTransparency plus a
-/// rounded root Border. That is the legacy trick — and it opts a window out of
+/// rounded root Border. That is the legacy trick · and it opts a window out of
 /// DWM entirely, which cost the native window shadow, the open/close/minimize
 /// animations, and clean teardown (closing showed a stale flash of the window).
 /// Asking DWM to round the corners itself keeps the look with none of the
@@ -27,7 +27,7 @@ public static class NativeChrome
 
     /// <summary>
     /// Call once at startup. Rounds every window the app ever shows, via a class
-    /// handler on Window.Loaded — the HWND exists by then, and the first frame
+    /// handler on Window.Loaded · the HWND exists by then, and the first frame
     /// hasn't been presented yet, so windows never appear square-cornered.
     /// </summary>
     public static void Initialize()
@@ -41,7 +41,7 @@ public static class NativeChrome
 
                 var preference = RoundedCorners;
                 // Best-effort: Windows 10 doesn't know the attribute and the call
-                // simply fails, leaving square corners — everything else works.
+                // simply fails, leaving square corners · everything else works.
                 DwmSetWindowAttribute(hwnd, WindowCornerPreference, ref preference, sizeof(int));
             }));
 }

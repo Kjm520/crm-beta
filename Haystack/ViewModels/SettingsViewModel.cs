@@ -53,7 +53,7 @@ public partial class SettingsViewModel : ViewModelBase
 
     /// <summary>
     /// Moves a nav tab to a new index. Called repeatedly while a drag is in flight
-    /// (once per row crossed), so it deliberately does NOT persist — the order is
+    /// (once per row crossed), so it deliberately does NOT persist · the order is
     /// written once the drag settles, via <see cref="CommitNavOrder"/>.
     /// </summary>
     public void MoveNav(int from, int to)

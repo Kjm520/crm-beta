@@ -209,7 +209,7 @@
         </Setter>
     </Style>
 
-    <!-- Close: red hover, white glyph on hover. Square — DWM clips the window
+    <!-- Close: red hover, white glyph on hover. Square · DWM clips the window
          (and anything drawn in it) to the native corner radius. -->
     <Style x:Key="WindowCloseButton" TargetType="Button" BasedOn="{StaticResource WindowCaptionButton}">
         <Setter Property="Template">
@@ -271,7 +271,7 @@
         <!-- 8 + the text host's own 2px caret reserve + the 1px border = text at
              11px, measured to land exactly on the combos' text edge (10 margin
              + 1 border). NOTE: the template deliberately does NOT bind the
-             ScrollViewer's Margin to this Padding — the TextBox's internal text
+             ScrollViewer's Margin to this Padding · the TextBox's internal text
              host applies Control.Padding by itself, and binding it in the
              template applied it twice (fields sat at 3 + 2×Padding). -->
         <Setter Property="Padding"          Value="8,0" />
@@ -302,8 +302,8 @@
     <!-- Search variant of InputField: a magnifier glyph and a ghost "Search…"
          prompt, so it reads as search rather than a stray input. Sits in the
          page header row beside the + New button. The glyph column supplies the
-         left inset (the text host still applies Padding internally — see the
-         InputField note — so Padding here only pads the right side). -->
+         left inset (the text host still applies Padding internally · see the
+         InputField note · so Padding here only pads the right side). -->
     <Style x:Key="SearchField" TargetType="TextBox">
         <Setter Property="Background"       Value="{DynamicResource BackgroundElevatedBrush}" />
         <Setter Property="Foreground"       Value="{DynamicResource TextPrimaryBrush}" />
@@ -383,7 +383,7 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="30" />
                                 </Grid.ColumnDefinitions>
-                                <!-- 10px text indent — the InputField's Padding is set to
+                                <!-- 10px text indent · the InputField's Padding is set to
                                      land its text on this same edge (see the note there). -->
                                 <ContentPresenter Grid.Column="0"
                                                   Content="{TemplateBinding SelectionBoxItem}"
@@ -624,7 +624,7 @@
          settled star widths one deferred pass after first render, which flashed
          mis-laid-out headers on every fresh view). Sorting lives in TableHeader;
          rows are ListBoxItems purely for virtualization and act as click targets
-         that open detail modals — selection is deliberately invisible.
+         that open detail modals · selection is deliberately invisible.
     ═══════════════════════════════════════════ -->
 
     <!-- Cell text: TextBody for the lead column, TextBodySecondary for the rest.
@@ -667,7 +667,7 @@
     </Style>
 
     <!-- Row container: RowButton's look on a ListBoxItem (hover tint, bottom rule,
-         no selection or focus chrome — clicking a row opens its detail modal). -->
+         no selection or focus chrome · clicking a row opens its detail modal). -->
     <Style x:Key="ListTableRow" TargetType="ListBoxItem">
         <Setter Property="Background"       Value="Transparent" />
         <Setter Property="BorderBrush"      Value="{DynamicResource BorderSubtleBrush}" />
@@ -697,7 +697,7 @@
     </Style>
 
     <!-- Scrollbar floats over the rows instead of claiming a layout column, so
-         its appearance can never change the content width — header and rows stay
+         its appearance can never change the content width · header and rows stay
          aligned no matter how long the list is. -->
     <Style x:Key="OverlayScroll" TargetType="ScrollViewer">
         <Setter Property="Template">

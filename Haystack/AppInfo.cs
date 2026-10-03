@@ -5,7 +5,7 @@ namespace Haystack;
 /// <summary>
 /// Version facts about the running build. The build number is the repo's commit
 /// count, baked into the assembly at build time by the EmbedBuildNumber target
-/// in Haystack.csproj — embedded rather than read from a file beside the exe,
+/// in Haystack.csproj · embedded rather than read from a file beside the exe,
 /// because the published app is a single self-contained executable with
 /// deliberately no sibling files.
 /// </summary>

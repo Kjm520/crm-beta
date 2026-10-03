@@ -6,8 +6,9 @@
     <UserControl.Resources>
         <!-- Single source of truth for this table's geometry: the header panel
              and every row lay out against this same spec (see TableRowPanel), so
-             they can never disagree. Settings' LIST COLUMNS choices are applied
-             to it in the constructor, before first layout. -->
+             they can never disagree. The user's saved column choices (header
+             right-click menu) are applied to it in the constructor, before
+             first layout. -->
         <common:TableColumns x:Key="Spec">
             <common:TableColumn Header="NAME"    Width="1.6*" SortMember="Name" />
             <common:TableColumn Header="COMPANY" Width="1.6*" SortMember="Company" />
@@ -36,7 +37,7 @@
             </Grid.ColumnDefinitions>
             <TextBlock Text="Leads" Style="{StaticResource TextDisplaySmall}" Grid.Column="0" />
 
-            <!-- Closed = finished (won / lost / dead — flagged per status in Settings).
+            <!-- Closed = finished (won / lost / dead · flagged per status in Settings).
                  Hidden from the list by default; this brings them back. -->
             <TextBlock Grid.Column="1" Text="Show closed"
                        Style="{StaticResource TextBodySecondary}"

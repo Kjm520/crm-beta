@@ -118,11 +118,25 @@
                         </StackPanel>
                     </Border>
 
+                    <!-- Monitors: rules that watch live data and add tasks to the
+                         Workflow queue (rows are built in code-behind from the
+                         Monitors registry). Per-record configuration lives on the
+                         records themselves; these are the master switches. -->
+                    <Border Style="{StaticResource CardPanel}" Margin="0,0,0,16">
+                        <StackPanel>
+                            <TextBlock Text="MONITORS" Style="{StaticResource TextSubheading}" Margin="0,0,0,4" />
+                            <TextBlock Text="Rules that watch your data and add tasks to the Workflow queue automatically. Turning one off retires its open tasks."
+                                       Style="{StaticResource TextBodySecondary}"
+                                       Margin="0,0,0,12" TextWrapping="Wrap" />
+                            <StackPanel x:Name="MonitorsHost" />
+                        </StackPanel>
+                    </Border>
+
                     <!-- Lead statuses (user-editable) -->
                     <Border Style="{StaticResource CardPanel}" Margin="0,0,0,16">
                         <StackPanel>
                             <TextBlock Text="LEAD STATUSES" Style="{StaticResource TextSubheading}" Margin="0,0,0,4" />
-                            <TextBlock Text="Deleting a status keeps its leads; they simply become unassigned. Statuses marked Closed count as finished (won, lost, dead) — the Leads list hides them unless its Show closed toggle is on."
+                            <TextBlock Text="Deleting a status keeps its leads; they simply become unassigned. Statuses marked Closed count as finished (won, lost, dead) · the Leads list hides them unless its Show closed toggle is on."
                                        Style="{StaticResource TextBodySecondary}"
                                        Margin="0,0,0,12" TextWrapping="Wrap" />
 

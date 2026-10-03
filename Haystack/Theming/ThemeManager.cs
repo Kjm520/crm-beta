@@ -7,7 +7,7 @@ namespace Haystack.Theming;
 /// Swaps the active colour palette (light/dark) at runtime by replacing the
 /// palette ResourceDictionary in Application.Resources. The theme brushes pull
 /// their colours from that palette via DynamicResource, so replacing it recolours
-/// every open window live — no restart, no per-window work.
+/// every open window live · no restart, no per-window work.
 /// </summary>
 public static class ThemeManager
 {

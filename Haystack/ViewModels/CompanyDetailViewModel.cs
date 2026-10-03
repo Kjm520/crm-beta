@@ -14,7 +14,7 @@ public partial class CompanyDetailViewModel : ViewModelBase
     private readonly InteractionRepository _interactionRepo = new();
 
     // Companies don't offer Carrier: that type is for contacts. The enum stays
-    // shared — this is a per-form restriction of the choices, and migration v9
+    // shared · this is a per-form restriction of the choices, and migration v9
     // re-homed any company rows that had been stored as Carrier.
     public ContactType[] CompanyTypes { get; set; } = [ContactType.Customer, ContactType.Prospect];
     public ContactStatus[] ContactStatuses { get; set; } = Enum.GetValues<ContactStatus>();

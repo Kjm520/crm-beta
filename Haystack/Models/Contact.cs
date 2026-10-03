@@ -36,9 +36,17 @@ public class Contact
         ? DaysSinceLastInteraction.ToString()
         : "-";
 
+    // Display-friendly cadence for the MAINTENANCE column: "-" when not monitored.
+    public string ContactEveryDaysDisplay => ContactEveryDays is { } days
+        ? days == 1 ? "1 day" : $"{days} days"
+        : "-";
+
+    // Sort member for the MAINTENANCE column: unmonitored lands last ascending.
+    public int ContactEveryDaysSort => ContactEveryDays ?? int.MaxValue;
+
     /// <summary>
     /// Days since the last activity, counting from creation when nothing was
-    /// ever logged — a new record gets its full cadence window before alarming,
+    /// ever logged · a new record gets its full cadence window before alarming,
     /// but can't hide forever.
     /// </summary>
     public int EffectiveDaysSince => LastInteractionDate.HasValue

@@ -15,19 +15,19 @@ namespace Haystack.Views.Common;
 /// Builds the clickable header cells for an in-house list table and runs its
 /// sorting, column resizing, and column management.
 ///
-/// Sorting — clicking a header sorts by the column's SortMember (ascending,
+/// Sorting · clicking a header sorts by the column's SortMember (ascending,
 /// then descending on a second click) through the list's collection view; the
 /// list ViewModels refill their collections in place, so the sort survives
 /// searching and reloads.
 ///
-/// Resizing — every visible column boundary carries an invisible 8px grip that
+/// Resizing · every visible column boundary carries an invisible 8px grip that
 /// straddles it. Dragging pins the left-hand column at the dragged pixel width
-/// (star columns absorb the slack, so shrinking can leave a trailing gap —
-/// Explorer's model — while widening is clamped so the row can never overflow
+/// (star columns absorb the slack, so shrinking can leave a trailing gap -
+/// Explorer's model · while widening is clamped so the row can never overflow
 /// the card). Double-clicking a grip auto-fits its column to the widest
 /// on-screen content.
 ///
-/// Column management — right-clicking the header opens a context menu in the
+/// Column management · right-clicking the header opens a context menu in the
 /// convention of Explorer/Excel: a check-glyph toggle per column (applied live;
 /// the single-pass table layout makes that flash-free), plus Auto-fit and a
 /// Reset to default that restores all columns at their designed widths. All
@@ -44,7 +44,7 @@ public class TableHeader
     private const double AutoFitPadding = 4;
     private const double ArrowAllowance = 14;
 
-    // The header content's side margins (8 + 8) — keep in sync with the margin
+    // The header content's side margins (8 + 8) · keep in sync with the margin
     // on the content Grid below and the cell styles in Controls.xaml.
     private const double HeaderInsets = 16;
 
@@ -139,7 +139,7 @@ public class TableHeader
             _labels.Add(label);
 
             // A column may never be squeezed narrower than its own header (plus
-            // insets and arrow room) — headers don't get ellipsis-trimmed by a
+            // insets and arrow room) · headers don't get ellipsis-trimmed by a
             // drag or auto-fit. The label trimming above is only the graceful
             // fallback for star columns on an extremely narrow window, which the
             // interactive clamps can't govern.
@@ -302,7 +302,7 @@ public class TableHeader
         {
             Style = (Style)Application.Current.FindResource("MenuDropItem"),
             Content = content,
-            // The last visible column can't be hidden — an all-blank table with
+            // The last visible column can't be hidden · an all-blank table with
             // no header left to right-click would be a trap.
             IsEnabled = !lastVisible,
             Opacity = lastVisible ? 0.45 : 1,
@@ -333,7 +333,7 @@ public class TableHeader
 
         BuildCells();       // grip topology follows visibility
         BumpLayout();
-        ListColumns.SaveHidden(_settingsKey, _columns.Where(c => !c.Visible).Select(c => c.Header));
+        ListColumns.SaveVisibility(_settingsKey, _columns);
         RebuildMenuItems(); // refresh check glyphs and the last-column guard
     }
 
@@ -415,7 +415,7 @@ public class TableHeader
     /// <summary>
     /// How wide a column may grow right now: it can consume the trailing gap and
     /// squeeze the other star columns down to their own minimums (each protects
-    /// its header text), but never push the row past the panel — the tables have
+    /// its header text), but never push the row past the panel · the tables have
     /// no horizontal scroll.
     /// </summary>
     private double MaxWidthFor(TableColumn column)
@@ -430,14 +430,14 @@ public class TableHeader
     }
 
     /// <summary>
-    /// Returns the table to its designed default, live: every column shown,
-    /// each at its XAML-designed width.
+    /// Returns the table to its designed default, live: every column at its
+    /// XAML-designed visibility and width.
     /// </summary>
     private void ResetToDefault()
     {
         foreach (var column in _columns)
         {
-            column.Visible = true;
+            column.Visible = column.DefaultVisible ?? true;
             if (column.DefaultWidth is { } design)
                 column.Width = design;
         }
@@ -459,7 +459,7 @@ public class TableHeader
 
     /// <summary>
     /// Sizes a column to its widest content among the header label and the rows
-    /// currently realized on screen (virtualized-away rows can't be measured —
+    /// currently realized on screen (virtualized-away rows can't be measured -
     /// the same trade Explorer makes). Caller bumps layout and saves.
     /// </summary>
     private void AutoFit(TableColumn column)

@@ -5,7 +5,7 @@ using System.Windows.Input;
 namespace Haystack.Behaviors;
 
 /// <summary>
-/// Restricts a TextBox to bare digits — typed, pasted, or spaced in. Used for
+/// Restricts a TextBox to bare digits · typed, pasted, or spaced in. Used for
 /// small numeric fields like the "contact every N days" cadence, where letting
 /// stray characters through would just make the binding silently refuse to
 /// update the (int?) source.

@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <!-- ═══════════════════════════════════════════
-         LIGHT palette — colours AND the brushes that use them.
+         LIGHT palette · colours AND the brushes that use them.
          The whole app references these brushes via DynamicResource, so swapping
          this dictionary for Palette.Dark.xaml at runtime recolours everything
          live. See Haystack.Theming.ThemeManager.

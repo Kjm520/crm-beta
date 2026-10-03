@@ -36,12 +36,12 @@ public class Lead
     public string? StatusName { get; set; }
 
     // Populated by join query: whether the assigned status is flagged closed
-    // (finished — won/lost/dead). Statusless leads count as open.
+    // (finished · won/lost/dead). Statusless leads count as open.
     public bool StatusIsClosed { get; set; }
 
     /// <summary>
     /// How to label this lead (falls back to the company when it has no name).
-    /// Empty for a lead that has neither — i.e. a new, not-yet-filled-in one, whose
+    /// Empty for a lead that has neither · i.e. a new, not-yet-filled-in one, whose
     /// modal title should read blank like Contact's and Company's do. Validation
     /// requires Name or Company, so a saved lead always labels as something.
     /// </summary>

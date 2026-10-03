@@ -3,6 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using Haystack.Alerts;
 using Haystack.Models;
 using Haystack.Navigation;
 using Haystack.ViewModels;
@@ -20,6 +21,48 @@ public partial class SettingsWindow : Window
         DataContext = _vm;
         VersionText.Text = AppInfo.Version;
         BuildText.Text = AppInfo.Build;
+        BuildMonitorToggles();
+    }
+
+    // One row per registered monitor: name + description, master toggle at the
+    // right. Rows come from the Monitors registry, so a new monitor appears
+    // here without touching this window.
+    private void BuildMonitorToggles()
+    {
+        foreach (var monitor in Monitors.All)
+        {
+            var row = new Grid { Margin = new Thickness(0, 4, 0, 4) };
+            row.ColumnDefinitions.Add(new ColumnDefinition());
+            row.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+
+            var text = new StackPanel { Margin = new Thickness(0, 0, 16, 0) };
+            text.Children.Add(new TextBlock
+            {
+                Text = monitor.Name,
+                Style = (Style)FindResource("TextBody"),
+            });
+            text.Children.Add(new TextBlock
+            {
+                Text = monitor.Description,
+                Style = (Style)FindResource("TextBodySecondary"),
+                TextWrapping = TextWrapping.Wrap,
+                Margin = new Thickness(0, 2, 0, 0),
+            });
+            row.Children.Add(text);
+
+            var toggle = new CheckBox
+            {
+                Style = (Style)FindResource("ToggleSwitch"),
+                IsChecked = Monitors.IsEnabled(monitor.Id),
+                VerticalAlignment = VerticalAlignment.Center,
+            };
+            Grid.SetColumn(toggle, 1);
+            var id = monitor.Id;
+            toggle.Click += (_, _) => Monitors.SetEnabled(id, toggle.IsChecked == true);
+            row.Children.Add(toggle);
+
+            MonitorsHost.Children.Add(row);
+        }
     }
 
     private void Website_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
@@ -38,7 +81,7 @@ public partial class SettingsWindow : Window
     //
     // A live, mouse-capture drag rather than WPF's DragDrop.DoDragDrop. DoDragDrop
     // runs its own blocking loop and reorders only on drop, so the list sat frozen
-    // for the whole gesture — the grip looked broken. Here the grabbed row follows
+    // for the whole gesture · the grip looked broken. Here the grabbed row follows
     // the cursor on a TranslateTransform, and every row it crosses is reordered in
     // the collection immediately and animated into its new slot, so the list shows
     // the result continuously. Nothing is persisted until the drag settles.
@@ -89,7 +132,7 @@ public partial class SettingsWindow : Window
         if (to == from || to < 0) return;
 
         // Snapshot where every row sits, reorder, then animate each displaced row
-        // from where it *was* back to zero — that's what makes them appear to slide.
+        // from where it *was* back to zero · that's what makes them appear to slide.
         var before = SlotTops();
         _vm.MoveNav(from, to);
         NavList.UpdateLayout();
@@ -100,7 +143,7 @@ public partial class SettingsWindow : Window
             if (!after.TryGetValue(item, out var newTop)) continue;
             var shift = oldTop - newTop;
 
-            // The dragged row isn't animated — it's pinned to the cursor. Its slot
+            // The dragged row isn't animated · it's pinned to the cursor. Its slot
             // moved out from under it, so compensate to keep it visually still.
             if (item == _navDragItem)
             {

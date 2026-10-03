@@ -3,39 +3,31 @@ using Haystack.Data;
 namespace Haystack.Alerts;
 
 /// <summary>
-/// The single compose-point for everything the alert bell shows. Each rule is
+/// The single compose-point for everything the alert bell shows. Each source is
 /// one private method returning its alerts; <see cref="GatherAll"/> concatenates
-/// them and the bell renders whatever comes back, grouped by Alert.Group — so
-/// adding a future rule (missed follow-ups, backup reminders, …) is one method
-/// and one line here, with no UI changes.
+/// them and the bell renders whatever comes back, grouped by Alert.Group.
+/// MonitorEngine has already synced the Workflow queue by the time this runs
+/// (see MainWindow.RefreshAlerts), so the bell simply mirrors the queue's open
+/// monitor tasks · one source of truth. Future non-task rules (e.g. backup
+/// reminders) are one method and one line here.
 /// </summary>
 public static class AlertCenter
 {
     public static List<Alert> GatherAll() =>
-        [.. OverdueRelationships()];
+        [.. MonitorTasks()];
 
-    /// <summary>
-    /// Relationship monitoring: companies and contacts with a "contact every N
-    /// days" cadence whose window has lapsed (see IsOverdue on the models —
-    /// activity on a company means activity on it or any of its contacts, and
-    /// never-contacted records count from their creation date).
-    /// </summary>
-    private static IEnumerable<Alert> OverdueRelationships()
+    /// <summary>The open monitor-created tasks, as bell items with click-through.</summary>
+    private static IEnumerable<Alert> MonitorTasks()
     {
-        foreach (var company in new CompanyRepository().GetAll().Where(c => c.IsOverdue))
-            yield return new Alert(
-                "NEEDS CONTACT",
-                company.Name,
-                $"{company.EffectiveDaysSince} days since activity — expected every {company.ContactEveryDays}",
-                AlertTarget.Company, company.Id);
+        foreach (var task in new WorkflowTaskRepository().GetOpenMonitorTasks())
+        {
+            if (task.TargetKind is not { } kind || task.TargetId is not { } id) continue;
 
-        foreach (var contact in new ContactRepository().GetAll().Where(c => c.IsOverdue))
             yield return new Alert(
                 "NEEDS CONTACT",
-                string.IsNullOrWhiteSpace(contact.CompanyName)
-                    ? contact.Name
-                    : $"{contact.Name} ({contact.CompanyName})",
-                $"{contact.EffectiveDaysSince} days since activity — expected every {contact.ContactEveryDays}",
-                AlertTarget.Contact, contact.Id);
+                task.Text,
+                task.AgeDays <= 0 ? "in the queue since today" : $"in the queue {task.AgeDisplay}",
+                kind, id);
+        }
     }
 }

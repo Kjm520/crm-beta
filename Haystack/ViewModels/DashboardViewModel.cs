@@ -50,6 +50,8 @@ public partial class DashboardViewModel : ViewModelBase
                 .OrderBy(c => c.DaysSinceLastInteraction)
                 .Take(100));
 
+        // 15 is a fetch cap, not a display count · the card's FitStackPanel
+        // shows only as many as fit its height at the current window size.
         RecentActivity = new ObservableCollection<Interaction>(
             _interactions.GetRecent(15));
 

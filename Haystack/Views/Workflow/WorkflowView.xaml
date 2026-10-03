@@ -5,24 +5,105 @@
     <Grid Margin="28,24">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="24" />
+            <RowDefinition Height="16" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <!-- Header -->
         <TextBlock Grid.Row="0" Text="Workflow" Style="{StaticResource TextDisplaySmall}" />
 
-        <!-- Empty state placeholder -->
-        <Border Grid.Row="2" Style="{StaticResource CardPanel}">
-            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,48">
-                <TextBlock Text="Nothing here yet"
-                           Style="{StaticResource TextSubheading}"
-                           HorizontalAlignment="Center"
-                           Margin="0,0,0,8" />
-                <TextBlock Text="Tasks and workflow items will appear here."
-                           Style="{StaticResource TextBodySecondary}"
-                           HorizontalAlignment="Center" />
-            </StackPanel>
+        <!-- The queue: oldest at the top, new tasks enter at the bottom · the
+             add box sits at the foot of the card for exactly that reason. -->
+        <Border Grid.Row="2" Style="{StaticResource CardPanel}" Padding="0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="20,12,20,12">
+                        <ItemsControl ItemsSource="{Binding Tasks}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="{DynamicResource BorderSubtleBrush}"
+                                            BorderThickness="0,0,0,1"
+                                            Padding="0,10">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <CheckBox Grid.Column="0"
+                                                      Style="{StaticResource InputCheck}"
+                                                      VerticalAlignment="Center"
+                                                      Margin="0,0,12,0"
+                                                      Click="TaskDone_Click"
+                                                      Tag="{Binding}" />
+                                            <!-- Monitor-created tasks link to their record:
+                                                 hand cursor + accent on hover, click opens it. -->
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding Text}"
+                                                       TextWrapping="Wrap"
+                                                       VerticalAlignment="Center"
+                                                       MouseLeftButtonUp="TaskLink_Click">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock" BasedOn="{StaticResource TextBody}">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding HasTarget}" Value="True">
+                                                                <Setter Property="Cursor" Value="Hand" />
+                                                            </DataTrigger>
+                                                            <MultiDataTrigger>
+                                                                <MultiDataTrigger.Conditions>
+                                                                    <Condition Binding="{Binding HasTarget}" Value="True" />
+                                                                    <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True" />
+                                                                </MultiDataTrigger.Conditions>
+                                                                <Setter Property="Foreground" Value="{DynamicResource AccentPrimaryBrush}" />
+                                                            </MultiDataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                            <TextBlock Grid.Column="2"
+                                                       Text="{Binding AgeDisplay}"
+                                                       Style="{StaticResource TextCaption}"
+                                                       VerticalAlignment="Center"
+                                                       Margin="12,0,0,0" />
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <TextBlock Text="Queue's clear · nothing waiting."
+                                   Style="{StaticResource TextBodySecondary}"
+                                   Margin="0,8,0,0"
+                                   Visibility="{Binding Tasks.Count, Converter={StaticResource ZeroToVisibleConverter}}" />
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- New tasks stack in at the bottom -->
+                <Border Grid.Row="1"
+                        BorderBrush="{DynamicResource BorderSubtleBrush}"
+                        BorderThickness="0,1,0,0"
+                        Padding="20,12">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="12" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0"
+                                 Style="{StaticResource InputField}"
+                                 Text="{Binding NewTaskText, UpdateSourceTrigger=PropertyChanged}"
+                                 KeyDown="NewTask_KeyDown" />
+                        <Button Grid.Column="2" Content="Add Task"
+                                Style="{StaticResource ButtonPrimary}"
+                                Click="AddTask_Click" />
+                    </Grid>
+                </Border>
+            </Grid>
         </Border>
     </Grid>
 </UserControl>
