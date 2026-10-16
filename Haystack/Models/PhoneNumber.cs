@@ -4,7 +4,7 @@ namespace Haystack.Models;
 
 /// <summary>
 /// Phone numbers are STORED as raw digits and FORMATTED only for display. That way
-/// "(402) 720-1614", "4027201614" and "402.720.1614" all normalize to one value,
+/// "(555) 555-0123", "5555550123" and "555.555.0123" all normalize to one value,
 /// so searching and comparison work, and the display format can change later.
 ///
 /// Anything that isn't a clean 10-digit US number (extensions, international, partial
@@ -58,7 +58,7 @@ public static class PhoneNumber
     }
 
     /// <summary>
-    /// Splits "4027201614x123" or "402-720-1614 x123" into main + extension digits.
+    /// Splits "5555550123x123" or "555-555-0123 x123" into main + extension digits.
     /// The extension is truncated to <see cref="MaxExtensionDigits"/>.
     /// </summary>
     private static (string Main, string? Ext) SplitExtension(string s)

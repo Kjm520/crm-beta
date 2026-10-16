@@ -1,0 +1,26 @@
+# Editor / tool state
+.vs
+.claude
+.scrap
+
+# Build output
+bin/
+obj/
+
+# Installer build output
+SetupProject/Debug/
+SetupProject/Release/
+
+# Per-developer VS state (not for source control)
+*.user
+
+# Signing material · never commit (safety net; certs live outside the repo)
+*.pfx
+*.cer
+*.snk
+
+# Local database files
+*.db
+
+# Local secrets (never commit)
+/.secrets
